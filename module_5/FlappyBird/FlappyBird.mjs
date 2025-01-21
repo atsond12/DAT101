@@ -145,15 +145,21 @@ function spawnObstacle() {
   const obstacle = new TObstacle(spcvs, SpriteInfoList.obstacle);
   GameProps.obstacles.push(obstacle);
   //Spawn a new obstacle in 2-7 seconds
-  const seconds = Math.ceil(Math.random() * 5) + 2;
-  setTimeout(spawnObstacle, seconds * 1000);
+  if (GameProps.status === EGameStatus.playing) {
+    const seconds = Math.ceil(Math.random() * 5) + 2;
+    setTimeout(spawnObstacle, seconds * 1000);
+  }
 }
 
 function spawnBait() {
-  const pos = new lib2d.TPosition(400, 100);
+  const pos = new lib2d.TPosition(SpriteInfoList.background.width, 100);
   const bait = new TBait(spcvs, SpriteInfoList.food, pos);
   GameProps.baits.push(bait);
   //Generer nye baits hvert 0.5 til 1 sekund med step på 0.1
+  if (GameProps.status === EGameStatus.playing) {
+    const sec = Math.ceil(Math.random() * 5) / 10 + 0.5;
+    setTimeout(spawnBait, sec * 1000);
+  }
 }
 
 //--------------- Event Handlers -----------------------------------------//
