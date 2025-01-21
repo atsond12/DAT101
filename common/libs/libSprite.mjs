@@ -118,6 +118,10 @@ class TSprite {
     this.boundingBox.y = aY;
   }
 
+  getPos(){
+    return this.#pos;
+  }
+
   get index() {
     return this.#index;
   }
@@ -128,6 +132,10 @@ class TSprite {
 
   hasCollided(aSprite){
     return this.boundingBox.isInsideRect(aSprite.boundingBox);
+  }
+
+  getCenter(){
+    return this.boundingBox.center;
   }
 
 } //End of TSprite class
