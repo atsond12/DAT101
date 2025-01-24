@@ -8,52 +8,64 @@ Dere skal flytte FlappyBird Spriten til en fornuftig plass på skjermen.
 Lage en play knapp som kan starte spillet.
 */
 
-
-export class TMenu{
+export class TMenu {
   #spFlappyBird;
   #spButtonPlay;
+  #spInfoText;
   #spcvs;
   #activeSprite;
-  constructor(aSpriteCanvas){
+  constructor(aSpriteCanvas) {
     this.#spcvs = aSpriteCanvas;
     const pos = new lib2d.TPosition(200, 100);
+
     this.#spFlappyBird = new libSprite.TSprite(aSpriteCanvas, SpriteInfoList.flappyBird, pos);
     pos.y = 200;
     pos.x = 230;
+
     this.#spButtonPlay = new libSprite.TSprite(aSpriteCanvas, SpriteInfoList.buttonPlay, pos);
+
+    pos.x = 200;
+    pos.y = 100;
+    this.#spInfoText = new libSprite.TSprite(aSpriteCanvas, SpriteInfoList.infoText, pos);
+
     this.#spcvs.addEventListener("mousemove", this.#onMouseMove);
     this.#spcvs.addEventListener("click", this.#onClick);
     this.#activeSprite = null; //Vi har ingen aktive sprite enda, når musen er over en sprite setter vi denne til den aktive sprite
   }
 
-
-  draw(){
-    switch(GameProps.status){
+  draw() {
+    switch (GameProps.status) {
       case EGameStatus.idle:
         this.#spFlappyBird.draw();
         this.#spButtonPlay.draw();
         break;
+      case EGameStatus.getReady:
+        this.#spInfoText.draw();
+        break;
     }
-  }// end of draw
+  } // end of draw
 
   //Ikke eksamensrelevant kode, men viktig for eventer i canvas
   #onMouseMove = (aEvent) => {
     const pos = this.#spcvs.getMousePos(aEvent);
     const boundRect = this.#spButtonPlay.boundingBox;
-    if(boundRect.isPositionInside(pos)){
-      this.#spcvs.style.cursor = "pointer";
-      this.#activeSprite = this.#spButtonPlay;
+    switch(GameProps.status){
+      case EGameStatus.idle:
+        if (boundRect.isPositionInside(pos)) {
+          this.#spcvs.style.cursor = "pointer";
+          this.#activeSprite = this.#spButtonPlay;
+        } else {
+          this.#spcvs.style.cursor = "default";
+          this.#activeSprite = null; //Ingen sprite er aktiv
+        }
+        break;
     }
-    else{
+  };
+
+  #onClick = () => {
+    if (this.#activeSprite === this.#spButtonPlay) {
+      GameProps.status = EGameStatus.getReady;
       this.#spcvs.style.cursor = "default";
-      this.#activeSprite = null; //Ingen sprite er aktiv
     }
-  }
-
-  #onClick = () =>{
-    if(this.#activeSprite === this.#spButtonPlay){
-      GameProps.status = EGameStatus.playing;
-    }
-  }
-
+  };
 }
