@@ -63,6 +63,10 @@ class TSpriteCanvas {
     return this.mousePos;
   }
 
+  get style(){
+    return this.#cvs.style;
+  }
+
 } // End of TSpriteCanvas class
 
 /* 

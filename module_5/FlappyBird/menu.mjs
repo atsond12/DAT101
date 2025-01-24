@@ -13,6 +13,7 @@ export class TMenu{
   #spFlappyBird;
   #spButtonPlay;
   #spcvs;
+  #activeSprite;
   constructor(aSpriteCanvas){
     this.#spcvs = aSpriteCanvas;
     const pos = new lib2d.TPosition(200, 100);
@@ -21,6 +22,8 @@ export class TMenu{
     pos.x = 230;
     this.#spButtonPlay = new libSprite.TSprite(aSpriteCanvas, SpriteInfoList.buttonPlay, pos);
     this.#spcvs.addEventListener("mousemove", this.#onMouseMove);
+    this.#spcvs.addEventListener("click", this.#onClick);
+    this.#activeSprite = null; //Vi har ingen aktive sprite enda, når musen er over en sprite setter vi denne til den aktive sprite
   }
 
 
@@ -36,6 +39,21 @@ export class TMenu{
   //Ikke eksamensrelevant kode, men viktig for eventer i canvas
   #onMouseMove = (aEvent) => {
     const pos = this.#spcvs.getMousePos(aEvent);
+    const boundRect = this.#spButtonPlay.boundingBox;
+    if(boundRect.isPositionInside(pos)){
+      this.#spcvs.style.cursor = "pointer";
+      this.#activeSprite = this.#spButtonPlay;
+    }
+    else{
+      this.#spcvs.style.cursor = "default";
+      this.#activeSprite = null; //Ingen sprite er aktiv
+    }
+  }
+
+  #onClick = () =>{
+    if(this.#activeSprite === this.#spButtonPlay){
+      GameProps.status = EGameStatus.playing;
+    }
   }
 
 }
