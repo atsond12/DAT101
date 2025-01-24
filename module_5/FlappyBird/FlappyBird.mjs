@@ -5,6 +5,7 @@ import libSprite from "../../common/libs/libSprite.mjs";
 import THero from "./hero.mjs";
 import TObstacle from "./obstacle.mjs";
 import { TBait } from "./bait.mjs";
+import { TMenu } from "./menu.mjs";
 
 //--------------- Objects and Variables ----------------------------------//
 const chkMuteSound = document.getElementById("chkMuteSound");
@@ -36,12 +37,13 @@ export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
-  status: EGameStatus.playing, //For testing, normalt EGameStatus.idle
+  status: EGameStatus.idle, //For testing, normalt EGameStatus.idle
   background: null,
   ground: null,
   hero: null,
   obstacles: [],
   baits: [],
+  menu: null,
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -72,7 +74,9 @@ function loadGame() {
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
-}
+
+  GameProps.menu = new TMenu(spcvs);
+}// end of loadGame
 
 function drawGame() {
   spcvs.clearCanvas();
@@ -138,6 +142,9 @@ function animateGame() {
         GameProps.baits.splice(delBaitIndex, 1);
       }
       break;
+      case EGameStatus.idle:
+        GameProps.hero.updateIdle();
+        break;
   }
 }
 
