@@ -67,23 +67,6 @@ class TSpriteCanvas {
     return this.#cvs.style;
   }
 
-  get left(){
-    return this.boundingBox.left;
-  }
-
-  get top(){
-    return this.boundingBox.top;
-  }
-
-  get right(){
-    return this.boundingBox.right;
-  }
-
-  get bottom(){
-    return this.boundingBox.bottom;
-  }
-  
-
 } // End of TSpriteCanvas class
 
 /* 
@@ -139,6 +122,22 @@ class TSpriteBase extends lib2D.TPosition {
 
   get boundingBox(){
     throw new TypeError("Property boundingBox must be overridden");
+  }
+
+  get left(){
+    return this.x;
+  }
+
+  get right(){
+    return this.x + this.#spi.width;
+  }
+
+  get top(){
+    return this.y;
+  }
+
+  get bottom(){
+    return this.y + this.#spi.height;
   }
 
 } //End of TSprite class

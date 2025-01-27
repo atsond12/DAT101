@@ -33,7 +33,7 @@ function drawCanvas() {
   requestAnimationFrame(drawCanvas);
 }
 
-const speed = 0.7;
+let speed = 0.7;
 
 function animateApp() {
   button1.x += speed;
