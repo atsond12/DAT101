@@ -1,5 +1,5 @@
 "use strict";
-import lib2D from "./lib2d.mjs";
+import lib2D from "./lib2d_v2.mjs";
 /**
  * @library libSprite
  * @description A library for classes that manage sprite animations.
@@ -67,6 +67,23 @@ class TSpriteCanvas {
     return this.#cvs.style;
   }
 
+  get left(){
+    return this.boundingBox.left;
+  }
+
+  get top(){
+    return this.boundingBox.top;
+  }
+
+  get right(){
+    return this.boundingBox.right;
+  }
+
+  get bottom(){
+    return this.boundingBox.bottom;
+  }
+  
+
 } // End of TSpriteCanvas class
 
 /* 
@@ -78,7 +95,6 @@ class TSpriteBase extends lib2D.TPosition {
   #spi;
   #index;
   #speedIndex;
-  #boundingBox;
   constructor(aSpriteCanvas, aSpriteInfo, aPosition) {
     super(aPosition.x, aPosition.y);
     //Can not create an instance of an abstract class
@@ -88,9 +104,7 @@ class TSpriteBase extends lib2D.TPosition {
     this.#index = 0;
     this.animateSpeed = 0;
     this.#speedIndex = 0;
-    this.#boundingBox = undefined;
     this.rotation = 0;
-
   }
 
   draw() {
@@ -107,31 +121,24 @@ class TSpriteBase extends lib2D.TPosition {
     this.#spcvs.drawSprite(this.#spi, this.x, this.y, this.#index, this.rotation);
   }
 
-  translate(aDx, aDy) {
-    this.x += aDx;
-    this.y += aDy;
-    this.boundingBox.x += aDx;
-    this.boundingBox.y += aDy;
-  }
-
   get index() {
     return this.#index;
   }
   
   set index(aIndex){
+    if(aIndex < 0 || aIndex >= this.#spi.count){
+      //Reset index to 0, because of ++ or -- operation
+      aIndex = 0;
+    }
     this.#index = aIndex;
   }
 
   hasCollided(aSprite){
-    throw new TypeError("Method hasCollided must be overridden");
-  }
-
-  getCenter(){
-    return this.boundingBox.center;
+    return this.boundingBox.isShapeInside(aSprite.boundingBox);
   }
 
   get boundingBox(){
-    return this.#boundingBox;
+    throw new TypeError("Property boundingBox must be overridden");
   }
 
 } //End of TSprite class
@@ -140,8 +147,13 @@ class TSprite extends TSpriteBase {
   #boundingBox;
   constructor(aSpriteCanvas, aSpriteInfo, aPosition) {
     super(aSpriteCanvas, aSpriteInfo, aPosition);
-    this.#boundingBox = new lib2D.TRectangle(aPosition.x, aPosition.y, aSpriteInfo.width, aSpriteInfo.height);
+    this.#boundingBox = new lib2D.TRectangle(this, aSpriteInfo.width, aSpriteInfo.height);
   }
+ 
+  get boundingBox(){
+    return this.#boundingBox;
+  }
+  
 }
 
 export default {
