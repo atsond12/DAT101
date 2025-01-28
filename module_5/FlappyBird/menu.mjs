@@ -19,6 +19,8 @@ export class TMenu {
   #spMedal;
   #spcvs;
   #activeSprite;
+  #posScore;
+  #posBestScore;
   constructor(aSpriteCanvas) {
     this.#spcvs = aSpriteCanvas;
     /* 
@@ -52,6 +54,10 @@ export class TMenu {
     this.#spcvs.addEventListener("mousemove", this.#onMouseMove);
     this.#spcvs.addEventListener("click", this.#onClick);
     this.#activeSprite = null; //Vi har ingen aktive sprite enda, når musen er over en sprite setter vi denne til den aktive sprite
+    
+    this.#posScore = new lib2d.TPosition(360, 181);
+    this.#posBestScore = new lib2d.TPosition(360, 225);
+  
   }
 
   draw() {
@@ -69,6 +75,8 @@ export class TMenu {
         this.#spInfoText.draw();
         this.#spGameOver.draw();
         this.#spMedal.draw();
+        this.#spcvs.drawText("50", this.#posScore);
+        this.#spcvs.drawText("100", this.#posBestScore);
         this.#spButtonPlay.draw();
         break;
     }
