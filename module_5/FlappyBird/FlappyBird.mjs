@@ -44,6 +44,8 @@ export const GameProps = {
   obstacles: [],
   baits: [],
   menu: null,
+  score: 0,
+  bestScore: 0,
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -138,6 +140,7 @@ function animateGame() {
       }
       if (delBaitIndex >= 0) {
         GameProps.baits.splice(delBaitIndex, 1);
+        GameProps.score += 10;
       }
       break;
       case EGameStatus.idle:

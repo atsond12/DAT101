@@ -55,8 +55,8 @@ export class TMenu {
     this.#spcvs.addEventListener("click", this.#onClick);
     this.#activeSprite = null; //Vi har ingen aktive sprite enda, når musen er over en sprite setter vi denne til den aktive sprite
     
-    this.#posScore = new lib2d.TPosition(360, 181);
-    this.#posBestScore = new lib2d.TPosition(360, 225);
+    this.#posScore = new lib2d.TPosition(383, 181);
+    this.#posBestScore = new lib2d.TPosition(383, 225);
   
   }
 
