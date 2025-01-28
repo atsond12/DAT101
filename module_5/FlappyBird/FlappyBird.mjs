@@ -46,6 +46,7 @@ export const GameProps = {
   menu: null,
   score: 0,
   bestScore: 0,
+  sounds: {countDown: null, food: null, gameOver: null, dead: null, running: null},
 };
 
 //--------------- Functions ----------------------------------------------//
@@ -72,6 +73,9 @@ function loadGame() {
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, pos);
 
   GameProps.menu = new TMenu(spcvs);
+
+  //Load sounds
+  GameProps.sounds.running = new libSound.TSoundFile("./Media/running.mp3");
 
   requestAnimationFrame(drawGame);
   setInterval(animateGame, 10);
@@ -122,7 +126,7 @@ function animateGame() {
         obstacle.update();
         if(obstacle.right < GameProps.hero.left && !obstacle.hasPassed) {
           //Congratulations, you have passed the obstacle
-          GameProps.score += 20;
+          GameProps.menu.incScore(20);
           console.log("Score: " + GameProps.score);
           obstacle.hasPassed = true;
         }
@@ -147,7 +151,7 @@ function animateGame() {
       }
       if (delBaitIndex >= 0) {
         GameProps.baits.splice(delBaitIndex, 1);
-        GameProps.score += 10;
+        GameProps.menu.incScore(10);
       }
       break;
       case EGameStatus.idle:
@@ -179,8 +183,16 @@ function spawnBait() {
 
 export function startGame() {
   GameProps.status = EGameStatus.playing;
+  //Helten er død, vi må lage en ny helt!
+  GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
+  //Vi må slette alle hindringer og baits
+  GameProps.obstacles = [];
+  GameProps.baits = [];
+  GameProps.menu.reset();
   spawnObstacle();
   spawnBait();
+  //Spill av lyd
+  GameProps.sounds.running.play();
 }
 
 //--------------- Event Handlers -----------------------------------------//

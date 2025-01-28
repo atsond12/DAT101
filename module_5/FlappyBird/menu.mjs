@@ -69,6 +69,7 @@ export class TMenu {
         this.#spButtonPlay.draw();
         break;
       case EGameStatus.getReady:
+        this.#spInfoText.index = 0; //Endre teksten til "Get Ready"
         this.#spInfoText.draw();
         this.#spNumber.draw();
         break;
@@ -77,8 +78,8 @@ export class TMenu {
         this.#spInfoText.draw();
         this.#spGameOver.draw();
         this.#spMedal.draw();
-        this.#spcvs.drawText("50", this.#posScore);
-        this.#spcvs.drawText("100", this.#posBestScore);
+        this.#spcvs.drawText(GameProps.score.toString(), this.#posScore);
+        this.#spcvs.drawText(GameProps.bestScore.toString(), this.#posBestScore);
         this.#spButtonPlay.draw();
         break;
       case EGameStatus.playing:
@@ -105,6 +106,12 @@ export class TMenu {
     }else{ //Ingen plassering
       this.#spMedal.index = 0;
     }
+  }
+
+  reset(){
+    GameProps.score = 0;
+    this.#spNumber.index = 3;
+    this.#spInfoText.index = 0;
   }
 
   //Ikke eksamensrelevant kode, men viktig for eventer i canvas
