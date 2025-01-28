@@ -2,7 +2,7 @@
 import lib2d from "../../common/libs/lib2d.mjs";
 import libSound from "../../common/libs/libSound.mjs";
 import libSprite from "../../common/libs/libSprite.mjs";
-import { SpriteInfoList, GameProps, EGameStatus } from "./FlappyBird.mjs";
+import { SpriteInfoList, GameProps, EGameStatus, startGame } from "./FlappyBird.mjs";
 
 /*
 Dere skal flytte FlappyBird Spriten til en fornuftig plass på skjermen.
@@ -83,7 +83,7 @@ export class TMenu {
       this.#spNumber.index--;      
       setTimeout(this.#onCountDown, 1000);
     }else{
-      GameProps.status = EGameStatus.playing;
+      startGame();
     }
    }
 
