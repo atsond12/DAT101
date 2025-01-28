@@ -10,6 +10,7 @@ class TSpriteCanvas {
   #ctx;
   #img;
   #boundingRect;
+  #sprites;
 
   constructor(aCanvas) {
     this.#cvs = aCanvas;
@@ -17,35 +18,117 @@ class TSpriteCanvas {
     this.#img = new Image();
     this.#boundingRect = this.#cvs.getBoundingClientRect();
     this.mousePos = new lib2D.TPosition(0, 0);
+    this.activeSprite = null;
+    this.#sprites = [];
+    this.#cvs.addEventListener("mousemove", this.#mouseMove);
+    this.#cvs.addEventListener("click", this.#mouseClick);
+    this.#cvs.addEventListener("mouseleave", this.#mouseLeave);
+    this.#cvs.addEventListener("mousedown", this.#mouseDown);
+    this.#cvs.addEventListener("mouseup", this.#mouseUp);
   }
+
+  #mouseMove = (aEvent) => {
+    const pos = this.getMousePos(aEvent);
+    let newButton = null;
+    
+    //First check if active sprite is a draggable sprite, and if it is dragging, then call onDrag
+    //Only TSpriteDraggable has isDragging property
+    if (this.activeSprite && this.activeSprite.isDragging) {
+      this.activeSprite.onDrag(pos);
+      return;
+    }
+
+    this.#sprites.every((aSprite) => {
+      //Continue to next button if this button is not visible
+      if (aSprite.visible === false) return true;
+      const isInside = aSprite.isMouseInside(pos);
+      if (isInside) {
+        newButton = aSprite;
+        return false;
+      } else {
+        return true;
+      }
+    });
+    if (newButton !== null && newButton !== this.activeSprite) {
+      this.activeSprite = newButton;
+      if (this.activeSprite.onEnter) {
+        this.activeSprite.onEnter();
+      }
+    } else if (newButton === null && this.activeSprite !== null) {
+      if (this.activeSprite.onLeave) {
+        this.activeSprite.onLeave();
+      }
+      this.activeSprite = null;
+    }
+    //If active sprite is not on the top, move it to the top
+    if (this.activeSprite !== null) {
+      const index = this.#sprites.indexOf(this.activeSprite);
+      if (index < this.#sprites.length - 1) {
+        this.#sprites.splice(index, 1);
+        this.#sprites.push(this.activeSprite);
+      }
+    }
+  };
+
+  #mouseClick = () => {
+    if (this.activeSprite !== null && this.activeSprite.onClick !== null) {
+      this.activeSprite.onClick();
+    }
+  };
+
+  #mouseLeave = () => {
+    this.activeSprite = null;
+    this.#cvs.style.cursor = "default";
+  };
+
+  #mouseDown = () => {
+    if (this.activeSprite !== null && this.activeSprite.onMouseDown) {
+      this.activeSprite.onMouseDown();
+    }
+  };
+
+  #mouseUp = () => {
+    if (this.activeSprite !== null && this.activeSprite.onMouseUp) {
+      this.activeSprite.onMouseUp();
+    }
+  };
 
   loadSpriteSheet(aFileName, aLoadedFinal) {
     this.#img.onload = aLoadedFinal;
     this.#img.src = aFileName;
   }
 
-  drawSprite(aSpriteInfo, aDx = 0, aDy = 0, aIndex = 0, aRot = 0) {
-    let index = aIndex;
-    const sx = aSpriteInfo.x + index * aSpriteInfo.width;
-    const sy = aSpriteInfo.y;
-    const sw = aSpriteInfo.width;
-    const sh = aSpriteInfo.height;
-    const dx = aDx;
-    const dy = aDy;
-    const dw = sw;
-    const dh = sh;
-    if(aRot !== 0){
-      //Hvis vi har rotasjon må vi flytte mitten av destinasjonen til 0,0
+  drawSprite(aSprite) {
+    const index = aSprite.index;
+    const spi = aSprite.spi;
+    const shape = aSprite.shape;
+    const rot = aSprite.rotation;
+    const sx = spi.x + index * spi.width;
+    const sy = spi.y;
+    const sw = spi.width;
+    const sh = spi.height;
+    const dx = shape.x;
+    const dy = shape.y;
+    const dw = shape.width;
+    const dh = shape.height;
+    if (rot !== 0) {
+      //If rotation is not 0, then first translate to the center of the sprite, then rotate, then draw the image, then rotate back, then translate back
       const cx = dx + dw / 2;
       const cy = dy + dh / 2;
-      const rad = aRot * Math.PI / 180;
+      const rad = (rot * Math.PI) / 180;
       this.#ctx.translate(cx, cy);
       this.#ctx.rotate(rad);
       this.#ctx.drawImage(this.#img, sx, sy, sw, sh, -dw / 2, -dh / 2, dw, dh);
       this.#ctx.rotate(-rad);
       this.#ctx.translate(-cx, -cy);
-    }else{
+    } else {
       this.#ctx.drawImage(this.#img, sx, sy, sw, sh, dx, dy, dw, dh);
+    }
+    if(aSprite.debug){
+      const oldStrokeStyle = this.#ctx.strokeStyle;
+      this.#ctx.strokeStyle = "red";
+      this.#ctx.stroke(shape.path2D);
+      this.#ctx.strokeStyle = oldStrokeStyle;
     }
   }
 
@@ -53,107 +136,278 @@ class TSpriteCanvas {
     this.#ctx.clearRect(0, 0, this.#cvs.width, this.#cvs.height);
   }
 
-  addEventListener(aType, aListener){
-    this.#cvs.addEventListener(aType, aListener);
+  addSpriteButton(aButton) {
+    this.#sprites.push(aButton);
+    console.log(this.#sprites);
   }
 
-  getMousePos(aEvent){
+  removeSpriteButton(aButton) {
+    const index = this.#sprites.indexOf(aButton);
+    if (index >= 0) {
+      this.#sprites.splice(index, 1);
+    }
+  }
+
+  getMousePos(aEvent) {
     this.mousePos.x = aEvent.clientX - this.#boundingRect.left;
     this.mousePos.y = aEvent.clientY - this.#boundingRect.top;
     return this.mousePos;
   }
 
-  get style(){
+  get style() {
     return this.#cvs.style;
   }
-
 } // End of TSpriteCanvas class
 
-/* 
- Utvid konstruktøren til å ta inn et punkt for destinasjon til sprite.
-*/
-
-class TSpriteBase extends lib2D.TPosition {
-  #spcvs;
-  #spi;
+class TSprite {
   #index;
   #speedIndex;
-  constructor(aSpriteCanvas, aSpriteInfo, aPosition) {
-    super(aPosition.x, aPosition.y);
-    //Can not create an instance of an abstract class
-    if (this.constructor === TSpriteBase) throw new TypeError("Can not create an instance of an abstract class");
-    this.#spcvs = aSpriteCanvas;
-    this.#spi = aSpriteInfo;
+  lastCollision;
+  constructor(aSpriteCanvas, aSpriteInfo, aPoint, aShapeClass) {
+    this.spcvs = aSpriteCanvas;
+    this.spi = aSpriteInfo;
+    //Create a shape object based on the shape class, or use default rectangle shape
+    this.shape = aShapeClass ? new aShapeClass(aPoint, aSpriteInfo.width, aSpriteInfo.height) : new lib2D.TRectangle(aPoint, aSpriteInfo.width, aSpriteInfo.height, lib2D.EShapeType.Rectangle);
     this.#index = 0;
     this.animateSpeed = 0;
     this.#speedIndex = 0;
     this.rotation = 0;
+    this.visible = true;
+    this.lastCollision = null;
   }
 
   draw() {
+    if (!this.visible) return;
     if (this.animateSpeed > 0) {
       this.#speedIndex += this.animateSpeed / 100;
       if (this.#speedIndex >= 1) {
-        this.#index++;
+        this.index++;
         this.#speedIndex = 0;
-        if (this.#index >= this.#spi.count) {
-          this.#index = 0;
-        }
       }
     }
-    this.#spcvs.drawSprite(this.#spi, this.x, this.y, this.#index, this.rotation);
+    this.spcvs.drawSprite(this);
   }
 
   get index() {
     return this.#index;
   }
-  
-  set index(aIndex){
-    if(aIndex < 0 || aIndex >= this.#spi.count){
+
+  set index(aIndex) {
+    if (aIndex < 0 || aIndex >= this.spi.count) {
       //Reset index to 0, because of ++ or -- operation
       aIndex = 0;
     }
     this.#index = aIndex;
   }
 
-  hasCollided(aSprite){
-    return this.boundingBox.isShapeInside(aSprite.boundingBox);
+  hasCollided(aSprite) {
+    if (this.visible === false || aSprite.visible === false) {
+      //If one of the sprites are not visible, then there is no collision
+      return false;
+    }
+    if (this.shape.isShapeInside(aSprite.shape)) {
+      //Check if this sprite is the last sprite that collided with aSprite
+      if (this.lastCollision === aSprite) {
+        //Only detect collision once, application must trigger the new collision, or it's forgotten
+        return false;
+      }
+      //Remember last collision
+      this.lastCollision = aSprite;
+      aSprite.lastCollision = this;
+      return true;
+    }
+    //Reset last collision, trigger new collision even if the sprites are colliding again!
+    this.lastCollision = null;
+    if(aSprite.lastCollision === this){
+      aSprite.lastCollision = null;
+    }
+    return false;
   }
 
-  get boundingBox(){
-    throw new TypeError("Property boundingBox must be overridden");
+  get x() {
+    return this.shape.x;
   }
 
-  get left(){
-    return this.x;
+  set x(aX) {
+    this.shape.x = aX;
   }
 
-  get right(){
-    return this.x + this.#spi.width;
+  get y() {
+    return this.shape.y;
   }
 
-  get top(){
-    return this.y;
+  set y(aY) {
+    this.shape.y = aY;
   }
 
-  get bottom(){
-    return this.y + this.#spi.height;
+  get left() {
+    return this.shape.left;
   }
 
+  get right() {
+    return this.shape.right;
+  }
+
+  get top() {
+    return this.shape.top;
+  }
+
+  get bottom() {
+    return this.shape.bottom;
+  }
+
+  get width() {
+    return this.shape.width;
+  }
+
+  set width(aWidth) {
+    this.shape.width = aWidth;
+  }
+
+  get height() {
+    return this.shape.height;
+  }
+
+  set height(aHeight) {
+    this.shape.height = aHeight;
+  }
+
+  get scale() {
+    return this.shape.scale;
+  }
+
+  set scale(aScale) {
+    this.shape.scale = aScale;
+  }
 } //End of TSprite class
 
-class TSprite extends TSpriteBase {
-  #boundingBox;
-  constructor(aSpriteCanvas, aSpriteInfo, aPosition) {
-    super(aSpriteCanvas, aSpriteInfo, aPosition);
-    this.#boundingBox = new lib2D.TRectangle(this, aSpriteInfo.width, aSpriteInfo.height);
+class TSpriteButton extends TSprite {
+  constructor(aSpriteCanvas, aSpriteInfo, aShape) {
+    super(aSpriteCanvas, aSpriteInfo, aShape);
+    this.spcvs.addSpriteButton(this);
+    this.disable = false;
+    this.onClick = null;
   }
- 
-  get boundingBox(){
-    return this.#boundingBox;
+
+  isMouseInside(aPosition) {
+    if (this.visible === false || this.disable) {
+      return false;
+    }
+    return this.isDragging || this.shape.isPositionInside(aPosition);
   }
-  
+} //End of TSpriteButton class
+
+class TSpriteButtonHaptic extends TSpriteButton {
+  constructor(aSpriteCanvas, aSpriteInfo, aShape) {
+    super(aSpriteCanvas, aSpriteInfo, aShape);
+  }
+
+  draw() {
+    if (this.disable) {
+      this.index = 3;
+    }
+    super.draw();
+  }
+
+  onEnter() {
+    this.spcvs.style.cursor = "pointer";
+    this.index = 1;
+  }
+
+  onLeave() {
+    this.index = 0;
+    this.spcvs.style.cursor = "default";
+  }
+
+  onMouseDown() {
+    this.index = 2;
+  }
+
+  onMouseUp() {
+    this.index = 1;
+  }
+} //End of TSpriteButton class
+
+class TSnapTo {
+  constructor(aPositions, aDistance) {
+    this.positions = aPositions;
+    this.distance = aDistance;
+  }
 }
+
+
+class TSpriteDraggable extends TSpriteButton {
+  #offset;
+  #startDragPos;
+  constructor(aSpriteCanvas, aSpriteInfo, aShape) {
+    super(aSpriteCanvas, aSpriteInfo, aShape);
+    this.#offset = null; //Not dragging
+    this.canDrag = true;
+    this.canDrop = true;
+    this.snapTo = null;
+  }
+
+  get isDragging() {
+    return this.#offset !== null;
+  }
+
+  onEnter() {
+    this.spcvs.style.cursor = "grab";
+  }
+
+  onLeave() {
+    this.spcvs.style.cursor = "default";
+  }
+
+
+  onMouseDown() {
+    if (this.canDrag === false) {
+      return;
+    }
+    if (!this.#offset) {
+      this.#startDragPos = this.shape.clonePosition(); //Clone the position
+      this.#offset = new lib2D.TPosition(this.x - this.spcvs.mousePos.x, this.y - this.spcvs.mousePos.y);
+    }
+    this.spcvs.style.cursor = "grabbing";
+  }
+
+  onMouseUp() {
+    if (this.canDrop === false) {
+      //Reset position to start drag position
+      this.x = this.#startDragPos.x;
+      this.y = this.#startDragPos.y;
+    }
+    this.#offset = null;
+    this.#startDragPos = null;
+    this.spcvs.style.cursor = "grab";
+  }
+
+  onDrag(aPosition) {
+    if (this.#offset === null) {
+      return;
+    }
+    this.canDrop = this.lastCollision === null;
+    if (this.canDrop === false) {
+      //Set canvas cursor to not-allowed
+      this.spcvs.style.cursor = "not-allowed";
+    }else{
+      this.spcvs.style.cursor = "grabbing";
+      this.x = aPosition.x + this.#offset.x;
+      this.y = aPosition.y + this.#offset.y;  
+      if (this.snapTo) {
+        this.snapTo.points.every((aPoint) => {
+          const distance = this.shape.distanceToPoint(aPoint);
+          if (distance <= this.snapTo.distance) {
+            this.x = aPoint.x;
+            this.y = aPoint.y;
+            return false;
+          }
+          return true;
+        });
+      }  
+    }
+  }
+} //End of TSpriteDraggable class
 
 export default {
   /**
@@ -164,15 +418,45 @@ export default {
    * @param {string} aFileName - The file name of the sprite sheet image.
    * @param {function} aLoadedFinal - A callback function to call when the image is done loading.
    */
-  TSpriteCanvas: TSpriteCanvas,
+  TSpriteCanvas,
 
   /**
    * @class TSprite
-   * @description A class that manage sprite animations.
+   * @description A simple sprite class for default rectangle shaped sprites. Create a TSprite extended class for custom shapes.
    * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use.
    * @param {object} aSpriteInfo - The sprite information.
-   * @param {TPosition} aPosition - The position of the sprite.
+   * @param {lib2D.TShape} aShape - The shape of the sprite.
    * @function draw - Draws the sprite on the canvas.
    */
-  TSprite: TSprite,
+  TSprite,
+
+  /**
+   * @class TSpriteButton
+   * @extends TSprite
+   * @description A class that manage sprite buttons.
+   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use.
+   * @param {object} aSpriteInfo - The sprite information.
+   * @param {lib2D.TShape} aShape - The shape of the sprite.
+   */
+  TSpriteButton,
+
+  /**
+   * @class TSpriteButtonHaptic
+   * @extends TSpriteButton
+   * @description A class that manage haptic buttons, means a button that gives feedback when pressed. Please provide at least 4 images in the sprite sheet inclusive disable mode.
+   * @description The images should be in the following order: Normal = 0, Hover = 1, Pressed = 3, Disabled = 4.
+   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use.
+   * @param {object} aSpriteInfo - The sprite information.
+   * @param {lib2D.TShape} aShape - The shape of the sprite.
+   */
+  TSpriteButtonHaptic,
+
+  /**
+   * @class TSpriteDraggable
+   * @description A class that manage draggable sprite buttons.
+   * @param {TSpriteCanvas} aSpriteCanvas - The sprite canvas to use.
+   * @param {object} aSpriteInfo - The sprite information.
+   * @param {lib2D.TShape} aShape - The shape of the sprite.
+   */
+  TSpriteDraggable,
 };

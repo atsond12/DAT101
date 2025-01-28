@@ -2,6 +2,9 @@
 import lib2d from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 
+//--------------- Classes ------------------------------------------------//
+
+
 //--------------- Objects and Variables ----------------------------------//
 
 // prettier-ignore
@@ -10,14 +13,26 @@ const SpriteInfoList = {
 };
 
 const cvs = document.getElementById("cvs");
+const ctx = cvs.getContext("2d");
 const spcvs = new libSprite.TSpriteCanvas(cvs, 800, 600);
 
 const pos = new lib2d.TPosition(0, 100);
-const button1 = new libSprite.TSprite(spcvs, SpriteInfoList.buttonGreen, pos);
-pos.x = 250;
-const button2 = new libSprite.TSprite(spcvs, SpriteInfoList.buttonGreen, pos);
+const button1 = new libSprite.TSpriteButtonHaptic(spcvs, SpriteInfoList.buttonGreen, pos);
+button1.scale = 0.5;
+button1.onClick = () => {console.log("Button 1 clicked");};
 
-console.log(button1.boundingBox.center);
+pos.x = 250;
+pos.y = 150;
+const button2 = new libSprite.TSpriteDraggable(spcvs, SpriteInfoList.buttonGreen, pos);
+button2.onClick = () => {console.log("Button 2 clicked");};
+button2.scale = 0.5;
+button2.visible = true;
+button2.snapDistance = 10;
+button2.snapTo = {points:[{x: 50, y: 300}, {x: 100, y: 300}, {x: 150, y: 300}, {x: 200, y: 300}], distance: 10};
+button2.debug = true;
+
+console.log(button1.shape.center);
+console.log(button2.shape.center);
 
 //--------------- Functions ----------------------------------------------//
 
@@ -28,6 +43,13 @@ function loadApp() {
 
 function drawCanvas() {
   spcvs.clearCanvas();
+  // Draw the button2 snap position as a circle
+  button2.snapTo.points.forEach((aPoint) => {
+    ctx.beginPath();
+    ctx.arc(aPoint.x, aPoint.y, 5, 0, 2 * Math.PI);
+    ctx.stroke();
+  });
+
   button1.draw();
   button2.draw();
   requestAnimationFrame(drawCanvas);
@@ -36,11 +58,13 @@ function drawCanvas() {
 let speed = 0.7;
 
 function animateApp() {
+  /*
   button1.x += speed;
   if(button1.right > cvs.width || button1.left < 0){
     speed *= -1;
   }
-  
+  button2.rotation += 1;
+  */
   if(button1.hasCollided(button2)){
     console.log("Collision detected");
   }
