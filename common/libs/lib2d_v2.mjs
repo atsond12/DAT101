@@ -67,12 +67,14 @@ class TShape extends TPosition{
     this.#type = aType;
     this.#center = new TPosition(x + aWidth / 2, y + aHeight / 2);
     this.#scale = 1;
+    this.pivot = null; //The pivot point for rotation, if null, the center of the shape is used
   }
 
   get type() { 
     return this.#type; 
   }
 
+  
   get center() {
     //Update the center position;
     this.#center.x = this.x + this.width / 2;
@@ -328,7 +330,6 @@ export default {
    * @method distanceToPoint - A method to calculate the distance to another point.
    */
   TPosition,
-
   /**
    * @class TRectangle
    * @extends TShape

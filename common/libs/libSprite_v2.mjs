@@ -5,6 +5,8 @@ import lib2D from "./lib2d_v2.mjs";
  * @description A library for classes that manage sprite animations.
  */
 
+const TShape = lib2D.TShape;
+
 class TSpriteCanvas {
   #cvs;
   #ctx;
@@ -30,7 +32,7 @@ class TSpriteCanvas {
   #mouseMove = (aEvent) => {
     const pos = this.getMousePos(aEvent);
     let newButton = null;
-    
+
     //First check if active sprite is a draggable sprite, and if it is dragging, then call onDrag
     //Only TSpriteDraggable has isDragging property
     if (this.activeSprite && this.activeSprite.isDragging) {
@@ -112,33 +114,48 @@ class TSpriteCanvas {
     const dw = shape.width;
     const dh = shape.height;
     if (rot !== 0) {
-      //If rotation is not 0, then first translate to the center of the sprite, then rotate, then draw the image, then rotate back, then translate back
-      const cx = dx + dw / 2;
-      const cy = dy + dh / 2;
+      //Center of rotation, relative to canvas top left corner
+      const px = aSprite.pivot ? aSprite.pivot.x : aSprite.center.x;
+      const py = aSprite.pivot ? aSprite.pivot.y : aSprite.center.y;
       const rad = (rot * Math.PI) / 180;
-      this.#ctx.translate(cx, cy);
+      this.#ctx.save();
+      this.#ctx.translate(px, py);
       this.#ctx.rotate(rad);
-      this.#ctx.drawImage(this.#img, sx, sy, sw, sh, -dw / 2, -dh / 2, dw, dh);
-      this.#ctx.rotate(-rad);
-      this.#ctx.translate(-cx, -cy);
+      this.#ctx.drawImage(this.#img, sx, sy, sw, sh, -(px - dx), -(py - dy), dw, dh);
+      this.#ctx.restore();
     } else {
       this.#ctx.drawImage(this.#img, sx, sy, sw, sh, dx, dy, dw, dh);
     }
-    if(aSprite.debug){
+    if (aSprite.debug) {
       const oldStrokeStyle = this.#ctx.strokeStyle;
       this.#ctx.strokeStyle = "red";
       this.#ctx.stroke(shape.path2D);
+      this.#ctx.strokeStyle = "blue";
+      this.#ctx.beginPath();
+      this.#ctx.arc(shape.center.x, shape.center.y, 5, 0, 2 * Math.PI);
+      this.#ctx.stroke();
+      if (aSprite.pivot) {
+        this.#ctx.strokeStyle = "green";
+        this.#ctx.beginPath();
+        this.#ctx.arc(aSprite.pivot.x, aSprite.pivot.y, 5, 0, 2 * Math.PI);
+        this.#ctx.fill();
+        this.#ctx.stroke();
+      }
       this.#ctx.strokeStyle = oldStrokeStyle;
     }
   }
 
   clearCanvas() {
     this.#ctx.clearRect(0, 0, this.#cvs.width, this.#cvs.height);
+    //add shadow to canvas
+    this.#ctx.shadowColor = "black";
+    this.#ctx.shadowBlur = 10;
+    this.#ctx.shadowOffsetX = 5;
+    this.#ctx.shadowOffsetY = 5;
   }
 
   addSpriteButton(aButton) {
     this.#sprites.push(aButton);
-    console.log(this.#sprites);
   }
 
   removeSpriteButton(aButton) {
@@ -218,7 +235,7 @@ class TSprite {
     }
     //Reset last collision, trigger new collision even if the sprites are colliding again!
     this.lastCollision = null;
-    if(aSprite.lastCollision === this){
+    if (aSprite.lastCollision === this) {
       aSprite.lastCollision = null;
     }
     return false;
@@ -272,6 +289,22 @@ class TSprite {
     this.shape.height = aHeight;
   }
 
+  get radius() {
+    return this.shape.radius;
+  }
+
+  set radius(aRadius) {
+    this.shape.radius = aRadius;
+  }
+
+  get center() {
+    return this.shape.center;
+  }
+
+  set center(aCenter) {
+    throw new Error("Center is read only, maybe you want to set pivot instead.");
+  }
+
   get scale() {
     return this.shape.scale;
   }
@@ -282,8 +315,8 @@ class TSprite {
 } //End of TSprite class
 
 class TSpriteButton extends TSprite {
-  constructor(aSpriteCanvas, aSpriteInfo, aShape) {
-    super(aSpriteCanvas, aSpriteInfo, aShape);
+  constructor(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass) {
+    super(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass);
     this.spcvs.addSpriteButton(this);
     this.disable = false;
     this.onClick = null;
@@ -295,11 +328,19 @@ class TSpriteButton extends TSprite {
     }
     return this.isDragging || this.shape.isPositionInside(aPosition);
   }
+
+  onEnter() {
+    this.spcvs.style.cursor = "pointer";
+  }
+
+  onLeave() {
+    this.spcvs.style.cursor = "default";
+  }
 } //End of TSpriteButton class
 
 class TSpriteButtonHaptic extends TSpriteButton {
-  constructor(aSpriteCanvas, aSpriteInfo, aShape) {
-    super(aSpriteCanvas, aSpriteInfo, aShape);
+  constructor(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass) {
+    super(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass);
   }
 
   draw() {
@@ -310,13 +351,13 @@ class TSpriteButtonHaptic extends TSpriteButton {
   }
 
   onEnter() {
-    this.spcvs.style.cursor = "pointer";
+    super.onEnter();
     this.index = 1;
   }
 
   onLeave() {
+    super.onLeave();
     this.index = 0;
-    this.spcvs.style.cursor = "default";
   }
 
   onMouseDown() {
@@ -335,12 +376,11 @@ class TSnapTo {
   }
 }
 
-
 class TSpriteDraggable extends TSpriteButton {
   #offset;
   #startDragPos;
-  constructor(aSpriteCanvas, aSpriteInfo, aShape) {
-    super(aSpriteCanvas, aSpriteInfo, aShape);
+  constructor(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass) {
+    super(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass);
     this.#offset = null; //Not dragging
     this.canDrag = true;
     this.canDrop = true;
@@ -358,7 +398,6 @@ class TSpriteDraggable extends TSpriteButton {
   onLeave() {
     this.spcvs.style.cursor = "default";
   }
-
 
   onMouseDown() {
     if (this.canDrag === false) {
@@ -387,13 +426,13 @@ class TSpriteDraggable extends TSpriteButton {
       return;
     }
     this.canDrop = this.lastCollision === null;
+    this.x = aPosition.x + this.#offset.x;
+    this.y = aPosition.y + this.#offset.y;
     if (this.canDrop === false) {
       //Set canvas cursor to not-allowed
       this.spcvs.style.cursor = "not-allowed";
-    }else{
+    } else {
       this.spcvs.style.cursor = "grabbing";
-      this.x = aPosition.x + this.#offset.x;
-      this.y = aPosition.y + this.#offset.y;  
       if (this.snapTo) {
         this.snapTo.points.every((aPoint) => {
           const distance = this.shape.distanceToPoint(aPoint);
@@ -404,7 +443,7 @@ class TSpriteDraggable extends TSpriteButton {
           }
           return true;
         });
-      }  
+      }
     }
   }
 } //End of TSpriteDraggable class

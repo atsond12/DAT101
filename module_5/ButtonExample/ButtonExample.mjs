@@ -15,15 +15,20 @@ const SpriteInfoList = {
 const cvs = document.getElementById("cvs");
 const ctx = cvs.getContext("2d");
 const spcvs = new libSprite.TSpriteCanvas(cvs, 800, 600);
+const cvsCenter = new lib2d.TPoint(cvs.width / 2, cvs.height / 2);
 
-const pos = new lib2d.TPosition(0, 100);
+const pos = new lib2d.TPosition(0, 0);
 const button1 = new libSprite.TSpriteButtonHaptic(spcvs, SpriteInfoList.buttonGreen, pos);
 button1.scale = 0.5;
+//set the pivot point to the right center of the button
+button1.pivot = cvsCenter;//{x: button1.right, y: (button1.bottom + button1.height / 2)};
 button1.onClick = () => {console.log("Button 1 clicked");};
+button1.debug = true;
+
 
 pos.x = 250;
 pos.y = 150;
-const button2 = new libSprite.TSpriteDraggable(spcvs, SpriteInfoList.buttonGreen, pos);
+const button2 = new libSprite.TSpriteDraggable(spcvs, SpriteInfoList.buttonGreen, pos, lib2d.TOval);
 button2.onClick = () => {console.log("Button 2 clicked");};
 button2.scale = 0.5;
 button2.visible = true;
@@ -57,12 +62,17 @@ function drawCanvas() {
 
 let speed = 0.7;
 
+
 function animateApp() {
   /*
   button1.x += speed;
   if(button1.right > cvs.width || button1.left < 0){
     speed *= -1;
   }
+  */
+  button1.rotation += 0.5;
+
+  /*
   button2.rotation += 1;
   */
   if(button1.hasCollided(button2)){
