@@ -1,7 +1,7 @@
 "use strict";
 import lib2d from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
-import { gameProps } from "./SimonSays.mjs";
+import { gameProps, EGameStatusType } from "./SimonSays.mjs";
 
 export class TColorButton extends libSprite.TSpriteButton{
   constructor(aSpriteCanvas, aSpriteInfo){
@@ -31,6 +31,9 @@ export class TColorButton extends libSprite.TSpriteButton{
   //Vi må også løse dette med polymorphism, når musa slippes opp på smultringen
   onMouseUp(){
     this.index = 0;
+    if(gameProps.Status !== EGameStatusType.Player){
+      return;
+    }
     if(gameProps.activeButton === this){
       console.log("Riktig knapp");
     }else{

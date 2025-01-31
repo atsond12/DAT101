@@ -18,9 +18,12 @@ export const SpriteInfoList = {
 const cvs = document.getElementById("cvs");
 const spcvs = new libSprite.TSpriteCanvas(cvs);
 
+export const EGameStatusType = {Idle: 0, Computer: 1, Player: 2, GameOver: 3};
+
 export const gameProps = {
   Background: new libSprite.TSprite(spcvs, SpriteInfoList.Background, new lib2d.TPoint(0, 0)),
   GameCenter: new lib2d.TPosition(SpriteInfoList.Background.width / 2, SpriteInfoList.Background.height / 2),
+  Status: EGameStatusType.Computer,
   //prettier-ignore
   ColorButtons: [
     new TColorButton(spcvs, SpriteInfoList.ButtonYellow),
@@ -28,6 +31,7 @@ export const gameProps = {
     new TColorButton(spcvs, SpriteInfoList.ButtonRed),
     new TColorButton(spcvs, SpriteInfoList.ButtonGreen)],
   sequence: [],
+  seqIndex: 0, //Hvilken knapp i sekvensen vi er på
   activeButton: null,//Ingen knapp er aktiv i starten
 };
 
@@ -35,6 +39,7 @@ export const gameProps = {
 function loadGame() {
   cvs.width = gameProps.Background.width;
   cvs.height = gameProps.Background.height;
+  gameProps.sequence.push(gameProps.ColorButtons[0]); //Simulerer at vi har en sekvens
   spawnSequence();
   drawGame();
 }
@@ -56,14 +61,32 @@ function setMouseDown(){
 }
 
 function setMouseUp(){
-  gameProps.activeButton.onMouseUp();
+  let done = false;
+  if(gameProps.seqIndex < gameProps.sequence.length - 1){
+    //Her er det flere knapper i igjen i sekvensen
+    gameProps.activeButton.onMouseUp();
+    gameProps.seqIndex++;
+  }else{
+    //Her er det siste knappen i sekvensen
+    gameProps.activeButton.onMouseUp();
+    gameProps.seqIndex = 0;
+    done = true;
+  }
+  gameProps.activeButton = gameProps.sequence[gameProps.seqIndex];
+  if(!done){
+    setTimeout(setMouseDown, 1000);
+  }else{
+    gameProps.Status = EGameStatusType.Player; //Nå venter vi på at spilleren skal trykke på knappene
+  }
 }
 
 function spawnSequence(){
  const index = Math.floor(Math.random() * gameProps.ColorButtons.length);
  const button = gameProps.ColorButtons[index];
  gameProps.sequence.push(button);
+ gameProps.seqIndex = 0;
  gameProps.activeButton = gameProps.sequence[0];
+ gameProps.Status = EGameStatusType.Computer;
  setTimeout(setMouseDown, 1000);
 }
 //--------------- Event Handlers -----------------------------------------//
