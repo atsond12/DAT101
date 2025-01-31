@@ -1,5 +1,9 @@
 "use strict";
 //--------------- Objects and Variables ----------------------------------//
+import lib2d from "../../common/libs/lib2d_v2.mjs";
+import libSprite from "../../common/libs/libSprite_v2.mjs";
+
+
 
 // prettier-ignore
 export const SpriteInfoList = {
@@ -12,12 +16,29 @@ export const SpriteInfoList = {
   number:         { x: 0, y: 2344, width:  23, height:  34, count: 10, dst: { x: 365, y: 385}},
 };
 
-export const gameProps = {
+const cvs = document.getElementById("cvs");
+const spcvs = new libSprite.TSpriteCanvas(cvs);
 
+export const gameProps = {
+  Background: new libSprite.TSprite(spcvs, SpriteInfoList.Background, new lib2d.TPoint(0, 0)),
 };
 
 //--------------- Functions ----------------------------------------------//
+function loadGame(){
+  cvs.width = gameProps.Background.width;
+  cvs.height = gameProps.Background.height;
+
+  drawGame();
+}
+
+function drawGame(){
+  spcvs.clearCanvas();
+  gameProps.Background.draw();
+
+  requestAnimationFrame(drawGame);
+}
 
 //--------------- Event Handlers -----------------------------------------//
 
 //--------------- Main Code ----------------------------------------------//
+spcvs.loadSpriteSheet("./media/spriteSheet.png", loadGame);
