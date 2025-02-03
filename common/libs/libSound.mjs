@@ -101,12 +101,13 @@ class TSoundWave {
 
 /**
  * @function activateAudioContext
+ * @description This function activates the audio context, call this in a user interaction event! This can be called multiple times, but only the first call will create the audio context.
  */
-
 function activateAudioContext() {
   if (audioContext === null) {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
   }
+  return audioContext; // Return the audio context
 }
 
 //--------------- Objects and Variables ----------------------------------//
