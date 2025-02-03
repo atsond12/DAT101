@@ -37,7 +37,7 @@ export const GameProps = {
   soundMuted: false,
   dayTime: true,
   speed: 1,
-  status: EGameStatus.idle, //For testing, normalt EGameStatus.idle
+  status: EGameStatus.idle, //For testing, normally EGameStatus.idle
   background: null,
   ground: null,
   hero: null,
@@ -174,7 +174,7 @@ function spawnBait() {
   const pos = new lib2d.TPosition(SpriteInfoList.background.width, 100);
   const bait = new TBait(spcvs, SpriteInfoList.food, pos);
   GameProps.baits.push(bait);
-  //Generer nye baits hvert 0.5 til 1 sekund med step på 0.1
+  //Generate a new bait in 0.5-1.5 seconds
   if (GameProps.status === EGameStatus.playing) {
     const sec = Math.ceil(Math.random() * 5) / 10 + 0.5;
     setTimeout(spawnBait, sec * 1000);
@@ -183,15 +183,15 @@ function spawnBait() {
 
 export function startGame() {
   GameProps.status = EGameStatus.playing;
-  //Helten er død, vi må lage en ny helt!
+  //The hero is dead, so we must create a new hero
   GameProps.hero = new THero(spcvs, SpriteInfoList.hero1, new lib2d.TPosition(100, 100));
-  //Vi må slette alle hindringer og baits
+  //We must reset the obstacles and baits
   GameProps.obstacles = [];
   GameProps.baits = [];
   GameProps.menu.reset();
   spawnObstacle();
   spawnBait();
-  //Spill av lyd
+  //Play the running sound
   GameProps.sounds.running.play();
 }
 
