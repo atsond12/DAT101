@@ -1,6 +1,7 @@
 "use strict";
 import lib2d from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
+import { TGameBoard } from "./GameBoard.mjs";
 
 //-----------------------------------------------------------------------------------------
 //----------- variables and object --------------------------------------------------------
@@ -34,7 +35,7 @@ const cvs = document.getElementById("cvs");
 const spcvs = new libSprite.TSpriteCanvas(cvs);
 
 const gameProps = {
-  gameBoard: new libSprite.TSprite(spcvs, SpriteInfoList.Board, new lib2d.TPoint(0, 0)),
+  gameBoard: new TGameBoard(spcvs, SpriteInfoList.Board),
 }
 //-----------------------------------------------------------------------------------------
 //----------- functions -------------------------------------------------------------------

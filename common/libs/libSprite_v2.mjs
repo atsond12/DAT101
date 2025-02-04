@@ -148,10 +148,12 @@ class TSpriteCanvas {
   clearCanvas() {
     this.#ctx.clearRect(0, 0, this.#cvs.width, this.#cvs.height);
     //add shadow to canvas
+    /*
     this.#ctx.shadowColor = "black";
     this.#ctx.shadowBlur = 10;
     this.#ctx.shadowOffsetX = 5;
     this.#ctx.shadowOffsetY = 5;
+    */
   }
 
   addSpriteButton(aButton) {
