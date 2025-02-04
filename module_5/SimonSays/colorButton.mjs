@@ -31,8 +31,16 @@ export class TColorButton extends libSprite.TSpriteButton{
     this.sound.play();
   }
 
+  onLeave(aEvent){
+    if(aEvent.buttons !== 0){
+      this.index = 0;
+      this.sound.stop();
+    }
+  }
+
   //Vi må også løse dette med polymorphism, når musa slippes opp på smultringen
   onMouseUp(){
+    if(this.index !== 1) return; //Hvis knappen ikke er trykket ned, så gjør ingenting
     this.index = 0;
     this.sound.stop();
     if(gameProps.Status !== EGameStatusType.Player){
