@@ -6,6 +6,7 @@ import { gameProps, EGameStatusType } from "./SimonSays.mjs";
 export class TColorButton extends libSprite.TSpriteButton{
   constructor(aSpriteCanvas, aSpriteInfo){
     super(aSpriteCanvas, aSpriteInfo, aSpriteInfo.dst);
+    this.sound = null;
   }
 
   //Vi har noe som heter A.P.I.E. (Abstract, Polymorphism, Inheritance, Encapsulation)
@@ -26,11 +27,13 @@ export class TColorButton extends libSprite.TSpriteButton{
   //Vi må også løse dette med polymorphism, når musa trykkes ned på smultringen
   onMouseDown(){
     this.index = 1;
+    this.sound.play();
   }
 
   //Vi må også løse dette med polymorphism, når musa slippes opp på smultringen
   onMouseUp(){
     this.index = 0;
+    this.sound.stop();
     if(gameProps.Status !== EGameStatusType.Player){
       return;
     }
