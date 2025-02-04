@@ -1,7 +1,7 @@
 "use strict";
 import lib2d from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
-import { gameProps, EGameStatusType } from "./SimonSays.mjs";
+import { gameProps, EGameStatusType, spawnSequence } from "./SimonSays.mjs";
 
 export class TColorButton extends libSprite.TSpriteButton{
   constructor(aSpriteCanvas, aSpriteInfo){
@@ -13,6 +13,7 @@ export class TColorButton extends libSprite.TSpriteButton{
   //Vi må løse dette med polymorphism, når musa er over smultringen
   isMouseInside(aPoint){
     //Først sjekker vi om musa er innenfor firkanten som omslutter smultringen
+    
     let isInside = super.isMouseInside(aPoint);
     //Hvis musa er innenfor, sjekk videre om den er utenfor radius 1 og innenfor radius 2
     if(isInside){
@@ -39,8 +40,23 @@ export class TColorButton extends libSprite.TSpriteButton{
     }
     if(gameProps.activeButton === this){
       console.log("Riktig knapp");
+      //Hvis vi har flere knapper i sekvensen, velge neste knapp som aktiv!!!!
+      if(gameProps.seqIndex < gameProps.sequence.length - 1){
+        gameProps.seqIndex++;
+        gameProps.activeButton = gameProps.sequence[gameProps.seqIndex];
+      }else{
+        //Nå er vi på siste knapp i sekvensen, og det er computerens tur!
+        gameProps.spnRound.value++;
+        spawnSequence();
+        console.log(gameProps.GameSpeed);
+      }
+
+      //Hvis ikke så spawn en ny knapp i sekvensen
     }else{
       console.log("Feil knapp");
+      gameProps.Status = EGameStatusType.GameOver;
+      gameProps.buttonStartEnd.index = 1;
+      gameProps.buttonStartEnd.visible = true;
     }
   }
 
