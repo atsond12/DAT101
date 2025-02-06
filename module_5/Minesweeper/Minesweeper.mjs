@@ -23,33 +23,36 @@ export const SpriteInfoList = {
 };
 
 const Difficulty = {
-  Level_1: { Tiles: { Row: 10, Col: 10 }, Mines: 3, caption: "Level 1" },
-  Level_2: { Tiles: { Row: 15, Col: 15 }, Mines: 50, caption: "Level 2" },
-  Level_3: { Tiles: { Row: 20, Col: 30 }, Mines: 5, caption: "Level 3" },
+  Level_1: { Tiles: { Row: 10, Col: 10 }, Mines: 4, caption: "Level 1" },
+  Level_2: { Tiles: { Row: 15, Col: 15 }, Mines: 20, caption: "Level 2" },
+  Level_3: { Tiles: { Row: 20, Col: 30 }, Mines: 99, caption: "Level 3" },
 };
 
-
-let gameLevel = Difficulty.Level_1;
+export let gameLevel = Difficulty.Level_1;
 
 const cvs = document.getElementById("cvs");
 const spcvs = new libSprite.TSpriteCanvas(cvs);
 
-const gameProps = {
-  gameBoard: new TGameBoard(spcvs, SpriteInfoList.Board),
+const selectDifficulty = document.getElementById("selectDifficulty");
+
+
+export const gameProps = {
+  gameBoard: null,
 }
 //-----------------------------------------------------------------------------------------
 //----------- functions -------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 function loadGame() {
-
   newGame();
   drawGame();
 }
 
 //-----------------------------------------------------------------------------------------
-function newGame() {
+export function newGame() {
   cvs.width = gameLevel.Tiles.Col * SpriteInfoList.ButtonTile.width + SpriteInfoList.Board.LeftMiddle.width + SpriteInfoList.Board.RightMiddle.width;
   cvs.height = gameLevel.Tiles.Row * SpriteInfoList.ButtonTile.height + SpriteInfoList.Board.TopMiddle.height + SpriteInfoList.Board.BottomMiddle.height;
+  spcvs.updateBoundsRect();
+  gameProps.gameBoard = new TGameBoard(spcvs, SpriteInfoList.Board, new lib2d.TPoint(0, 0));
 }
 
 
@@ -63,11 +66,26 @@ function drawGame() {
 //----------- Events ----------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 
+function selectDifficultyChange(e) {
+  switch (e.target.value) {
+    case "Level_1":
+      gameLevel = Difficulty.Level_1;
+      break;
+    case "Level_2":
+      gameLevel = Difficulty.Level_2;
+      break;
+    case "Level_3":
+      gameLevel = Difficulty.Level_3;
+      break;
+  }
+  newGame();
+}
 
 //-----------------------------------------------------------------------------------------
 //----------- Main Program ----------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
 
 spcvs.loadSpriteSheet("./media/spriteSheet.png", loadGame);
+selectDifficulty.addEventListener("change", selectDifficultyChange);
 
 

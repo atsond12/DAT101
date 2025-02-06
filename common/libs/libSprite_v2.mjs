@@ -11,14 +11,16 @@ class TSpriteCanvas {
   #cvs;
   #ctx;
   #img;
-  #boundingRect;
+  #rect;
   #sprites;
+  #mouseDownSprite;
+  #mouseUpSprite;
 
   constructor(aCanvas) {
     this.#cvs = aCanvas;
     this.#ctx = aCanvas.getContext("2d");
     this.#img = new Image();
-    this.#boundingRect = this.#cvs.getBoundingClientRect();
+    this.#rect = this.#cvs.getBoundingClientRect();
     this.mousePos = new lib2D.TPosition(0, 0);
     this.activeSprite = null;
     this.#sprites = [];
@@ -29,10 +31,12 @@ class TSpriteCanvas {
     this.#cvs.addEventListener("mouseup", this.#mouseUp);
   }
 
+  get canvas() {
+    return this.#cvs;
+  }
+
   #mouseMove = (aEvent) => {
     const pos = this.getMousePos(aEvent);
-    let newButton = null;
-
     //First check if active sprite is a draggable sprite, and if it is dragging, then call onDrag
     //Only TSpriteDraggable has isDragging property
     if (this.activeSprite && this.activeSprite.isDragging) {
@@ -40,28 +44,39 @@ class TSpriteCanvas {
       return;
     }
 
+    let newSprite = null;
     this.#sprites.every((aSprite) => {
-      //Continue to next button if this button is not visible
-      if (aSprite.visible === false || aSprite.disable) return true;
+      //Continue to next button if this button is not visible or disabled
+      if (!aSprite.visible || aSprite.disable) return true;
       const isInside = aSprite.isMouseInside(pos);
       if (isInside) {
-        newButton = aSprite;
-        return false;
+        newSprite = aSprite;
+        return false; //Break the loop
       } else {
-        return true;
+        return true; //Continue the loop
       }
     });
-    if (newButton !== null && newButton !== this.activeSprite) {
-      this.activeSprite = newButton;
-      if (this.activeSprite.onEnter) {
-        this.activeSprite.onEnter();
+    //If the sprite has changed, then call onEnter and onLeave
+    let spriteHasChanged = newSprite !== this.activeSprite;
+
+    if(spriteHasChanged){
+      if(this.activeSprite !== null){
+        if(this.activeSprite.onLeave){
+          this.activeSprite.onLeave(aEvent);
+        }
       }
-    } else if (newButton === null && this.activeSprite !== null) {
-      if (this.activeSprite.onLeave) {
-        this.activeSprite.onLeave(aEvent);
+      if(newSprite !== null){
+        if(newSprite.onEnter){
+          newSprite.onEnter(aEvent);
+        }
+        this.activeSprite = newSprite;
       }
+    }
+
+    if(newSprite === null && this.activeSprite !== null){
       this.activeSprite = null;
     }
+
     //If active sprite is not on the top, move it to the top
     if (this.activeSprite !== null) {
       const index = this.#sprites.indexOf(this.activeSprite);
@@ -72,27 +87,38 @@ class TSpriteCanvas {
     }
   };
 
-  #mouseClick = () => {
+  #mouseClick = (aEvent) => {
     if (this.activeSprite !== null && this.activeSprite.onClick !== null) {
-      this.activeSprite.onClick();
+      this.activeSprite.onClick(aEvent);
     }
   };
 
-  #mouseLeave = () => {
+  #mouseLeave = (aEvent) => {
+    if (this.activeSprite !== null && this.activeSprite.onLeave) {
+      this.activeSprite.onLeave(aEvent);
+    }
     this.activeSprite = null;
     this.#cvs.style.cursor = "default";
   };
 
-  #mouseDown = () => {
+  #mouseDown = (aEvent) => {
+    this.#mouseDownSprite = this.activeSprite;
     if (this.activeSprite !== null && this.activeSprite.onMouseDown) {
-      this.activeSprite.onMouseDown();
+      this.activeSprite.onMouseDown(aEvent);
     }
   };
 
-  #mouseUp = () => {
-    if (this.activeSprite !== null && this.activeSprite.onMouseUp) {
-      this.activeSprite.onMouseUp();
+  #mouseUp = (aEvent) => {
+    this.#mouseUpSprite = this.activeSprite;
+    //If the mouse down sprite is the same as the mouse up sprite, then call onMouseUp
+    if (this.activeSprite && this.activeSprite.onMouseUp && this.#mouseDownSprite === this.#mouseUpSprite) {
+      this.activeSprite.onMouseUp(aEvent);
+      //If the sprite is disabled after then reset the active sprite
+      if (this.activeSprite.disable) {
+        this.activeSprite = null;
+      }
     }
+    this.#mouseDownSprite = null; //Reset mouse down sprite
   };
 
   loadSpriteSheet(aFileName, aLoadedFinal) {
@@ -143,6 +169,9 @@ class TSpriteCanvas {
       }
       this.#ctx.strokeStyle = oldStrokeStyle;
     }
+    if(aSprite.onCustomDraw){
+      aSprite.onCustomDraw(this.#ctx);
+    }
   }
 
   clearCanvas() {
@@ -168,13 +197,22 @@ class TSpriteCanvas {
   }
 
   getMousePos(aEvent) {
-    this.mousePos.x = aEvent.clientX - this.#boundingRect.left;
-    this.mousePos.y = aEvent.clientY - this.#boundingRect.top;
+    this.mousePos.x = aEvent.clientX - this.#rect.left;
+    this.mousePos.y = aEvent.clientY - this.#rect.top;
     return this.mousePos;
   }
 
   get style() {
     return this.#cvs.style;
+  }
+
+  //Call this function when the canvas size has changed or position has changed, eks. window resize
+  updateBoundsRect(){
+    this.#rect = this.#cvs.getBoundingClientRect();
+  }
+
+  clearButtons() {
+    this.#sprites = [];
   }
 } // End of TSpriteCanvas class
 
@@ -306,6 +344,20 @@ class TSprite {
 
   set center(aCenter) {
     throw new Error("Center is read only, maybe you want to set pivot instead.");
+  }
+
+
+  get noneUniformScale() {
+    const scale = {
+      x: this.shape.width / this.spi.width,
+      y: this.shape.height / this.spi.height
+    };
+    return scale;
+  }
+
+  set noneUniformScale({x, y}) {
+    this.width *= x;
+    this.height *= y;
   }
 
   get scale() {
@@ -467,8 +519,10 @@ class TSpriteNumber {
     this.#position = aPosition;
     this.#shapeClass = aShapeClass;
     this.#value = 0;
-    this.#spNumbers = [new TSprite(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass)];
+    this.digits = 0; //if Digit is 0, then the number of digits is the length of the value
+    this.#spNumbers = [];
     this.#justify = ESpriteNumberJustifyType.Left;
+    this.value = 0;
   }
 
   get value() {
@@ -478,11 +532,16 @@ class TSpriteNumber {
   set value(aValue) {
     //Convert value to string, check number of digits, each digit is a sprite.
     //If the list of sprite is less than the number of digits, then add more sprites, or remove sprites.
+    let strValue = aValue.toString();
+    let digits = this.digits ? this.digits : strValue.length;
+    let needToRealign = digits !== this.#spNumbers.length && this.#justify !== ESpriteNumberJustifyType.Left;
+    if(strValue.length > digits){
+      //No more space for new digits, the max value is reached, return without updating the value
+      return;
+    }
     this.#value = aValue;
-    const strValue = this.#value.toString();
-    let needToRealign = strValue.length !== this.#spNumbers.length && this.#justify !== ESpriteNumberJustifyType.Left;
-    while (strValue.length !== this.#spNumbers.length) {
-      const addDigit = strValue.length > this.#spNumbers.length;
+    while (digits !== this.#spNumbers.length) {
+      const addDigit = digits > this.#spNumbers.length;
       if (addDigit) {
         //assume the number is left justified, so add new digit sprite to the right    
         const nextPosition = {x: this.#position.x + this.#spNumbers.length * this.#spi.width, y: this.#position.y};
@@ -497,6 +556,9 @@ class TSpriteNumber {
     }
 
     //Set the sprite index of each digit sprite
+    while (strValue.length < this.#spNumbers.length) {
+      strValue = "0" + strValue;
+    }
     this.#spNumbers.forEach((aSprite, aIndex) => {
       aSprite.index = parseInt(strValue.charAt(aIndex));
     });

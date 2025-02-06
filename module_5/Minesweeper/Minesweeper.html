@@ -32,14 +32,27 @@
         font-weight: bold;
         font-size: large;
       }
+      .border {
+        border: thin solid black;
+        padding: 10px;
+        margin: 10px;
+      }
     </style>
     <script src="./Minesweeper.mjs" type="module" defer></script>
+    <script>
+      //Prevent default context menu on right click
+      window.oncontextmenu = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      };
+    </script>
   </head>
 
   <body>
     <h1>Minesweeper</h1>
     <canvas id="cvs" height="100" width="100" style="background-color: antiquewhite"></canvas>
-    <fieldset>
+    <fieldset class="border">
       <legend>Game options</legend>
       <label for="selectDifficulty">Select Difficulty:</label>
       <select id="selectDifficulty">
@@ -48,6 +61,14 @@
         <option value="Level_3">3. Hard</option>
       </select>
     </fieldset>
-    <h4>Press F12 to debug (Chrome and Firefox)</h4>
+    <p class="border" style="font-family: 'Franklin Gothic'; font-size: x-small;">
+      <i>Information on debuger mode:</i>&nbsp;
+      <br />
+      <strong>The right click is disabled in the game, becouse of the insert of flags.</strong>
+      <br />
+      On Chrome and Firefox, Press F12 (rember if you have a "FN" key, you might need to press "FN" + F12) to open the developer console.
+      <br />
+      On safari in macOS, you need to enable the developer menu in the preferences and press Option+Command+I (⌥+⌘+I).
+    </p>
   </body>
 </html>
