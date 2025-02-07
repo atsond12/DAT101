@@ -24,7 +24,7 @@ export const SpriteInfoList = {
 };
 
 const Difficulty = {
-  Level_1: { Tiles: { Row: 10, Col: 10 }, Mines: 4, caption: "Level 1" },
+  Level_1: { Tiles: { Row: 10, Col: 10 }, Mines: 20, caption: "Level 1" },
   Level_2: { Tiles: { Row: 15, Col: 15 }, Mines: 20, caption: "Level 2" },
   Level_3: { Tiles: { Row: 20, Col: 30 }, Mines: 99, caption: "Level 3" },
 };
