@@ -2,6 +2,7 @@
 import lib2d from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { TGameBoard } from "./GameBoard.mjs";
+import { TTile , forEachTile} from "./Tile.mjs";
 
 //-----------------------------------------------------------------------------------------
 //----------- variables and object --------------------------------------------------------
@@ -35,10 +36,10 @@ const spcvs = new libSprite.TSpriteCanvas(cvs);
 
 const selectDifficulty = document.getElementById("selectDifficulty");
 
-
 export const gameProps = {
   gameBoard: null,
-}
+  tiles: [],
+};
 //-----------------------------------------------------------------------------------------
 //----------- functions -------------------------------------------------------------------
 //-----------------------------------------------------------------------------------------
@@ -53,13 +54,26 @@ export function newGame() {
   cvs.height = gameLevel.Tiles.Row * SpriteInfoList.ButtonTile.height + SpriteInfoList.Board.TopMiddle.height + SpriteInfoList.Board.BottomMiddle.height;
   spcvs.updateBoundsRect();
   gameProps.gameBoard = new TGameBoard(spcvs, SpriteInfoList.Board, new lib2d.TPoint(0, 0));
+  //Lag ny forekomst av TTile
+  for (let row = 0; row < gameLevel.Tiles.Row; row++) {
+    const rows = []; //Dette er kolonner i raden av "row"
+    for (let col = 0; col < gameLevel.Tiles.Col; col++){
+      rows.push(new TTile(spcvs, SpriteInfoList.ButtonTile, row, col));
+    }
+    gameProps.tiles.push(rows);
+  }
 }
-
 
 function drawGame() {
   spcvs.clearCanvas();
   gameProps.gameBoard.draw();
+  //Husk å tegne forekomsten av TTile
+  forEachTile(drawTile);
   requestAnimationFrame(drawGame);
+}
+
+function drawTile(aTile){
+  aTile.draw();
 }
 
 //-----------------------------------------------------------------------------------------
@@ -87,5 +101,3 @@ function selectDifficultyChange(e) {
 
 spcvs.loadSpriteSheet("./media/spriteSheet.png", loadGame);
 selectDifficulty.addEventListener("change", selectDifficultyChange);
-
-
