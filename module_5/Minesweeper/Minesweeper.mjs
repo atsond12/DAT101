@@ -2,7 +2,7 @@
 import lib2d from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { TGameBoard } from "./GameBoard.mjs";
-import { TTile , forEachTile} from "./Tile.mjs";
+import { TTile, forEachTile } from "./Tile.mjs";
 
 //-----------------------------------------------------------------------------------------
 //----------- variables and object --------------------------------------------------------
@@ -57,11 +57,22 @@ export function newGame() {
   //Lag ny forekomst av TTile
   for (let row = 0; row < gameLevel.Tiles.Row; row++) {
     const rows = []; //Dette er kolonner i raden av "row"
-    for (let col = 0; col < gameLevel.Tiles.Col; col++){
+    for (let col = 0; col < gameLevel.Tiles.Col; col++) {
       rows.push(new TTile(spcvs, SpriteInfoList.ButtonTile, row, col));
     }
     gameProps.tiles.push(rows);
   }
+  //Lag alle minene i spillet basert på gameLevel.Mines
+  let mineCounter = 1; //Indikerer hvor mange miner som er lagt ut
+  do {
+    const row = Math.floor(Math.random() * gameLevel.Tiles.Row);
+    const col = Math.floor(Math.random() * gameLevel.Tiles.Col);
+    const tile = gameProps.tiles[row][col];
+    if (!tile.isMine) {
+      tile.isMine = true;
+      mineCounter++;
+    }
+  } while (mineCounter <= gameLevel.Mines);
 }
 
 function drawGame() {
@@ -72,7 +83,7 @@ function drawGame() {
   requestAnimationFrame(drawGame);
 }
 
-function drawTile(aTile){
+function drawTile(aTile) {
   aTile.draw();
 }
 

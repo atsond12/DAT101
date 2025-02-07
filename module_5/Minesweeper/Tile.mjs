@@ -11,13 +11,41 @@ class TCell{
 }
 
 export class TTile extends libSprite.TSpriteButton {
+  #isMine;
+
   constructor(aSpriteCanvas, aSpriteInfo, aRow, aColumn) {
     const cell = new TCell(aRow, aColumn);
     const pos = new lib2d.TPoint(21,133);
     pos.x += aSpriteInfo.width * cell.col;
     pos.y += aSpriteInfo.height * cell.row;
     super(aSpriteCanvas, aSpriteInfo, pos);
+    this.#isMine = false; //Vi setter at det ikke er en mine som default
   }
+
+  onMouseDown(aEvent){
+    this.index = 1;
+  }
+
+  onMouseUp(aEvent){
+    this.index = 2;
+    this.disable = true;
+  }
+
+  onLeave(aEvent){
+    if(aEvent.buttons === 1){
+      this.index = 0;
+    }
+  }
+
+  get isMine(){
+    return this.#isMine;
+  }
+
+  set isMine(aValue){
+    this.#isMine = aValue;
+    this.index = 4;
+  }
+
 }
 
 export function forEachTile(aCallBack){
