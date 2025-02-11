@@ -34,7 +34,8 @@ class TCell{
     for(let rowIndex = rows.from; rowIndex <= rows.to; rowIndex++ ){
       const row = gameProps.tiles[rowIndex];
       for(let colIndex = cols.from; colIndex <= cols.to; colIndex++){
-        if(this.row !== rowIndex && this.col !== colIndex){
+        const isThisTile = (this.row == rowIndex && this.col == colIndex);
+        if(!isThisTile){
           const tile = row[colIndex];
           neighbors.push(tile);
         }
