@@ -34,7 +34,8 @@ class TCell{
     for(let rowIndex = rows.from; rowIndex <= rows.to; rowIndex++ ){
       const row = gameProps.tiles[rowIndex];
       for(let colIndex = cols.from; colIndex <= cols.to; colIndex++){
-        const isThisTile = (this.row == rowIndex && this.col == colIndex);
+        const isThisTile = (this.row === rowIndex && this.col === colIndex);
+        //ikke legg til seg selv!
         if(!isThisTile){
           const tile = row[colIndex];
           neighbors.push(tile);
@@ -92,6 +93,7 @@ export class TTile extends libSprite.TSpriteButton {
         const neighbor = neighbors[i];
         neighbor.incMineInfo();
       }
+      this.#mineInfo = 0;
     }
   }
 
