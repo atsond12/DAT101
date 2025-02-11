@@ -4,7 +4,7 @@ import lib2d from "../../common/libs/lib2d_v2.mjs"
 import { gameProps, gameLevel} from "./Minesweeper.mjs";
 
 //Farger kan definers med enten tekst "black" eller kode "#000000"
-const MineInfoColors = [];
+const MineInfoColors = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
 
 class TCell{
   constructor(aRow, aColumn){
@@ -113,6 +113,7 @@ export class TTile extends libSprite.TSpriteButton {
       const posX = this.x + 17;
       const posY = this.y + 35;
       aCTX.font = "30px serif";
+      aCTX.fillStyle = MineInfoColors[this.#mineInfo - 1];
       aCTX.fillText(this.#mineInfo.toString(), posX, posY);
     }
   }
