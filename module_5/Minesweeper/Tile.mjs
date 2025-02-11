@@ -40,12 +40,14 @@ class TCell{
         }
       }
     }
-
-  }
-}
+    return neighbors;
+  }// End of neighbors
+}// End of class
 
 export class TTile extends libSprite.TSpriteButton {
   #isMine;
+  #cell;
+  #mineInfo;
 
   constructor(aSpriteCanvas, aSpriteInfo, aRow, aColumn) {
     const cell = new TCell(aRow, aColumn);
@@ -54,6 +56,8 @@ export class TTile extends libSprite.TSpriteButton {
     pos.y += aSpriteInfo.height * cell.row;
     super(aSpriteCanvas, aSpriteInfo, pos);
     this.#isMine = false; //Vi setter at det ikke er en mine som default
+    this.#cell = cell;
+    this.#mineInfo = 0;
   }
 
   onMouseDown(aEvent){
@@ -77,10 +81,38 @@ export class TTile extends libSprite.TSpriteButton {
 
   set isMine(aValue){
     this.#isMine = aValue;
-    this.index = 4;
+    if(aValue){
+      this.index = 4;
+      const neighbors = this.#cell.neighbors;
+      console.log(this.#cell);
+      console.log(neighbors);
+      //debugger;
+      for(let i = 0; i < neighbors.length; i++){
+        const neighbor = neighbors[i];
+        neighbor.incMineInfo();
+      }
+    }
   }
 
-}
+  incMineInfo(){
+    if(this.#isMine){
+      this.#mineInfo = 0;
+    }else{
+      this.#mineInfo++;
+      console.log("Mine info: ", this.#mineInfo);
+    }
+  }
+
+  onCustomDraw(aCTX){
+    if(this.#mineInfo > 0){
+      const posX = this.x + 17;
+      const posY = this.y + 35;
+      aCTX.font = "30px serif";
+      aCTX.fillText(this.#mineInfo.toString(), posX, posY);
+    }
+  }
+
+}// End of class TTile
 
 export function forEachTile(aCallBack){
   if(!aCallBack){
