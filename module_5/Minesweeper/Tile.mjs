@@ -3,6 +3,9 @@ import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2d from "../../common/libs/lib2d_v2.mjs"
 import { gameProps, gameLevel} from "./Minesweeper.mjs";
 
+//Farger kan definers med enten tekst "black" eller kode "#000000"
+const MineInfoColors = [];
+
 class TCell{
   constructor(aRow, aColumn){
     this.row = aRow;
@@ -88,7 +91,6 @@ export class TTile extends libSprite.TSpriteButton {
       const neighbors = this.#cell.neighbors;
       console.log(this.#cell);
       console.log(neighbors);
-      //debugger;
       for(let i = 0; i < neighbors.length; i++){
         const neighbor = neighbors[i];
         neighbor.incMineInfo();
@@ -102,7 +104,7 @@ export class TTile extends libSprite.TSpriteButton {
       this.#mineInfo = 0;
     }else{
       this.#mineInfo++;
-      console.log("Mine info: ", this.#mineInfo);
+      this.index  = 2; //For å teste at knappen er åpen.
     }
   }
 
