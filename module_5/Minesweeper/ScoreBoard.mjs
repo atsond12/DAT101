@@ -16,7 +16,9 @@ export class TScoreBoard {
   #spTime;
   #spSmiley;
   #hndTime;
+  #spcvs;
   constructor(aSpriteCanvas) {
+    this.#spcvs = aSpriteCanvas;
     const pos = new lib2d.TPoint(112, 22);
     this.#spMines = new libSprite.TSpriteNumber(aSpriteCanvas, SpriteInfoList.Numbers, pos);
     this.#spMines.justify = libSprite.ESpriteNumberJustifyType.Right;
@@ -73,4 +75,17 @@ export class TScoreBoard {
     this.#spSmiley.index = 0;
     newGame();
   }
+
+  reset(){
+    clearInterval(this.#hndTime);
+    this.#spTime.value = 0;
+    this.#spMines.value = gameLevel.Mines;
+
+    let newX = (this.#spcvs.canvas.width / 2) - (SpriteInfoList.ButtonSmiley.width / 2);
+    this.#spSmiley.x = newX;
+
+    newX = this.#spcvs.canvas.width - 70;
+    this.#spTime.x = newX; 
+  }
+
 }
