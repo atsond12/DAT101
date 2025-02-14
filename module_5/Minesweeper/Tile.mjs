@@ -66,11 +66,30 @@ export class TTile extends libSprite.TSpriteButton {
   }
 
   onMouseDown(aEvent) {
+    if(aEvent.buttons === 2){
+      return
+    }
+
     this.index = 1;
     gameProps.ScoreBoard.spSmiley.index = 1;
   }
 
   onMouseUp(aEvent) {
+    if(aEvent.button === 2){ 
+      if(this.index === 3){
+        this.index = 0;
+        //Her må dere øke mine telleren
+        gameProps.ScoreBoard.mineCounter++;
+      }else{
+        //Her må dere redusere mine telleren
+        if(gameProps.ScoreBoard.mineCounter > 0){
+          this.index = 3;
+          gameProps.ScoreBoard.mineCounter--;
+        }
+      }
+      return;
+    }
+
     if (this.#isMine) {
       this.index = 4;
       gameProps.ScoreBoard.spSmiley.index = 2;
@@ -135,7 +154,7 @@ export class TTile extends libSprite.TSpriteButton {
   }
 
   get isOpen() {
-    if (this.index !== 0 && this.index !== 1) {
+    if (this.index !== 0 && this.index !== 1 && this.index !== 3) {
       return true;
     }
     return false;
