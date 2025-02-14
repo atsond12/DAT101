@@ -16,6 +16,7 @@ export class TScoreBoard {
   #spMines;
   #spTime;
   #spSmiley;
+  #hndTime;
   constructor(aSpriteCanvas){
     const pos = new lib2d.TPoint(112, 22);
     this.#spMines = new libSprite.TSpriteNumber(aSpriteCanvas, SpriteInfoList.Numbers, pos);
@@ -28,10 +29,29 @@ export class TScoreBoard {
     this.#spTime.justify = libSprite.ESpriteNumberJustifyType.Right;
     this.#spTime.digits = 3;
     this.#spTime.value = 0;
+
+    pos.x = (aSpriteCanvas.canvas.width / 2) - (SpriteInfoList.ButtonSmiley.width / 2);
+    this.#spSmiley = new libSprite.TSpriteButton(aSpriteCanvas, SpriteInfoList.ButtonSmiley, pos);
+    
+    this.#hndTime = setInterval(this.#increaseTime, 1000);
   }
 
   draw(){
     this.#spMines.draw();
     this.#spTime.draw();
+    this.#spSmiley.draw();
   }
+
+  get spSmiley(){
+    return this.#spSmiley;
+  }
+
+  //Vi må lage denne som pil-funksjon for å kunne bruke this
+  #increaseTime = () => {
+    if(this.#spTime.value < 999){
+      this.#spTime.value++;
+    }else{
+      this.#spTime.value = 999;
+    }
+  };
 }

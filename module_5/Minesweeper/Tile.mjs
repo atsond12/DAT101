@@ -67,14 +67,17 @@ export class TTile extends libSprite.TSpriteButton {
 
   onMouseDown(aEvent) {
     this.index = 1;
+    gameProps.ScoreBoard.spSmiley.index = 1;
   }
 
   onMouseUp(aEvent) {
     if (this.#isMine) {
       this.index = 4;
+      gameProps.ScoreBoard.spSmiley.index = 2;
       //Game over :(
     } else {
       this.index = 2;
+      gameProps.ScoreBoard.spSmiley.index = 0;
       if (this.#mineInfo === 0) {
         const neighbors = this.#cell.neighbors;
         for (let i = 0; i < neighbors.length; i++) {
