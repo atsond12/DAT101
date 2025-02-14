@@ -68,6 +68,8 @@ export class TTile extends libSprite.TSpriteButton {
   onMouseDown(aEvent) {
     if(aEvent.buttons === 2){
       return
+    }else if(this.index === 3){
+      return;
     }
 
     this.index = 1;
@@ -88,6 +90,8 @@ export class TTile extends libSprite.TSpriteButton {
         }
       }
       return;
+    }else if(this.index === 3){
+      return;
     }
 
     if (this.#isMine) {
@@ -107,6 +111,13 @@ export class TTile extends libSprite.TSpriteButton {
       }
     }
     this.disable = true;
+    //TODO: Sjekk om spillet er slutt!, Hint bruke forEachTile
+    gameProps.openTiles = 0;//Vi må resette denne, later som om vi ikke har noen åpnet enda
+    forEachTile(this.#countOpenTiles);
+    //Her er openTiles oppdatert med antall åpne miner
+    //Lag en if test, sjekk om det er flere tiles å åpne, hvis ikke så er spillet slutt!
+    
+
   }
 
   onLeave(aEvent) {
@@ -161,7 +172,7 @@ export class TTile extends libSprite.TSpriteButton {
   }
 
   OpenUp(){
-    if(this.isOpen){
+    if(this.isOpen || this.index === 3){
       return;
     }
     this.index = 2;
@@ -183,6 +194,13 @@ export class TTile extends libSprite.TSpriteButton {
     if(this.#isMine){
       this.index = 5;
     }
+  }
+
+  #countOpenTiles(aTile){
+    if(!aTile.isOpen){
+      return;
+    }
+    gameProps.openTiles++;
   }
 
 } // End of class TTile
