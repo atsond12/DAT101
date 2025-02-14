@@ -116,7 +116,13 @@ export class TTile extends libSprite.TSpriteButton {
     forEachTile(this.#countOpenTiles);
     //Her er openTiles oppdatert med antall åpne miner
     //Lag en if test, sjekk om det er flere tiles å åpne, hvis ikke så er spillet slutt!
-    
+    const totalTiles = gameLevel.Tiles.Row * gameLevel.Tiles.Col;
+    const tilesLeft = totalTiles - gameProps.openTiles;
+    console.log(tilesLeft);
+    if(tilesLeft === gameLevel.Mines){
+      gameProps.ScoreBoard.spSmiley.index = 4;
+      setGameOver();
+    }
 
   }
 
