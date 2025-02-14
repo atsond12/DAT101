@@ -1,7 +1,7 @@
 "use strict";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2d from "../../common/libs/lib2d_v2.mjs";
-import { gameProps, gameLevel } from "./Minesweeper.mjs";
+import { gameProps, gameLevel, setGameOver} from "./Minesweeper.mjs";
 
 //Farger kan definers med enten tekst "black" eller kode "#000000"
 const MineInfoColors = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
@@ -74,9 +74,10 @@ export class TTile extends libSprite.TSpriteButton {
     if (this.#isMine) {
       this.index = 4;
       gameProps.ScoreBoard.spSmiley.index = 2;
-      //Game over :(
+      setGameOver();
     } else {
       this.index = 2;
+      this.disable = true;
       gameProps.ScoreBoard.spSmiley.index = 0;
       if (this.#mineInfo === 0) {
         const neighbors = this.#cell.neighbors;
@@ -145,12 +146,23 @@ export class TTile extends libSprite.TSpriteButton {
       return;
     }
     this.index = 2;
+    this.disable = true;
     if(this.#mineInfo === 0){
       const neighbors = this.#cell.neighbors;
       for(let i = 0; i < neighbors.length; i++){
         const neighbor = neighbors[i];
         neighbor.OpenUp();
       }
+    }
+  }
+
+  reveal(){
+    if(this.isOpen){
+      return;
+    }
+    this.index = 2;
+    if(this.#isMine){
+      this.index = 5;
     }
   }
 
