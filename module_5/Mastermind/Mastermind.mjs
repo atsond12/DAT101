@@ -31,6 +31,11 @@ const spcvs = new libSprite.TSpriteCanvas(cvs);
 export const GameProps = {
   board: null,
   colorPickers:[],
+  snapTo:{
+    positions: MastermindBoard.ColorAnswer.Row1,
+    distance: 20
+  }
+  
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -68,7 +73,7 @@ function loadGame() {
   console.log(ColorKeys);
   for(let i = 0; i < ColorKeys.length; i++){
     const colorName = ColorKeys[i]; //Color name
-    const colorPicker = new TColorPicker(spcvs, SpriteInfoList.ColorPicker, colorName);
+    const colorPicker = new TColorPicker(spcvs, SpriteInfoList.ColorPicker, colorName, i);
     GameProps.colorPickers.push(colorPicker);
   }
 
