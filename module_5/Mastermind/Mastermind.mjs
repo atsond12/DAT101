@@ -26,7 +26,7 @@ const spcvs = new libSprite.TSpriteCanvas(cvs);
 
 //Add all you game objects here
 export const GameProps = {
- 
+  board: null
 }
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ function newGame() {
 function drawGame(){
   spcvs.clearCanvas();
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
-  
+  GameProps.board.draw();
   requestAnimationFrame(drawGame);
 }
 
@@ -52,6 +52,9 @@ function loadGame() {
   //Set canvas with and height to match the sprite sheet
   cvs.width = SpriteInfoList.Board.width;
   cvs.height = SpriteInfoList.Board.height;
+  spcvs.updateBoundsRect();
+  const pos = new lib2D.TPoint(0, 0);
+  GameProps.board = new libSprite.TSprite(spcvs, SpriteInfoList.Board, pos);
 
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop
