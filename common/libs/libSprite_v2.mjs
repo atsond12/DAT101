@@ -434,11 +434,12 @@ class TSnapTo {
 class TSpriteDraggable extends TSpriteButton {
   #offset;
   #startDragPos;
+  #canDrop;
   constructor(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass) {
     super(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass);
     this.#offset = null; //Not dragging
     this.canDrag = true;
-    this.canDrop = true;
+    this.#canDrop = true;
     this.snapTo = null;
   }
 
@@ -466,7 +467,7 @@ class TSpriteDraggable extends TSpriteButton {
   }
 
   onMouseUp() {
-    if (this.canDrop === false) {
+    if (this.#canDrop === false) {
       //Reset position to start drag position
       this.x = this.#startDragPos.x;
       this.y = this.#startDragPos.y;
@@ -480,25 +481,28 @@ class TSpriteDraggable extends TSpriteButton {
     if (this.#offset === null) {
       return;
     }
-    this.canDrop = this.lastCollision === null;
+    //Check if the sprite can drop at the new position
+    this.#canDrop = this.lastCollision === null && this.onCanDrop ? this.onCanDrop(aPosition) : true;
     this.x = aPosition.x + this.#offset.x;
     this.y = aPosition.y + this.#offset.y;
-    if (this.canDrop === false) {
+    //Check if the sprite can snap to a position, then override the canDrop
+    if (this.snapTo) {
+      this.snapTo.positions.every((aPosition) => {
+        const distance = this.shape.distanceToPoint(aPosition);
+        if (distance <= this.snapTo.distance) {
+          this.x = aPosition.x;
+          this.y = aPosition.y;
+          this.#canDrop = true;
+          return false; //Break the loop
+        }
+        return true; //Continue the loop
+      });
+    }
+    if (this.#canDrop === false) {
       //Set canvas cursor to not-allowed
       this.spcvs.style.cursor = "not-allowed";
     } else {
       this.spcvs.style.cursor = "grabbing";
-      if (this.snapTo) {
-        this.snapTo.points.every((aPoint) => {
-          const distance = this.shape.distanceToPoint(aPoint);
-          if (distance <= this.snapTo.distance) {
-            this.x = aPoint.x;
-            this.y = aPoint.y;
-            return false;
-          }
-          return true;
-        });
-      }
     }
   }
 } //End of TSpriteDraggable class
