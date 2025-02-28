@@ -59,21 +59,21 @@ class TSpriteCanvas {
     //If the sprite has changed, then call onEnter and onLeave
     let spriteHasChanged = newSprite !== this.activeSprite;
 
-    if(spriteHasChanged){
-      if(this.activeSprite !== null){
-        if(this.activeSprite.onLeave){
+    if (spriteHasChanged) {
+      if (this.activeSprite !== null) {
+        if (this.activeSprite.onLeave) {
           this.activeSprite.onLeave(aEvent);
         }
       }
-      if(newSprite !== null){
-        if(newSprite.onEnter){
+      if (newSprite !== null) {
+        if (newSprite.onEnter) {
           newSprite.onEnter(aEvent);
         }
         this.activeSprite = newSprite;
       }
     }
 
-    if(newSprite === null && this.activeSprite !== null){
+    if (newSprite === null && this.activeSprite !== null) {
       this.activeSprite = null;
     }
 
@@ -114,7 +114,7 @@ class TSpriteCanvas {
     if (this.activeSprite && this.activeSprite.onMouseUp && this.#mouseDownSprite === this.#mouseUpSprite) {
       this.activeSprite.onMouseUp(aEvent);
       //If the sprite is disabled after then reset the active sprite
-      if (this.activeSprite.disable) {
+      if (this.activeSprite && this.activeSprite.disable) {
         this.activeSprite = null;
       }
     }
@@ -169,7 +169,7 @@ class TSpriteCanvas {
       }
       this.#ctx.strokeStyle = oldStrokeStyle;
     }
-    if(aSprite.onCustomDraw){
+    if (aSprite.onCustomDraw) {
       aSprite.onCustomDraw(this.#ctx);
     }
   }
@@ -193,6 +193,10 @@ class TSpriteCanvas {
     const index = this.#sprites.indexOf(aButton);
     if (index >= 0) {
       this.#sprites.splice(index, 1);
+      if (this.activeSprite === aButton) {
+        this.activeSprite = null;
+        this.#cvs.style.cursor = "default";
+      }
     }
   }
 
@@ -207,7 +211,7 @@ class TSpriteCanvas {
   }
 
   //Call this function when the canvas size has changed or position has changed, eks. window resize
-  updateBoundsRect(){
+  updateBoundsRect() {
     this.#rect = this.#cvs.getBoundingClientRect();
   }
 
@@ -346,16 +350,15 @@ class TSprite {
     throw new Error("Center is read only, maybe you want to set pivot instead.");
   }
 
-
   get noneUniformScale() {
     const scale = {
       x: this.shape.width / this.spi.width,
-      y: this.shape.height / this.spi.height
+      y: this.shape.height / this.spi.height,
     };
     return scale;
   }
 
-  set noneUniformScale({x, y}) {
+  set noneUniformScale({ x, y }) {
     this.width *= x;
     this.height *= y;
   }
@@ -473,18 +476,21 @@ class TSpriteDraggable extends TSpriteButton {
       //Reset position to start drag position
       this.x = this.#startDragPos.x;
       this.y = this.#startDragPos.y;
-      if(this.onCancelDrop){
+      if (this.onCancelDrop) {
         //Call the onCancelDrop function, user has cancelled the drop
         this.onCancelDrop();
       }
-    }else{
-      if(this.onDrop){
+      //The mouse if no longer over the sprite, so reset the cursor
+      this.spcvs.style.cursor = "default";
+    } else {
+      if (this.onDrop) {
         this.onDrop(this.#dropPos);
       }
+      //The mouse is still over the sprite, so set the cursor to grab
+      this.spcvs.style.cursor = "grab";
     }
     this.#offset = null;
     this.#startDragPos = null;
-    this.spcvs.style.cursor = "grab";
   }
 
   onDrag(aPosition) {
@@ -518,7 +524,7 @@ class TSpriteDraggable extends TSpriteButton {
   }
 } //End of TSpriteDraggable class
 
-const ESpriteNumberJustifyType = {Left: 0, Center: 1, Right: 2};
+const ESpriteNumberJustifyType = { Left: 0, Center: 1, Right: 2 };
 
 class TSpriteNumber {
   #spcvs;
@@ -550,7 +556,7 @@ class TSpriteNumber {
     let strValue = aValue.toString();
     let digits = this.digits ? this.digits : strValue.length;
     let needToRealign = digits !== this.#spNumbers.length && this.#justify !== ESpriteNumberJustifyType.Left;
-    if(strValue.length > digits){
+    if (strValue.length > digits) {
       //No more space for new digits, the max value is reached, return without updating the value
       return;
     }
@@ -558,10 +564,10 @@ class TSpriteNumber {
     while (digits !== this.#spNumbers.length) {
       const addDigit = digits > this.#spNumbers.length;
       if (addDigit) {
-        //assume the number is left justified, so add new digit sprite to the right    
-        const nextPosition = {x: this.#position.x + this.#spNumbers.length * this.#spi.width, y: this.#position.y};
+        //assume the number is left justified, so add new digit sprite to the right
+        const nextPosition = { x: this.#position.x + this.#spNumbers.length * this.#spi.width, y: this.#position.y };
         this.#spNumbers.push(new TSprite(this.#spcvs, this.#spi, nextPosition, this.#shapeClass));
-      }else{
+      } else {
         this.#spNumbers.pop();
       }
     }
@@ -588,7 +594,7 @@ class TSpriteNumber {
 
   #UpdatePosition = () => {
     //move the sprite according to the new justify
-    switch(this.#justify){
+    switch (this.#justify) {
       case ESpriteNumberJustifyType.Left:
         this.#spNumbers.forEach((aSprite, aIndex) => {
           aSprite.x = this.#position.x + aIndex * this.#spi.width;
@@ -596,7 +602,7 @@ class TSpriteNumber {
         });
         break;
       case ESpriteNumberJustifyType.Center:
-        const center = this.#spNumbers.length * this.#spi.width / 2;
+        const center = (this.#spNumbers.length * this.#spi.width) / 2;
         this.#spNumbers.forEach((aSprite, aIndex) => {
           aSprite.x = this.#position.x - center + aIndex * this.#spi.width;
           aSprite.y = this.#position.y;
@@ -609,21 +615,19 @@ class TSpriteNumber {
           aSprite.y = this.#position.y;
         });
         break;
-      }
+    }
   };
 
-
-  get justify(){
+  get justify() {
     return this.#justify;
   }
 
-  set justify(aJustify){
+  set justify(aJustify) {
     if (this.#justify === aJustify) return;
     this.#justify = aJustify;
     this.#UpdatePosition();
   }
 }
-
 
 export default {
   /**
