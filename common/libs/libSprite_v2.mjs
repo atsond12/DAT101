@@ -473,6 +473,10 @@ class TSpriteDraggable extends TSpriteButton {
       //Reset position to start drag position
       this.x = this.#startDragPos.x;
       this.y = this.#startDragPos.y;
+      if(this.onCancelDrop){
+        //Call the onCancelDrop function, user has cancelled the drop
+        this.onCancelDrop();
+      }
     }else{
       if(this.onDrop){
         this.onDrop(this.#dropPos);
