@@ -32,11 +32,11 @@ export const GameProps = {
   board: null,
   colorPickers:[],
   snapTo:{
-    positions: MastermindBoard.ColorAnswer.Row1,
+    positions: MastermindBoard.ColorAnswer.Row10,
     distance: 20
   }
-  
 }
+
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Functions

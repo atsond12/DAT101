@@ -37,4 +37,12 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
     GameProps.colorPickers.push(this.clone());
   }
 
+  onMouseDown(){
+    super.onMouseDown();
+    //Få denne knappen til å være i det øverste laget
+    const index = GameProps.colorPickers.indexOf(this);
+    GameProps.colorPickers.splice(index, 1);
+    GameProps.colorPickers.push(this);
+  }
+
 } 
