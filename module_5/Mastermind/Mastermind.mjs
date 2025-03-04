@@ -38,7 +38,8 @@ export const GameProps = {
   },
   computerAnswers: [],
   roundIndicator: null,
-  menu: null
+  menu: null,
+  playerAnswers: [null, null, null, null],
 }
 
 
@@ -54,10 +55,6 @@ function drawGame(){
   spcvs.clearCanvas();
   //Draw all game objects here, remember to think about the draw order (layers in PhotoShop for example!)
   GameProps.board.draw();
-  for(let i = 0; i < GameProps.colorPickers.length; i++){
-    const colorPicker = GameProps.colorPickers[i];
-    colorPicker.draw();
-  }
 
   for(let i = 0; i < GameProps.computerAnswers.length; i++){
     const computerAnswer = GameProps.computerAnswers[i];
@@ -67,6 +64,11 @@ function drawGame(){
   GameProps.roundIndicator.draw();
 
   GameProps.menu.draw();
+
+  for(let i = 0; i < GameProps.colorPickers.length; i++){
+    const colorPicker = GameProps.colorPickers[i];
+    colorPicker.draw();
+  }
 
   requestAnimationFrame(drawGame);
 }
