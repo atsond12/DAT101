@@ -7,6 +7,7 @@ import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { TColorPicker } from "./ColorPicker.mjs";
 import MastermindBoard from "./MastermindBoard.mjs";
+import { TMenu } from "./menu.mjs";
 
 
 //--------------------------------------------------------------------------------------------------------------------
@@ -36,7 +37,8 @@ export const GameProps = {
     distance: 20
   },
   computerAnswers: [],
-  roundIndicator: null
+  roundIndicator: null,
+  menu: null
 }
 
 
@@ -63,6 +65,8 @@ function drawGame(){
   }
   
   GameProps.roundIndicator.draw();
+
+  GameProps.menu.draw();
 
   requestAnimationFrame(drawGame);
 }
@@ -112,6 +116,8 @@ function loadGame() {
   GameProps.roundIndicator = new libSprite.TSprite(spcvs, SpriteInfoList.ColorHint, pos);
   GameProps.roundIndicator.index = 2;
   moveRoundIndicator();
+
+  GameProps.menu = new TMenu(spcvs);
 
   newGame();
   requestAnimationFrame(drawGame); // Start the animation loop
