@@ -12,6 +12,7 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
   #spi;
   #color;
   #snapPos;
+  #snapIndex;
   #hasMoved;
   constructor(spcvs, spriteInfo, color, index){
     super(spcvs, spriteInfo,Positions[color]);
@@ -22,6 +23,7 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
     this.#color = color;
     this.#snapPos = null;
     this.#hasMoved = false;
+    this.#snapIndex = -1;
   }
 
   onCanDrop(){
@@ -39,10 +41,14 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
 
   onDrop(aDropPosition){
     GameProps.colorPickers.push(this.clone());
-    const index = GameProps.snapTo.positions.indexOf(aDropPosition);
-    const removedItems = GameProps.snapTo.positions.splice(index, 1);
-    this.#snapPos = removedItems[0];
+    this.#snapIndex = GameProps.snapTo.positions.indexOf(aDropPosition);
+    this.#snapPos = new lib2D.TPoint();
+    this.#snapPos.x = GameProps.snapTo.positions[this.#snapIndex].x;
+    this.#snapPos.y = GameProps.snapTo.positions[this.#snapIndex].y;
+    GameProps.snapTo.positions[this.#snapIndex] = null;
     this.#hasMoved = true;
+    GameProps.playerAnswers[this.#snapIndex] = this;
+    console.log("Drop color on snap index", this.#snapIndex);
   }
 
   onMouseDown(){
@@ -53,8 +59,9 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
     GameProps.colorPickers.push(this);
     if(this.#snapPos !== null){
       console.log("Pushing snapPos", this.#snapPos);
-      GameProps.snapTo.positions.push(this.#snapPos);
+      GameProps.snapTo.positions[this.#snapIndex] = this.#snapPos;
       this.#snapPos = null;
+      GameProps.playerAnswers[this.#snapIndex] = null;
     }
   }
 

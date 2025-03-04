@@ -504,6 +504,7 @@ class TSpriteDraggable extends TSpriteButton {
     //Check if the sprite can snap to a position, then override the canDrop
     if (this.snapTo) {
       this.snapTo.positions.every((aPosition) => {
+        if(aPosition === null) return true; //Continue the loop
         const distance = this.shape.distanceToPoint(aPosition);
         if (distance <= this.snapTo.distance) {
           this.x = aPosition.x;
