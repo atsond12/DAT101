@@ -73,6 +73,10 @@ export class TMenu {
     //Lage liste over spillerens svar
     const playerAnswerList = [];
     for(let i = 0; i < 4; i++){
+      // kontrollere at brukeren har valgt 4 farger
+      if(GameProps.playerAnswers[i] === null){
+        return; // Avslutt funksjonen, brukeren mangler farger
+      }
       const obj = Object.create(answerObject);
       const playerAnswer = GameProps.playerAnswers[i];
       obj.color = playerAnswer.index;
@@ -87,17 +91,42 @@ export class TMenu {
       const playerAnswer = playerAnswerList[i];
       if(computerAnswer.color === playerAnswer.color){
         console.log(`Riktig farge på plass ${i + 1}`);
-        const pos = GameProps.answerHintRow[answerColorHintIndex++];
-        // answerColorHintIndex += 1;
-        // answerColorHintIndex = answerColorHintIndex + 1;
-        // answerColorHintIndex++;
-        const colorHintSPI = SpriteInfoList.ColorHint;
-        const colorHint = new libSprite.TSprite(this.#spcvs, colorHintSPI, pos);
-        colorHint.index = 1;
-        this.#colorHints.push(colorHint);
+        answerColorHintIndex = this.#createColorHint(answerColorHintIndex, 1);
         //Vi må ikke sjekke disse to fargene igjen
         computerAnswer.checkThis = playerAnswer.checkThis = false;
       }
     }
-  }
-}
+    //Sjekke om vi har valgt riktig farge på feil plass.
+    // ytre for løkke sjekker spillerens svar
+    for(let i = 0; i < 4; i++){
+      const playerAnswer = playerAnswerList[i];
+      // Hvis denne fargen skal sjekkes, sjekk mot alle computerens svar
+      if(playerAnswer.checkThis){
+        for(let j = 0; j < 4; j++){
+          const computerAnswer = computerAnswerList[j];
+          // Test om denne fargen skal sjekkes og at den ikke er på samme plass
+          if(computerAnswer.checkThis && (playerAnswer.pos !== computerAnswer.pos)){
+            if(playerAnswer.color === computerAnswer.color){
+              console.log(`Rett farge på feil plass - ${playerAnswer.pos + 1} , ${computerAnswer.pos + 1}`);
+              answerColorHintIndex = this.#createColorHint(answerColorHintIndex, 0);
+              // Vi må ikke sjekke disse to fargene igjen
+              computerAnswer.checkThis = playerAnswer.checkThis = false;
+            }
+          }
+
+        }
+      } 
+    }
+  } // End of onCheckAnswerClick
+
+  //Privat metode, den bruker interne variabler og kan ikke påberopes utenfra
+  #createColorHint(posIndex, colorIndex){
+    const pos = GameProps.answerHintRow[posIndex++];
+    const colorHintSPI = SpriteInfoList.ColorHint;
+    const colorHint = new libSprite.TSprite(this.#spcvs, colorHintSPI, pos);
+    colorHint.index = colorIndex;
+    this.#colorHints.push(colorHint);
+    return posIndex; // Vi må returnere den nye indeksen til posisjonen
+  } // End of #createColorHint
+
+} // End of class TMenu
