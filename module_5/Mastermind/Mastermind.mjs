@@ -33,14 +33,14 @@ export const GameProps = {
   board: null,
   colorPickers:[],
   snapTo:{
-    positions: MastermindBoard.ColorAnswer.Row10,
+    positions: MastermindBoard.ColorAnswer.Row1,
     distance: 20
   },
   computerAnswers: [],
   roundIndicator: null,
   menu: null,
   playerAnswers: [null, null, null, null],
-  answerHintRow: MastermindBoard.AnswerHint.Row10,
+  answerHintRow: MastermindBoard.AnswerHint.Row1,
 }
 
 
@@ -88,7 +88,7 @@ function generateComputerAnswer(){
 
 }
 
-function moveRoundIndicator(){
+export function moveRoundIndicator(){
   const pos = GameProps.snapTo.positions[0];
   GameProps.roundIndicator.x = pos.x - 84;
   GameProps.roundIndicator.y = pos.y + 7;

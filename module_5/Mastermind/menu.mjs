@@ -1,7 +1,7 @@
 "use strict";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2D from "../../common/libs/lib2d_v2.mjs";
-import{ GameProps, SpriteInfoList } from "./Mastermind.mjs";
+import{ GameProps, SpriteInfoList, moveRoundIndicator} from "./Mastermind.mjs";
 import MastermindBoard from "./MastermindBoard.mjs";
 
 //Lag en meny klasse "TMenu", ingen arv, skal ha tre knapper og en sprite
@@ -12,8 +12,10 @@ export class TMenu {
   #panelHint;
   #colorHints;
   #spcvs;
+  #roundNumber;
   constructor(aSpriteCanvas){
     this.#spcvs = aSpriteCanvas;
+    this.#roundNumber = 1;
     this.#buttonNewGame = 
     new libSprite.TSpriteButton(
       aSpriteCanvas,
@@ -117,6 +119,8 @@ export class TMenu {
         }
       } 
     }
+    // Gå videre til neste runde
+    this.#setNextRound();
   } // End of onCheckAnswerClick
 
   //Privat metode, den bruker interne variabler og kan ikke påberopes utenfra
@@ -128,5 +132,18 @@ export class TMenu {
     this.#colorHints.push(colorHint);
     return posIndex; // Vi må returnere den nye indeksen til posisjonen
   } // End of #createColorHint
+
+  // Lag en metode #setNextRound som setter opp neste runde
+  #setNextRound(){
+    this.#roundNumber++;
+    const rowText = `Row${this.#roundNumber}`;
+    GameProps.snapTo.positions = MastermindBoard.ColorAnswer[rowText];
+    GameProps.answerHintRow = MastermindBoard.AnswerHint[rowText];
+    moveRoundIndicator();
+    for(let i = 0; i < 4; i++){
+      GameProps.playerAnswers[i].disable = true;
+      GameProps.playerAnswers[i] = null;
+    }
+  }
 
 } // End of class TMenu
