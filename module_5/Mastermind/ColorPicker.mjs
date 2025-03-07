@@ -48,7 +48,6 @@ export class TColorPicker extends libSprite.TSpriteDraggable {
     GameProps.snapTo.positions[this.#snapIndex] = null;
     this.#hasMoved = true;
     GameProps.playerAnswers[this.#snapIndex] = this;
-    console.log("Drop color on snap index", this.#snapIndex);
   }
 
   onMouseDown(){

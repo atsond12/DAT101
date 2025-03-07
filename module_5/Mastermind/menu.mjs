@@ -80,16 +80,13 @@ export class TMenu {
       playerAnswerList.push(obj);
     }
 
-    console.log("Computer answer", computerAnswerList);
-    console.log("Player answer", playerAnswerList);
     //Sjekke om vi har valgt riktig farge på riktig plass
     let answerColorHintIndex = 0;
     for(let i = 0; i < 4; i++){
       const computerAnswer = computerAnswerList[i];
       const playerAnswer = playerAnswerList[i];
       if(computerAnswer.color === playerAnswer.color){
-        console.log("Riktig farge på riktig plass");
-        console.log("Indeks", i);
+        console.log(`Riktig farge på plass ${i + 1}`);
         const pos = GameProps.answerHintRow[answerColorHintIndex++];
         // answerColorHintIndex += 1;
         // answerColorHintIndex = answerColorHintIndex + 1;

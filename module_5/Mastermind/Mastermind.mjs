@@ -108,7 +108,7 @@ function loadGame() {
   GameProps.board = new libSprite.TSprite(spcvs, SpriteInfoList.Board, pos);
  
   const ColorKeys = Object.keys(MastermindBoard.ColorPicker);
-  console.log(ColorKeys);
+  
   for(let i = 0; i < ColorKeys.length; i++){
     const colorName = ColorKeys[i]; //Color name
     const colorPicker = new TColorPicker(spcvs, SpriteInfoList.ColorPicker, colorName, i);
