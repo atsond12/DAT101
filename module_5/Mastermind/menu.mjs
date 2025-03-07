@@ -10,7 +10,10 @@ export class TMenu {
   #buttonCheckAnswer;
   #buttonHint;
   #panelHint;
+  #colorHints;
+  #spcvs;
   constructor(aSpriteCanvas){
+    this.#spcvs = aSpriteCanvas;
     this.#buttonNewGame = 
     new libSprite.TSpriteButton(
       aSpriteCanvas,
@@ -37,13 +40,18 @@ export class TMenu {
         
     this.#buttonHint.onClick = this.onHintClick;
     this.#buttonCheckAnswer.onClick = this.onCheckAnswerClick;
-  }
+    this.#colorHints = [];
+  }//End of constructor
 
   draw(){
     this.#buttonNewGame.draw();
     this.#buttonCheckAnswer.draw();
     this.#buttonHint.draw();
     this.#panelHint.draw();
+    for(let i = 0; i < this.#colorHints.length; i++){
+      const colorHint = this.#colorHints[i];
+      colorHint.draw();
+    }
   }
 
   onHintClick = () =>{
@@ -75,12 +83,22 @@ export class TMenu {
     console.log("Computer answer", computerAnswerList);
     console.log("Player answer", playerAnswerList);
     //Sjekke om vi har valgt riktig farge på riktig plass
+    let answerColorHintIndex = 0;
     for(let i = 0; i < 4; i++){
       const computerAnswer = computerAnswerList[i];
       const playerAnswer = playerAnswerList[i];
       if(computerAnswer.color === playerAnswer.color){
         console.log("Riktig farge på riktig plass");
         console.log("Indeks", i);
+        const pos = GameProps.answerHintRow[answerColorHintIndex++];
+        // answerColorHintIndex += 1;
+        // answerColorHintIndex = answerColorHintIndex + 1;
+        // answerColorHintIndex++;
+        const colorHintSPI = SpriteInfoList.ColorHint;
+        const colorHint = new libSprite.TSprite(this.#spcvs, colorHintSPI, pos);
+        colorHint.index = 1;
+        this.#colorHints.push(colorHint);
+        
       }
     }
   }

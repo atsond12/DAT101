@@ -40,6 +40,7 @@ export const GameProps = {
   roundIndicator: null,
   menu: null,
   playerAnswers: [null, null, null, null],
+  answerHintRow: MastermindBoard.AnswerHint.Row10,
 }
 
 
