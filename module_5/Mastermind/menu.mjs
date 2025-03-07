@@ -22,7 +22,7 @@ export class TMenu {
       aSpriteCanvas,
       SpriteInfoList.ButtonCheckAnswer,
       MastermindBoard.ButtonCheckAnswer);
-      
+
     this.#buttonHint = 
     new libSprite.TSpriteButton(
       aSpriteCanvas,
@@ -36,6 +36,7 @@ export class TMenu {
         MastermindBoard.PanelHideAnswer);   
         
     this.#buttonHint.onClick = this.onHintClick;
+    this.#buttonCheckAnswer.onClick = this.onCheckAnswerClick;
   }
 
   draw(){
@@ -63,7 +64,24 @@ export class TMenu {
     }
     //Lage liste over spillerens svar
     const playerAnswerList = [];
+    for(let i = 0; i < 4; i++){
+      const obj = Object.create(answerObject);
+      const playerAnswer = GameProps.playerAnswers[i];
+      obj.color = playerAnswer.index;
+      obj.pos = i;
+      playerAnswerList.push(obj);
+    }
 
+    console.log("Computer answer", computerAnswerList);
+    console.log("Player answer", playerAnswerList);
+    //Sjekke om vi har valgt riktig farge på riktig plass
+    for(let i = 0; i < 4; i++){
+      const computerAnswer = computerAnswerList[i];
+      const playerAnswer = playerAnswerList[i];
+      if(computerAnswer.color === playerAnswer.color){
+        console.log("Riktig farge på riktig plass");
+        console.log("Indeks", i);
+      }
+    }
   }
-
 }
