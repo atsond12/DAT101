@@ -60,7 +60,7 @@ export class TMenu {
 
   onCheckAnswerClick = () =>{
     //Denne sjekker om vi har valgt rett farge
-    const answerObject = { color : 0, pos: -1};
+    const answerObject = { color : 0, pos: -1, checkThis: true};
     //Lage liste over computerens svar
     const computerAnswerList = [];
     for(let i = 0 ; i < 4; i++){
@@ -98,7 +98,8 @@ export class TMenu {
         const colorHint = new libSprite.TSprite(this.#spcvs, colorHintSPI, pos);
         colorHint.index = 1;
         this.#colorHints.push(colorHint);
-        
+        //Vi må ikke sjekke disse to fargene igjen
+        computerAnswer.checkThis = playerAnswer.checkThis = false;
       }
     }
   }
