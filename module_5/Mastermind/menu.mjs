@@ -8,8 +8,8 @@ import MastermindBoard from "./MastermindBoard.mjs";
 export class TMenu {
   #buttonNewGame;
   #buttonCheckAnswer;
-  #buttonHint;
-  #panelHint;
+  #buttonCheat;
+  #panelCheat;
   #colorHints;
   #spcvs;
   #roundNumber;
@@ -17,30 +17,30 @@ export class TMenu {
     this.#spcvs = aSpriteCanvas;
     this.#roundNumber = 1;
     this.#buttonNewGame = 
-    new libSprite.TSpriteButton(
+    new libSprite.TSpriteButtonHaptic(
       aSpriteCanvas,
       SpriteInfoList.ButtonNewGame,
       MastermindBoard.ButtonNewGame);
 
     this.#buttonCheckAnswer = 
-    new libSprite.TSpriteButton(
+    new libSprite.TSpriteButtonHaptic(
       aSpriteCanvas,
       SpriteInfoList.ButtonCheckAnswer,
       MastermindBoard.ButtonCheckAnswer);
-
-    this.#buttonHint = 
-    new libSprite.TSpriteButton(
+    
+    this.#buttonCheat = 
+    new libSprite.TSpriteButtonHaptic(
       aSpriteCanvas,
       SpriteInfoList.ButtonCheat,
       MastermindBoard.ButtonCheat);
 
-    this.#panelHint = 
+    this.#panelCheat = 
       new libSprite.TSprite(
         aSpriteCanvas,
         SpriteInfoList.PanelHideAnswer,
         MastermindBoard.PanelHideAnswer);   
         
-    this.#buttonHint.onClick = this.onHintClick;
+    this.#buttonCheat.onClick = this.onButtonCheatClick;
     this.#buttonCheckAnswer.onClick = this.onCheckAnswerClick;
     this.#colorHints = [];
   }//End of constructor
@@ -48,16 +48,16 @@ export class TMenu {
   draw(){
     this.#buttonNewGame.draw();
     this.#buttonCheckAnswer.draw();
-    this.#buttonHint.draw();
-    this.#panelHint.draw();
+    this.#buttonCheat.draw();
+    this.#panelCheat.draw();
     for(let i = 0; i < this.#colorHints.length; i++){
       const colorHint = this.#colorHints[i];
       colorHint.draw();
     }
   }
 
-  onHintClick = () =>{
-    this.#panelHint.visible = !this.#panelHint.visible;
+  onButtonCheatClick = () =>{
+    this.#panelCheat.visible = !this.#panelCheat.visible;
   }
 
   onCheckAnswerClick = () =>{
