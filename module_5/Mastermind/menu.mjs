@@ -21,6 +21,7 @@ export class TMenu {
       aSpriteCanvas,
       SpriteInfoList.ButtonNewGame,
       MastermindBoard.ButtonNewGame);
+    
 
     this.#buttonCheckAnswer = 
     new libSprite.TSpriteButtonHaptic(
@@ -42,6 +43,7 @@ export class TMenu {
         
     this.#buttonCheat.onClick = this.onButtonCheatClick;
     this.#buttonCheckAnswer.onClick = this.onCheckAnswerClick;
+    this.#buttonNewGame.onClick = this.onButtonNewGameClick;
     this.#colorHints = [];
   }//End of constructor
 
@@ -88,6 +90,7 @@ export class TMenu {
 
     //Sjekke om vi har valgt riktig farge på riktig plass
     let answerColorHintIndex = 0;
+    let numberOfCorrectColors = 0;
     for(let i = 0; i < 4; i++){
       const computerAnswer = computerAnswerList[i];
       const playerAnswer = playerAnswerList[i];
@@ -96,7 +99,15 @@ export class TMenu {
         answerColorHintIndex = this.#createColorHint(answerColorHintIndex, 1);
         //Vi må ikke sjekke disse to fargene igjen
         computerAnswer.checkThis = playerAnswer.checkThis = false;
+        //Er alle fargene riktig så er spillet over, og vi må vise fargene fra computeren.
+        //Hint: vi må bruke en variabel som forteller om alle farger er riktig
+        numberOfCorrectColors++;
       }
+    }
+    if(numberOfCorrectColors === 4){
+      console.log("Gratulerer, du har vunnet!");
+      this.#panelCheat.visible = false;
+      return; //Trenger ikke å sjekke resten av fargene
     }
     //Sjekke om vi har valgt riktig farge på feil plass.
     // ytre for løkke sjekker spillerens svar
@@ -123,6 +134,10 @@ export class TMenu {
     this.#setNextRound();
   } // End of onCheckAnswerClick
 
+  onButtonNewGameClick = () =>{
+    newGame();
+  }
+  
   //Privat metode, den bruker interne variabler og kan ikke påberopes utenfra
   #createColorHint(posIndex, colorIndex){
     const pos = GameProps.answerHintRow[posIndex++];
@@ -136,6 +151,11 @@ export class TMenu {
   // Lag en metode #setNextRound som setter opp neste runde
   #setNextRound(){
     this.#roundNumber++;
+    if(this.#roundNumber > 10){
+      console.log("Du har tapt, prøv igjen!");
+      this.#panelCheat.visible = false;
+      return;
+    }
     const rowText = `Row${this.#roundNumber}`;
     GameProps.snapTo.positions = MastermindBoard.ColorAnswer[rowText];
     GameProps.answerHintRow = MastermindBoard.AnswerHint[rowText];
