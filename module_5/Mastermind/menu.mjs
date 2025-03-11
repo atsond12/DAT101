@@ -1,7 +1,7 @@
 "use strict";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import lib2D from "../../common/libs/lib2d_v2.mjs";
-import{ GameProps, SpriteInfoList, moveRoundIndicator} from "./Mastermind.mjs";
+import{ GameProps, SpriteInfoList, moveRoundIndicator, newGame} from "./Mastermind.mjs";
 import MastermindBoard from "./MastermindBoard.mjs";
 
 //Lag en meny klasse "TMenu", ingen arv, skal ha tre knapper og en sprite
@@ -135,9 +135,12 @@ export class TMenu {
   } // End of onCheckAnswerClick
 
   onButtonNewGameClick = () =>{
+    this.#roundNumber = 0;
+    this.#setNextRound();
+    this.#colorHints = [];
     newGame();
   }
-  
+
   //Privat metode, den bruker interne variabler og kan ikke påberopes utenfra
   #createColorHint(posIndex, colorIndex){
     const pos = GameProps.answerHintRow[posIndex++];
