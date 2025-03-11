@@ -135,8 +135,7 @@ export class TMenu {
   } // End of onCheckAnswerClick
 
   onButtonNewGameClick = () =>{
-    this.#roundNumber = 0;
-    this.#setNextRound();
+    this.#roundNumber = 1;
     this.#colorHints = [];
     newGame();
   }

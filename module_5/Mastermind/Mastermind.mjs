@@ -28,8 +28,6 @@ export const SpriteInfoList = {
 const cvs = document.getElementById("cvs");
 const spcvs = new libSprite.TSpriteCanvas(cvs);
 
-const ColorAnswer = Object.create(MastermindBoard.ColorAnswer);
-
 //Add all you game objects here
 export const GameProps = {
   board: null,
@@ -59,6 +57,9 @@ export function newGame() {
   GameProps.colorPickers = [];
   const ColorKeys = Object.keys(MastermindBoard.ColorPicker);
   
+  GameProps.snapTo.positions = MastermindBoard.ColorAnswer.Row1;
+  moveRoundIndicator();
+
   for(let i = 0; i < ColorKeys.length; i++){
     const colorName = ColorKeys[i]; //Color name
     const colorPicker = new TColorPicker(spcvs, SpriteInfoList.ColorPicker, colorName, i);
