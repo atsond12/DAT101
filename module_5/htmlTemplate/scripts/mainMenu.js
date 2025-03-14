@@ -25,6 +25,8 @@ class TMainMenu extends TBootstrapComponent {
 
   #navigateToPage(aMenuItem){
     console.log("Navigating to " + aMenuItem.getAttribute("page-data"));
+    const bodyContent = document.getElementById("body-content");
+    bodyContent.innerHTML = "<home-page></home-page>";
   }
 }
 customElements.define("main-menu", TMainMenu);
