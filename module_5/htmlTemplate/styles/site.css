@@ -15,7 +15,7 @@ body{
   flex-direction: column;
   padding-bottom: 30px;
   background: linear-gradient(to bottom, #91afff, #4070f4);
-  overflow: hidden;
+ 
 }
 
 section {
