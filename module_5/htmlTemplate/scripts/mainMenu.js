@@ -19,11 +19,12 @@ class TMainMenu extends TBootstrapComponent {
     for(let i = 0; i < menuItems.length; i++){
       const menuItem = menuItems[i];
         //Vi må lage en ikke navngitt pilfunksjon pga. eventlytteren
-        menuItem.addEventListener("click",
-        () => {
-          console.log("Navigating to " + menuItem.getAttribute("page-data"));
-        });
+        menuItem.addEventListener("click",() => this.#navigateToPage(menuItem));
     }
+  }// end #createMenuManager
+
+  #navigateToPage(aMenuItem){
+    console.log("Navigating to " + aMenuItem.getAttribute("page-data"));
   }
 }
 customElements.define("main-menu", TMainMenu);
