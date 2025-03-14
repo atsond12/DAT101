@@ -48,12 +48,40 @@
     </nav>
   </template>
   
+  <!-- Template for home page -->
   <template id="home-page-template">
-    <div class="container">
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
       <h1>Velkommen til min DAT101 side!</h1>
       <p>Bruk menyen over til å navigere.</p>
     </div>
   </template>
+
+  <!-- Template for My Movies page -->
+  <template id="my-movies-page-template">
+    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+      <h3>My Movies</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Director</th>
+            <th>Year</th>
+            <th>Genre</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Her må vi lage filmer dynamisk -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">Total movies: <span id="totalMovies">0</span></td>
+          </tr>
+      </table>
+    </div>
+  </template>
+
+
 
   <script src="./scripts/mainMenu.js" type="module" defer></script>
   <script src="./scripts/home.js" type="module" defer></script>
