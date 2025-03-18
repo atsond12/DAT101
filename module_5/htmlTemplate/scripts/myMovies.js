@@ -69,6 +69,26 @@ export class TMyMovies extends TBootstrapComponent {
     this.#htmlTable = this.shadowRoot.getElementById("table-body");
     this.#loadMovies();
   }
-}
+}// End of class TMyMovies
 
 customElements.define("movies-page", TMyMovies);
+
+
+class TMovieForm extends TBootstrapComponent {
+
+  constructor(){
+    super();
+    this.attachShadow({mode: "open"});
+  }
+
+  render(){
+    const template = document.getElementById("add-edit-movie-template");
+    const content = template.content.cloneNode(true);
+    this.shadowRoot.appendChild(content);
+  }
+}
+
+customElements.define("add-edit-movie-page", TMovieForm);
+//Kun for å midlertidig vise add-edit-movie-page
+const bodyContent = document.getElementById("body-content");
+bodyContent.innerHTML = "<add-edit-movie-page></add-edit-movie-page>";
