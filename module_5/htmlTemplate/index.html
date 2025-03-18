@@ -1,88 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DAT101</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>  
-  <link rel="stylesheet" href="./styles/site.css">
-</head>
-<body>
-  <section id="header-content" class="header-content">
-    <main-menu></main-menu>
-  </section>
-  <section id="body-content" class="body-content">
-    <!-- Her kommer alt inneholdet fra meny styringen -->
-  </section>
-  <section id="footer-content" class="footer-content">
-    <footer class="footer mt-auto">
-      <div class="container">
-        <span class="text-muted">&copy; Arne-Thomas | DAT101 | 2025</span>
-      </div>
-    </footer>
-  </section>
-
-  <template id="main-menu-template">
-    <nav class="navbar navbar-expand-sm">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#" page-data="home" >DAT101</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#" page-data="home">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" page-data="about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" page-data="movies">My Movies</a>
-            </li>
-          </ul>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DAT101</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./styles/site.css" />
+  </head>
+  <body>
+    <section id="header-content" class="header-content">
+      <main-menu></main-menu>
+    </section>
+    <section id="body-content" class="body-content">
+      <!-- Her kommer alt inneholdet fra meny styringen -->
+    </section>
+    <section id="footer-content" class="footer-content">
+      <footer class="footer mt-auto">
+        <div class="container">
+          <span class="text-muted">&copy; Arne-Thomas | DAT101 | 2025</span>
         </div>
+      </footer>
+    </section>
+
+    <template id="main-menu-template">
+      <nav class="navbar navbar-expand-sm">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" page-data="home">DAT101</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#" page-data="home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" page-data="about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" page-data="movies">My Movies</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </template>
+
+    <!-- Template for home page -->
+    <template id="home-page-template">
+      <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <h1>Velkommen til min DAT101 side!</h1>
+        <p>Bruk menyen over til å navigere.</p>
       </div>
-    </nav>
-  </template>
-  
-  <!-- Template for home page -->
-  <template id="home-page-template">
-    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
-      <h1>Velkommen til min DAT101 side!</h1>
-      <p>Bruk menyen over til å navigere.</p>
-    </div>
-  </template>
+    </template>
 
-  <!-- Template for My Movies page -->
-  <template id="my-movies-page-template">
-    <div class="container shadow-lg p-3 mb-5 bg-white rounded">
-      <h3>My Movies</h3>
-      <table id="movie-table" class="table table-striped">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Director</th>
-            <th>Year</th>
-            <th>Genre</th>
-            <th>Rating</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          <!-- Her må vi lage filmer dynamisk -->
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colspan="5">Total movies: <span id="totalMovies">0</span></td>
-          </tr>
-      </table>
-    </div>
-  </template>
+    <!-- Template for My Movies page -->
+    <template id="my-movies-page-template">
+      <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <h3>My Movies</h3>
+        <table id="movie-table" class="table table-striped">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Director</th>
+              <th>Year</th>
+              <th>Genre</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Her må vi lage filmer dynamisk -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">Total movies: <span id="totalMovies">0</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </template>
 
-  <script src="./scripts/mainMenu.js" type="module" defer></script>
-  <script src="./scripts/home.js" type="module" defer></script>
-  <script src="./scripts/myMovies.js" type="module" defer></script>
-</body>
+    <!-- Template for Add/Edit Movie page -->
+    <template id="add-edit-movie-template">
+      <div class="container shadow-lg p-3 mb-5 bg-white rounded">
+        <h3 id="form-title">Add/Edit Movie</h3>
+        <form id="movie-form">
+          <div class="mb-3">
+            <label for="movie-title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="movie-title" required />
+          </div>
+          <div class="mb-3">
+            <label for="movie-director" class="form-label">Director</label>
+            <input type="text" class="form-control" id="movie-director" required />
+          </div>
+          <div class="mb-3">
+            <label for="movie-year" class="form-label">Year</label>
+            <input type="number" class="form-control" id="movie-year" required />
+          </div>
+          <div class="mb-3">
+            <label for="movie-genre" class="form-label">Genre</label>
+            <div id="movie-genre">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Action" id="genre-action" />
+                <label class="form-check-label" for="genre-action">Action</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Comedy" id="genre-comedy" />
+                <label class="form-check-label" for="genre-comedy">Comedy</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Drama" id="genre-drama" />
+                <label class="form-check-label" for="genre-drama">Drama</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Horror" id="genre-horror" />
+                <label class="form-check-label" for="genre-horror">Horror</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Sci-Fi" id="genre-sci-fi" />
+                <label class="form-check-label" for="genre-sci-fi">Sci-Fi</label>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="movie-rating" class="form-label">Rating</label>
+            <input type="number" class="form-control" id="movie-rating" min="1" max="10" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Save Movie</button>
+        </form>
+      </div>
+    </template>
+
+    <script src="./scripts/mainMenu.js" type="module" defer></script>
+    <script src="./scripts/home.js" type="module" defer></script>
+    <script src="./scripts/myMovies.js" type="module" defer></script>
+  </body>
 </html>

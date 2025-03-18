@@ -42,7 +42,30 @@ class TPosition extends TPoint {
     const dy = this.y - aPoint.y;
     return Math.hypot(dx, dy);
   }
+
+  // Calculate the direction from this point to another point
+  calculateDirectionTo(aTargetPoint) {
+    const dx = aTargetPoint.x - this.x;
+    const dy = aTargetPoint.y - this.y;
+    const magnitude = Math.hypot(dx, dy);
+    this.x = dx / magnitude;
+    this.y = dy / magnitude;
+    return this;
+  }
+
+  // Calculate the movement based on a direction and speed
+  calculateMovement(aDirectionVector, aSpeed) {
+    this.x = aDirectionVector.x * aSpeed;
+    this.y = aDirectionVector.y * aSpeed;
+    const speedLimit = Math.hypot(this.x, this.y);
+    if (speedLimit > aSpeed) {
+      this.x *= aSpeed / speedLimit;
+      this.y *= aSpeed / speedLimit;
+    }
+    return this;
+  }
 } // End of TPosition class
+
 
 /* Example usages of the TPosition class */
 const pos1 = new TPosition(10, 20);
@@ -51,6 +74,21 @@ const point = new TPoint(50, 100);
 const distance = pos1.distanceToPoint(point);
 /* Clone the position object with the same x and y values */
 const pos2 = pos1.clone(); 
+/* change the x and y values of the cloned object */
+pos2.x = 100;
+pos2.y = 200;
+/* Calculate the direction from the position to a point */
+const direction = pos1.calculateDirectionTo(point);
+/* 
+  Calculate the movement based on a direction and speed.
+  With the given speed, the x and y portion of the movement is calculated,
+  so that the travel distance is equal to the speed.
+  If the speed is greater than the distance between the position and the point,
+  the x and y portion of the movement is equal to the distance between the position and the point.
+*/
+const speed = 10;
+const movement = pos1.calculateMovement(speed);
+
 
 
 const EShapeType = { Rectangle: 0, Circle: 1, Oval: 2 };
@@ -179,11 +217,23 @@ class TRectangle extends TShape {
   }
 
   isCircleInside(aCircle) {
-    //Check if a circle is inside this rectangle
-    const dx = this.center.x - aCircle.center.x;
-    const dy = this.center.y - aCircle.center.y;
-    const distance = Math.hypot(dx, dy);
-    return distance < this.radius + aCircle.radius;
+    // Check if a circle is inside this rectangle
+    const dx = Math.abs(aCircle.center.x - this.center.x);
+    const dy = Math.abs(aCircle.center.y - this.center.y);
+  
+    // Check if the circle is completely outside the rectangle
+    if (dx > (this.width / 2 + aCircle.radius) || dy > (this.height / 2 + aCircle.radius)) {
+      return false;
+    }
+  
+    // Check if the circle is completely inside the rectangle
+    if (dx <= (this.width / 2) && dy <= (this.height / 2)) {
+      return true;
+    }
+  
+    // Check if the circle is intersecting the rectangle's corner
+    const cornerDistanceSq = Math.pow(dx - this.width / 2, 2) + Math.pow(dy - this.height / 2, 2);
+    return cornerDistanceSq <= Math.pow(aCircle.radius, 2);
   }
 
   isRectInside(aRect) {
