@@ -59,7 +59,10 @@
     <!-- Template for My Movies page -->
     <template id="my-movies-page-template">
       <div class="container shadow-lg p-3 mb-5 bg-white rounded">
-        <h3>My Movies</h3>
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="mb-3">My Movies</h3>
+          <button class="btn btn-primary" id="add-movie-button">Add Movie</button>
+        </div>
         <table id="movie-table" class="table table-striped">
           <thead>
             <tr>
@@ -84,7 +87,7 @@
 
     <!-- Template for Add/Edit Movie page -->
     <template id="add-edit-movie-template">
-      <div class="container shadow-sm p-3 mb-5 bg-white rounded" style="max-width: 550px;">
+      <div class="container shadow-sm p-3 mb-5 bg-white rounded" style="max-width: 550px">
         <h3 id="form-title">Add/Edit Movie</h3>
         <form id="movie-form">
           <div class="mb-3">
@@ -93,7 +96,7 @@
           </div>
           <div class="mb-3">
             <!-- <label for="movie-director" class="form-label">Director</label> -->
-            <input type="text" class="form-control" id="movie-director" placeholder="Director here!" required/>
+            <input type="text" class="form-control" id="movie-director" placeholder="Director here!" required />
           </div>
           <div class="mb-3 d-flex align-items-center">
             <input type="number" class="form-control me-2" id="movie-year" placeholder="Movie Year here!" required />
@@ -109,32 +112,33 @@
               <option value="9">9</option>
               <option value="10">10</option>
             </select>
-            <img src="./media/rating-star.png" alt="Genre" style="width: 22px;" />
-          </div>          <div class="mb-3">
+            <img src="./media/rating-star.png" alt="Genre" style="width: 22px" />
+          </div>
+          <div class="mb-3">
             <div id="movie-genre">
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="Action" id="genre-action" />
+                <input class="form-check-input" type="checkbox" value="Action" id="genre-action" name="movie-genre" />
                 <label class="form-check-label" for="genre-action">Action</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="Comedy" id="genre-comedy" />
+                <input class="form-check-input" type="checkbox" value="Comedy" id="genre-comedy" name="movie-genre" />
                 <label class="form-check-label" for="genre-comedy">Comedy</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="Drama" id="genre-drama" />
+                <input class="form-check-input" type="checkbox" value="Drama" id="genre-drama" name="movie-genre" />
                 <label class="form-check-label" for="genre-drama">Drama</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="Horror" id="genre-horror" />
+                <input class="form-check-input" type="checkbox" value="Horror" id="genre-horror" name="movie-genre" />
                 <label class="form-check-label" for="genre-horror">Horror</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" value="Sci-Fi" id="genre-sci-fi" />
+                <input class="form-check-input" type="checkbox" value="Sci-Fi" id="genre-sci-fi" name="movie-genre" />
                 <label class="form-check-label" for="genre-sci-fi">Sci-Fi</label>
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Save Movie</button>
+          <button type="submit" class="btn btn-primary" id="add-save-button">Save Movie</button>
         </form>
       </div>
     </template>

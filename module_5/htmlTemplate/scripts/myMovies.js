@@ -75,16 +75,39 @@ customElements.define("movies-page", TMyMovies);
 
 
 class TMovieForm extends TBootstrapComponent {
-
+  #titleElement;
+  #directorElement;
+  #yearElement;
+  #genreElements;
+  #ratingElement;
   constructor(){
     super();
     this.attachShadow({mode: "open"});
+  }
+
+  #onSubmitForm = (aEvent) => {
+    aEvent.preventDefault();
+    const movie = new TMovie();
+    movie.title = this.#titleElement.value;
+    movie.director = this.#directorElement.value;
+    movie.year = this.#yearElement.value;
+    movie.rating = this.#ratingElement.value;
+    for(let i = 0; i < this.#genreElements.length; i++){
+    }
+    console.log(movie);
   }
 
   render(){
     const template = document.getElementById("add-edit-movie-template");
     const content = template.content.cloneNode(true);
     this.shadowRoot.appendChild(content);
+    this.#titleElement = this.shadowRoot.getElementById("movie-title");
+    this.#directorElement = this.shadowRoot.getElementById("movie-director");
+    this.#yearElement = this.shadowRoot.getElementById("movie-year");
+    this.#genreElements = this.shadowRoot.getElementsByName("movie-genre"); //Liste med sjekkbokser
+    this.#ratingElement = this.shadowRoot.getElementById("movie-rating");
+    const form = this.shadowRoot.getElementById("movie-form");
+    form.addEventListener("submit", this.#onSubmitForm);
   }
 }
 
