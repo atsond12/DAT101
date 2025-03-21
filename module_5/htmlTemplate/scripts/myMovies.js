@@ -87,6 +87,10 @@ export class TMyMovies extends TBootstrapComponent {
     bodyContent.innerHTML = "<add-edit-movie-page></add-edit-movie-page>";
   };
 
+  #onSortMovies = (aEvent) => {
+    console.log(`sorterer på ${aEvent.target.textContent}`);
+  }
+
   render(){
     const template = document.getElementById("my-movies-page-template");
     const content = template.content.cloneNode(true);
@@ -101,9 +105,17 @@ export class TMyMovies extends TBootstrapComponent {
     this.#loadMovies();
     const addMovieButton = this.shadowRoot.getElementById("add-movie-button");
     addMovieButton.addEventListener("click", this.#onAddMovie);
+    let columnHeader = this.shadowRoot.getElementById("movie-col-title");
+    columnHeader.addEventListener("click", this.#onSortMovies);
+    columnHeader = this.shadowRoot.getElementById("movie-col-director");
+    columnHeader.addEventListener("click", this.#onSortMovies);
+    columnHeader = this.shadowRoot.getElementById("movie-col-year");
+    columnHeader.addEventListener("click", this.#onSortMovies);
+    columnHeader = this.shadowRoot.getElementById("movie-col-genre");
+    columnHeader.addEventListener("click", this.#onSortMovies);
+    columnHeader = this.shadowRoot.getElementById("movie-col-rating");
+    columnHeader.addEventListener("click", this.#onSortMovies);
     
-
-
   }
 }// End of class TMyMovies
 
