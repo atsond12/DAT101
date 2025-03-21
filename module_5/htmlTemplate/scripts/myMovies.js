@@ -14,6 +14,7 @@ export class TMovie{
 
 let newMovie = null;
 let editMovie = null;
+let movieSortColumnName = "Title";
 
 export class TMyMovies extends TBootstrapComponent {
   #movies;
@@ -87,8 +88,31 @@ export class TMyMovies extends TBootstrapComponent {
     bodyContent.innerHTML = "<add-edit-movie-page></add-edit-movie-page>";
   };
 
+  #sortMovieList(aMovie1, aMovie2){
+    if(movieSortColumnName === "Title"){
+      return aMovie1.title.localeCompare(aMovie2.title);
+    }
+    if(movieSortColumnName === "Director"){
+      return aMovie1.director.localeCompare(aMovie2.director);
+    }
+    if(movieSortColumnName === "Year"){
+      return aMovie1.year - aMovie2.year;
+    }
+    if(movieSortColumnName === "Rating"){
+      return aMovie1.rating - aMovie2.rating;
+    }
+    if(movieSortColumnName === "Genre"){
+      const genre1 = aMovie1.genre.join(", ");
+      const genre2 = aMovie2.genre.join(", ");
+      return genre1.localeCompare(genre2);
+    }
+  }
+
   #onSortMovies = (aEvent) => {
     console.log(`sorterer på ${aEvent.target.textContent}`);
+    movieSortColumnName = aEvent.target.textContent;
+    movieList.sort(this.#sortMovieList);
+    this.#loadMovies();
   }
 
   render(){
