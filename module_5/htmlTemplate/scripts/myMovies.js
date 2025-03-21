@@ -154,6 +154,13 @@ class TMovieForm extends TBootstrapComponent {
     bodyContent.innerHTML = "<movies-page></movies-page>";
   }
 
+  #onCancel = () => {
+    editMovie = null;
+    newMovie = null;
+    const bodyContent = document.getElementById("body-content");
+    bodyContent.innerHTML = "<movies-page></movies-page>";
+  }
+
   render(){
     const template = document.getElementById("add-edit-movie-template");
     const content = template.content.cloneNode(true);
@@ -165,6 +172,7 @@ class TMovieForm extends TBootstrapComponent {
     this.#ratingElement = this.shadowRoot.getElementById("movie-rating");
     const form = this.shadowRoot.getElementById("movie-form");
     form.addEventListener("submit", this.#onSubmitForm);
+    this.shadowRoot.getElementById("cancel-button").addEventListener("click", this.#onCancel);
     if(editMovie){
       //Her må vi fylle ut feltene med informasjon fra editMovie
       console.log(editMovie);
@@ -187,5 +195,6 @@ class TMovieForm extends TBootstrapComponent {
 
 customElements.define("add-edit-movie-page", TMovieForm);
 //Kun for å midlertidig vise add-edit-movie-page
+
 const bodyContent = document.getElementById("body-content");
 bodyContent.innerHTML = "<movies-page></movies-page>";

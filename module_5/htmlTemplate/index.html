@@ -13,6 +13,7 @@
     <section id="header-content" class="header-content mb-3">
       <main-menu></main-menu>
     </section>
+
     <section id="body-content" class="body-content">
       <!-- Her kommer alt inneholdet fra meny styringen -->
     </section>
@@ -99,8 +100,8 @@
             <input type="text" class="form-control" id="movie-director" placeholder="Director here!" required />
           </div>
           <div class="mb-3 d-flex align-items-center">
-            <input type="number" class="form-control me-2" id="movie-year" placeholder="Movie Year here!" required />
-            <select id="movie-rating" class="form-select me-2" required>
+            <input type="number" class="form-control me-2" id="movie-year" style="max-width: 5em;" placeholder="Year" required />
+            <select id="movie-rating" class="form-select me-2" style="max-width: 4em;" required>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -138,7 +139,10 @@
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary" id="add-save-button">Save Movie</button>
+          <div class="mb-3 d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary" id="add-save-button">Save Movie</button>
+            <button type="button" class="btn btn-danger" id="cancel-button">Cancel</button>  
+          </div>
         </form>
       </div>
     </template>
