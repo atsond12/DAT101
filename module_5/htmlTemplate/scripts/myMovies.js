@@ -15,6 +15,7 @@ export class TMovie{
 let newMovie = null;
 let editMovie = null;
 let movieSortColumnName = "Title";
+let oldSortColumnName = "";
 
 export class TMyMovies extends TBootstrapComponent {
   #movies;
@@ -22,7 +23,14 @@ export class TMyMovies extends TBootstrapComponent {
   constructor(){
     super();
     //Hvis vi ikke har noen filmer, så lager vi en tom liste
-    this.#movies = movieList || [];
+    //Hvis vi har filmer i localStorage, så henter vi disse
+    let moviesFromJson = null;
+    let localStorageMovies = localStorage.getItem("movieList");
+    if(localStorageMovies !== null){
+      moviesFromJson = JSON.parse(localStorageMovies);
+    }
+    
+    this.#movies = moviesFromJson || movieList || [];
     this.#htmlTable = null;
     this.attachShadow({mode: "open"});
   }
@@ -111,7 +119,13 @@ export class TMyMovies extends TBootstrapComponent {
   #onSortMovies = (aEvent) => {
     console.log(`sorterer på ${aEvent.target.textContent}`);
     movieSortColumnName = aEvent.target.textContent;
-    movieList.sort(this.#sortMovieList);
+    if(oldSortColumnName === movieSortColumnName){
+      this.#movies.reverse();      
+      oldSortColumnName = "";
+    }else{
+      this.#movies.sort(this.#sortMovieList);
+      oldSortColumnName = movieSortColumnName;
+    }
     this.#loadMovies();
   }
 
@@ -139,7 +153,8 @@ export class TMyMovies extends TBootstrapComponent {
     columnHeader.addEventListener("click", this.#onSortMovies);
     columnHeader = this.shadowRoot.getElementById("movie-col-rating");
     columnHeader.addEventListener("click", this.#onSortMovies);
-    
+    const jsonMovies = JSON.stringify(this.#movies);
+    localStorage.setItem("movieList", jsonMovies);
   }
 }// End of class TMyMovies
 
