@@ -97,6 +97,7 @@ export class TMyMovies extends TBootstrapComponent {
       this.#movies.push(newMovie);
       newMovie = null;
     }
+
     this.#loadMovies();
     const addMovieButton = this.shadowRoot.getElementById("add-movie-button");
     addMovieButton.addEventListener("click", this.#onAddMovie);
@@ -122,11 +123,21 @@ class TMovieForm extends TBootstrapComponent {
 
   #onSubmitForm = (aEvent) => {
     aEvent.preventDefault();
-    const movie = new TMovie();
+    let movie = null;
+    let editMode = false;
+    if(editMovie !== null){
+      movie = editMovie;
+      editMovie = null;
+      editMode = true;
+    }else{
+      movie = new TMovie();
+    }
+
     movie.title = this.#titleElement.value;
     movie.director = this.#directorElement.value;
     movie.year = this.#yearElement.value;
     movie.rating = this.#ratingElement.value;
+    movie.genre = [];
     for(let i = 0; i < this.#genreElements.length; i++){
       //Oppgaven nå er nå å legge til kun de valgte sjangerne!
       const genreElement = this.#genreElements[i];
@@ -135,7 +146,10 @@ class TMovieForm extends TBootstrapComponent {
       }
     }
     console.log(movie);
-    newMovie = movie;
+    if(!editMode){
+      newMovie = movie;
+    }
+    
     const bodyContent = document.getElementById("body-content");
     bodyContent.innerHTML = "<movies-page></movies-page>";
   }
@@ -153,9 +167,19 @@ class TMovieForm extends TBootstrapComponent {
     form.addEventListener("submit", this.#onSubmitForm);
     if(editMovie){
       //Her må vi fylle ut feltene med informasjon fra editMovie
-
-
-      editMovie = null;
+      console.log(editMovie);
+      this.#titleElement.value = editMovie.title;
+      this.#directorElement.value = editMovie.director;
+      this.#yearElement.value = editMovie.year;
+      this.#ratingElement.value = Math.floor(parseFloat(editMovie.rating));
+      for(let i = 0; i < this.#genreElements.length; i++){
+        const genreElement = this.#genreElements[i];
+        for(let j=0; j < editMovie.genre.length; j++){
+          if(genreElement.value === editMovie.genre[j]){
+            genreElement.checked = true;
+          }
+        }
+      }
     }
 
   }
