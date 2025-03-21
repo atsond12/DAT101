@@ -245,7 +245,4 @@ class TMovieForm extends TBootstrapComponent {
 }
 
 customElements.define("add-edit-movie-page", TMovieForm);
-//Kun for å midlertidig vise add-edit-movie-page
 
-const bodyContent = document.getElementById("body-content");
-bodyContent.innerHTML = "<movies-page></movies-page>";
