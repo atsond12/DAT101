@@ -69,11 +69,11 @@
         <table id="movie-table" class="table table-striped table-hover">
           <thead>
             <tr>
-              <th id="movie-col-title"    style="cursor: pointer;">Title</th>
-              <th id="movie-col-director" style="cursor: pointer;">Director</th>
-              <th id="movie-col-year"     style="cursor: pointer;">Year</th>
-              <th id="movie-col-genre"    style="cursor: pointer;">Genre</th>
-              <th id="movie-col-rating"   style="cursor: pointer;">Rating</th>
+              <th id="movie-col-title" style="cursor: pointer">Title</th>
+              <th id="movie-col-director" style="cursor: pointer">Director</th>
+              <th id="movie-col-year" style="cursor: pointer">Year</th>
+              <th id="movie-col-genre" style="cursor: pointer">Genre</th>
+              <th id="movie-col-rating" style="cursor: pointer">Rating</th>
             </tr>
           </thead>
           <tbody id="table-body">
@@ -102,8 +102,8 @@
             <input type="text" class="form-control" id="movie-director" placeholder="Director here!" required />
           </div>
           <div class="mb-3 d-flex align-items-center">
-            <input type="number" class="form-control me-2" id="movie-year" style="max-width: 5em;" placeholder="Year" required />
-            <select id="movie-rating" class="form-select me-2" style="max-width: 4em;" required>
+            <input type="number" class="form-control me-2" id="movie-year" style="max-width: 5em" placeholder="Year" required />
+            <select id="movie-rating" class="form-select me-2" style="max-width: 4em" required>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -143,33 +143,49 @@
           </div>
           <div class="mb-3 d-flex justify-content-between">
             <button type="submit" class="btn btn-primary" id="add-save-button">Save Movie</button>
-            <button type="button" class="btn btn-danger" id="cancel-button">Cancel</button>  
+            <button type="button" class="btn btn-danger" id="cancel-button">Cancel</button>
           </div>
         </form>
       </div>
     </template>
 
     <!-- Picture carousel -->
-     <template id="picture-carousel-page-template">
+    <template id="picture-carousel-page-template">
       <div class="container shadow-lg p-3 mb-5 bg-white rounded">
         <h3>Picture Carousel</h3>
         <div id="picture-carousel" class="carousel slide" data-bs-ride="carousel">
-          <!-- her blir alle bildene satt inn -->
+          <div class="carousel-inner" id="picture-carousel-inner">
+            <!-- her blir alle bildene satt inn -->
+          </div>
+          <!-- navigasjons knapper -->
+          <button class="carousel-control-prev" id="prev-button" data-bs-target="#picture-carousel">
+            <span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" id="next-button">
+            <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+          <!-- Indikatorer -->
+          <!-- <div id="carousel-indicators" class="carousel-indicators"> -->
+            <!-- her blir alle indikatorene satt inn -->
+          <!-- </div> -->
         </div>
-        <!-- navigasjons knapper -->
-         <div class="d-flex justify-content-between">
-          <button class="btn btn-primary" id="prev-button" data-bs-target="#picture-carousel" >Previous</button>
-          <button class="btn btn-primary" id="next-button">Next</button>
-         </div>
-         <!-- Indikatorer -->
-         <div id="carousel-indicators" class="carousel-indicators">
-          <!-- her blir alle indikatorene satt inn -->
-         </div>  
       </div>
-     </template>
+    </template>
+
+    <!-- Picture carousel image -->
+     <template id="picture-carousel-item-template">
+      <!-- Husk å legge til eller trekke i fra "active" klassen i JavaScript-->
+      <div class="carousel-item">
+        <img src="" class="d-block w-100" alt="" />
+      </div>
+    </template>
+
+
     <script src="./scripts/mainMenu.js" type="module" defer></script>
     <script src="./scripts/home.js" type="module" defer></script>
     <script src="./scripts/myMovies.js" type="module" defer></script>
-    <script src="./scripts/pictureCollection.js" type="module" defer></script> 
+    <script src="./scripts/pictureCollection.js" type="module" defer></script>
   </body>
 </html>

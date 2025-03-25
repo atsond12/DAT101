@@ -16,22 +16,41 @@ const pictureFiles =
 ];
 
 class TPictureCarousel extends TBootstrapComponent{
+  #carousel;
+  #carouselInner;
   constructor(){
     super();
+    this.#carousel = null;
+    this.#carouselInner = null;
     this.attachShadow({mode: "open"});
   }
+
+  #addPicture(aIndex){
+    const content = document.getElementById("picture-carousel-item-template").content;
+    const doc = content.cloneNode(true);
+    const div = doc.querySelector("div");
+    const img = doc.querySelector("img");
+    const picture = pictureFiles[aIndex];
+    img.src = picture.fn;
+    img.alt = picture.caption;
+    if(aIndex === 0){
+      div.classList.add("active");
+    }
+    this.#carouselInner.appendChild(div);
+  }
+
 
   render(){
     const content = document.getElementById("picture-carousel-page-template").content.cloneNode(true);
     this.shadowRoot.appendChild(content);
-    const pictureCarousel = this.shadowRoot.getElementById("picture-carousel");
-    
-    //Tester med ett bilde
-    const picture = document.createElement("img");
-    picture.src = pictureFiles[0].fn;
-    picture.alt = pictureFiles[0].caption;
-    picture.className = "d-block w-100";
-    pictureCarousel.appendChild(picture);
+    const htmlCarousel = this.shadowRoot.getElementById("picture-carousel");
+    this.#carousel = new bootstrap.Carousel(htmlCarousel);
+    this.#carouselInner = this.shadowRoot.getElementById("picture-carousel-inner");
+
+    for(let i = 0; i < pictureFiles.length; i++){
+      this.#addPicture(i);
+    }
+
   }
 }
 
