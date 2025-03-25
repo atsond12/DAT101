@@ -27,6 +27,16 @@ class TPictureCarousel extends TBootstrapComponent{
     this.attachShadow({mode: "open"});
   }
 
+  #addCaption(aDiv, aIndex){
+    const content = document.getElementById("picture-carousel-item-caption-template").content;
+    const doc = content.cloneNode(true);
+    const h5 = doc.querySelector("h5");
+    const p = doc.querySelector("p");
+    h5.textContent = "Slide " + (aIndex + 1);
+    p.textContent = pictureFiles[aIndex].caption;
+    aDiv.appendChild(doc);
+  }
+
   #addPicture(aIndex){
     const content = document.getElementById("picture-carousel-item-template").content;
     const doc = content.cloneNode(true);
@@ -38,6 +48,9 @@ class TPictureCarousel extends TBootstrapComponent{
     if(aIndex === 0){
       div.classList.add("active");
     }
+
+    this.#addCaption(div, aIndex);
+
     this.#carouselInner.appendChild(div);
   }
 
@@ -45,7 +58,14 @@ class TPictureCarousel extends TBootstrapComponent{
     const content = document.getElementById("picture-carousel-indicator-template").content;
     const doc = content.cloneNode(true);
     const button = doc.querySelector("button");
-    button.dataset.slideTo = aIndex;
+    button.setAttribute("data-bs-slide-to",aIndex);
+    button.setAttribute("aria-label","Slide " + (aIndex + 1));
+    if(aIndex === 0){
+      button.setAttribute("aria-current","true");
+      button.classList.add("active");
+    }
+    button.addEventListener("click", () => this.#carousel.to(aIndex));
+    this.#carouselIndicators.appendChild(button);
   }
 
   render(){
