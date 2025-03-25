@@ -5,6 +5,8 @@
 //--------------------------------------------------------------------------------------------------------------------
 import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
+import { THero } from "./hero.mjs";
+import { TBall } from "./ball.mjs";
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
@@ -36,6 +38,8 @@ let hndUpdateGame = null;
 export const GameProps = {
   bounds : new lib2D.TRectangle({x: 26, y: 110}, SpriteInfoList.Background.width - 52, SpriteInfoList.Background.height - 195),
   background: new libSprite.TSprite(spcvs, SpriteInfoList.Background),
+  hero: null,
+  ball: null,
 }
   
 
@@ -46,6 +50,8 @@ export const GameProps = {
 function newGame() {
   // Create dynamic game properties here:
   
+  GameProps.hero = new THero(spcvs);
+  GameProps.ball = new TBall(spcvs);
   if(hndUpdateGame !== null) {
     clearInterval(hndUpdateGame);
   }
@@ -67,11 +73,14 @@ function drawGame() {
   spcvs.clearCanvas();
   GameProps.background.draw(0, 0);
   drawBounds();
+  GameProps.hero.draw();
+  GameProps.ball.draw();
   requestAnimationFrame(drawGame);
 }
 
 function updateGame() {
   // Update game properties here:
+  GameProps.ball.update();
 }
 
 //--------------------------------------------------------------------------------------------------------------------
