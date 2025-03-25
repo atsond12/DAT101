@@ -27,7 +27,6 @@ const point1 = new TPoint(10, 20);
 point1.x = 50;
 point1.y = 100;
 
-
 class TPosition extends TPoint {
   constructor(aX, aY) {
     super(aX, aY);
@@ -41,6 +40,12 @@ class TPosition extends TPoint {
     const dx = this.x - aPoint.x;
     const dy = this.y - aPoint.y;
     return Math.hypot(dx, dy);
+  }
+} // End of TPosition class
+
+class TMotionVector extends TPosition {
+  constructor(aX, aY) {
+    super(aX, aY);
   }
 
   // Calculate the direction from this point to another point
@@ -64,16 +69,15 @@ class TPosition extends TPoint {
     }
     return this;
   }
-} // End of TPosition class
-
+}
 
 /* Example usages of the TPosition class */
-const pos1 = new TPosition(10, 20);
+const pos1 = new TMotionVector(10, 20);
 const point = new TPoint(50, 100);
 /* Calculate the distance between a position and a point */
 const distance = pos1.distanceToPoint(point);
 /* Clone the position object with the same x and y values */
-const pos2 = pos1.clone(); 
+const pos2 = pos1.clone();
 /* change the x and y values of the cloned object */
 pos2.x = 100;
 pos2.y = 200;
@@ -89,14 +93,12 @@ const direction = pos1.calculateDirectionTo(point);
 const speed = 10;
 const movement = pos1.calculateMovement(speed);
 
-
-
 const EShapeType = { Rectangle: 0, Circle: 1, Oval: 2 };
-class TShape extends TPosition{
+class TShape extends TPosition {
   #center;
   #type;
   #scale;
-  constructor({x, y}, aWidth, aHeight, aType) {
+  constructor({ x, y }, aWidth, aHeight, aType) {
     super(x, y);
     //Do not create an instance of this abstract class
     if (this.constructor === TShape) throw new Error("Cannot create an instance of an abstract class");
@@ -108,11 +110,10 @@ class TShape extends TPosition{
     this.pivot = null; //The pivot point for rotation, if null, the center of the shape is used
   }
 
-  get type() { 
-    return this.#type; 
+  get type() {
+    return this.#type;
   }
 
-  
   get center() {
     //Update the center position;
     this.#center.x = this.x + this.width / 2;
@@ -205,7 +206,7 @@ class TRectangle extends TShape {
     this.height = aHeight;
   }
 
-  get path2D(){
+  get path2D() {
     return new Path2D(`M ${this.x} ${this.y} h ${this.width} v ${this.height} h ${-this.width} Z`);
   }
 
@@ -213,24 +214,24 @@ class TRectangle extends TShape {
     //Check if a oval with radius a and b is inside this rectangle
     const dx = this.center.x - aOval.center.x;
     const dy = this.center.y - aOval.center.y;
-    return dx * dx / aOval.radius.a * aOval.radius.a + dy * dy / aOval.radius.b * aOval.radius.b < 1;
+    return ((dx * dx) / aOval.radius.a) * aOval.radius.a + ((dy * dy) / aOval.radius.b) * aOval.radius.b < 1;
   }
 
   isCircleInside(aCircle) {
     // Check if a circle is inside this rectangle
     const dx = Math.abs(aCircle.center.x - this.center.x);
     const dy = Math.abs(aCircle.center.y - this.center.y);
-  
+
     // Check if the circle is completely outside the rectangle
-    if (dx > (this.width / 2 + aCircle.radius) || dy > (this.height / 2 + aCircle.radius)) {
+    if (dx > this.width / 2 + aCircle.radius || dy > this.height / 2 + aCircle.radius) {
       return false;
     }
-  
+
     // Check if the circle is completely inside the rectangle
-    if (dx <= (this.width / 2) && dy <= (this.height / 2)) {
+    if (dx <= this.width / 2 && dy <= this.height / 2) {
       return true;
     }
-  
+
     // Check if the circle is intersecting the rectangle's corner
     const cornerDistanceSq = Math.pow(dx - this.width / 2, 2) + Math.pow(dy - this.height / 2, 2);
     return cornerDistanceSq <= Math.pow(aCircle.radius, 2);
@@ -261,7 +262,7 @@ class TCircle extends TShape {
     this.radius = Math.max(aWidth, aHeight) / 2; //The radius is the maximum of the width and height
   }
 
-  get path2D(){
+  get path2D() {
     return new Path2D(`M ${this.center.x} ${this.center.y} m ${-this.radius} 0 a ${this.radius} ${this.radius} 0 1 0 ${this.radius * 2} 0 a ${this.radius} ${this.radius} 0 1 0 ${-this.radius * 2} 0`);
   }
 
@@ -300,13 +301,12 @@ class TCircle extends TShape {
 class TOval extends TShape {
   constructor(aPosition, aWidth, aHeight) {
     super(aPosition, aWidth, aHeight, EShapeType.Oval);
-    this.radius = {a: aWidth / 2, b: aHeight / 2};
+    this.radius = { a: aWidth / 2, b: aHeight / 2 };
   }
 
-  get path2D(){
+  get path2D() {
     return new Path2D(`M ${this.center.x} ${this.center.y} m ${-this.radius.a} 0 a ${this.radius.a} ${this.radius.b} 0 1 0 ${this.radius.a * 2} 0 a ${this.radius.a} ${this.radius.b} 0 1 0 ${-this.radius.a * 2} 0`);
   }
-  
 
   isOvalInside(aOval) {
     //Check if this oval is inside another oval with radius a and b
@@ -328,10 +328,8 @@ class TOval extends TShape {
     //Check if a rectangle is inside this oval
     const dx = this.center.x - Math.max(aRect.left, Math.min(this.center.x, aRect.right));
     const dy = this.center.y - Math.max(aRect.top, Math.min(this.center.y, aRect.bottom));
-    return dx * dx / this.radius.a * this.radius.a + dy * dy / this.radius.b * this.radius.b < 1;
+    return ((dx * dx) / this.radius.a) * this.radius.a + ((dy * dy) / this.radius.b) * this.radius.b < 1;
   }
-
-
 }
 
 const RAD = Math.PI / 180;
@@ -360,7 +358,7 @@ export default {
    * @property {number} Rectangle - The rectangle shape.
    * @property {number} Circle - The circle shape.
    * @property {number} Oval - The oval shape.
-   */ 
+   */
   EShapeType,
 
   /**
@@ -380,6 +378,16 @@ export default {
    * @method distanceToPoint - A method to calculate the distance to another point.
    */
   TPosition,
+  /**
+   * @class TMotionVector
+   * @description A class representation for a motion vector in 2D.
+   * @param {number} aX - The x-coordinate.
+   * @param {number} aY - The y-coordinate.
+   * @extends TPosition
+   * @method calculateDirectionTo - A method to calculate the direction to another point.
+   * @method calculateMovement - A method to calculate the movement based on a direction and speed.
+   */
+  TMotionVector,
   /**
    * @class TRectangle
    * @extends TShape

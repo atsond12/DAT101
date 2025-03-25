@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="no" style="display: table; margin: auto;">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Brick Breaker</title>
+    <style>
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+        .note {
+            font-size: 0.8em;
+            color: gray;
+        }
+    </style>
+    <script src="./BrickBreaker.mjs" type="module" defer></script>
+</head>
+<body>
+<canvas id="cvs" height="100px" width="100px" style="background-color: antiquewhite; border: 7px  black solid"></canvas>
+<p class="note">
+    Right-click is disabled! <br />
+    On windows press F12 to debug (Chrome and Firefox) <br />
+    On Mac press Cmd + Option + I (Chrome and Firefox) <br />
+    On Mac press Cmd + Option + J (Safari) <br />
+</p>
+<script>
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+</script>
+</body>
+</html>
