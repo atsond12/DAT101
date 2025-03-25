@@ -68,6 +68,13 @@ class TPictureCarousel extends TBootstrapComponent{
     this.#carouselIndicators.appendChild(button);
   }
 
+  #onSlideTypeChange = (aEvent) => {
+    const btn = aEvent.target;
+    const pictureCarousel = this.shadowRoot.getElementById("picture-carousel");
+    pictureCarousel.classList.remove("carousel-fade");
+    pictureCarousel.classList.add("carousel-" + btn.value);
+  }
+
   render(){
     const content = document.getElementById("picture-carousel-page-template").content.cloneNode(true);
     this.shadowRoot.appendChild(content);
@@ -85,6 +92,13 @@ class TPictureCarousel extends TBootstrapComponent{
     button.addEventListener("click", () => this.#carousel.prev());
     button = this.shadowRoot.getElementById("next-button");
     button.addEventListener("click", () => this.#carousel.next());
+
+    const btnSlideTypes = this.shadowRoot.querySelectorAll("input[name='btnSlideType']");
+    for(let i = 0; i < btnSlideTypes.length; i++){
+      const btn = btnSlideTypes[i];
+      btn.addEventListener("change", this.#onSlideTypeChange);
+    }
+    
 
   }
 }

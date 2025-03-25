@@ -152,7 +152,34 @@
     <!-- Picture carousel -->
     <template id="picture-carousel-page-template">
       <div class="container shadow-lg p-3 mb-5 bg-white rounded">
-        <h3>Picture Carousel</h3>
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="mb-3">Picture Collection</h3>
+          <div class="btn-group" role="group" aria-label="select Slide Type">
+            <input 
+              type="radio" 
+              class="btn-check" 
+              name="btnSlideType" 
+              id="btnSlide" 
+              autocomplete="off" 
+              value="slide"
+              checked />
+              <label
+                class="btn btn-outline-primary"
+                for="btnSlide">Slide
+              </label>
+              <input 
+              type="radio" 
+              class="btn-check" 
+              name="btnSlideType" 
+              id="btnFade" 
+              autocomplete="off" 
+              value="fade"/>
+              <label
+                class="btn btn-outline-primary"
+                for="btnFade">fade
+              </label>
+          </div>
+        </div>
         <div id="picture-carousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner" id="picture-carousel-inner">
             <!-- her blir alle bildene satt inn -->
