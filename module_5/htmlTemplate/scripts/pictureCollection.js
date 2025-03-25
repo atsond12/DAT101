@@ -18,10 +18,12 @@ const pictureFiles =
 class TPictureCarousel extends TBootstrapComponent{
   #carousel;
   #carouselInner;
+  #carouselIndicators;
   constructor(){
     super();
     this.#carousel = null;
     this.#carouselInner = null;
+    this.#carouselIndicators = null;
     this.attachShadow({mode: "open"});
   }
 
@@ -39,6 +41,12 @@ class TPictureCarousel extends TBootstrapComponent{
     this.#carouselInner.appendChild(div);
   }
 
+  #addIndicator(aIndex){
+    const content = document.getElementById("picture-carousel-indicator-template").content;
+    const doc = content.cloneNode(true);
+    const button = doc.querySelector("button");
+    button.dataset.slideTo = aIndex;
+  }
 
   render(){
     const content = document.getElementById("picture-carousel-page-template").content.cloneNode(true);
@@ -46,10 +54,17 @@ class TPictureCarousel extends TBootstrapComponent{
     const htmlCarousel = this.shadowRoot.getElementById("picture-carousel");
     this.#carousel = new bootstrap.Carousel(htmlCarousel);
     this.#carouselInner = this.shadowRoot.getElementById("picture-carousel-inner");
+    this.#carouselIndicators = this.shadowRoot.getElementById("carousel-indicators");
 
     for(let i = 0; i < pictureFiles.length; i++){
       this.#addPicture(i);
+      this.#addIndicator(i);
     }
+
+    let button = this.shadowRoot.getElementById("prev-button");
+    button.addEventListener("click", () => this.#carousel.prev());
+    button = this.shadowRoot.getElementById("next-button");
+    button.addEventListener("click", () => this.#carousel.next());
 
   }
 }

@@ -167,9 +167,9 @@
             <span class="visually-hidden">Next</span>
           </button>
           <!-- Indikatorer -->
-          <!-- <div id="carousel-indicators" class="carousel-indicators"> -->
+          <div id="carousel-indicators" class="carousel-indicators">
             <!-- her blir alle indikatorene satt inn -->
-          <!-- </div> -->
+          </div>
         </div>
       </div>
     </template>
@@ -181,6 +181,18 @@
         <img src="" class="d-block w-100" alt="" />
       </div>
     </template>
+
+    <!-- Picture carousel indicator -->
+     <template id="picture-carousel-indicator-template">
+      <button 
+        type="button" 
+        data-bs-target="#picture-carousel"
+        data-bs-slide-to="0"
+        aria-label="Slide 1"
+        aria-current="true"
+        class="active">
+      </button>
+     </template>
 
 
     <script src="./scripts/mainMenu.js" type="module" defer></script>
