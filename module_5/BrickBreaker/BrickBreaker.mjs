@@ -88,8 +88,8 @@ function updateGame() {
 }
 
 function createBricks() {
-  for( let i = 0; i < 1; i++) {// Lager en mursten for å teste først
-    const brick = new TBrick(spcvs);
+  for( let i = 0; i < 7; i++) {// Lager en mursten for å teste først
+    const brick = new TBrick(spcvs, i);
     GameProps.bricks.push(brick);
   }
 }
