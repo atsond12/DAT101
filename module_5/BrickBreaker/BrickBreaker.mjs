@@ -7,6 +7,7 @@ import lib2D from "../../common/libs/lib2d_v2.mjs";
 import libSprite from "../../common/libs/libSprite_v2.mjs";
 import { THero } from "./hero.mjs";
 import { TBall } from "./ball.mjs";
+import { TBrick } from "./brick.mjs";
 
 //--------------------------------------------------------------------------------------------------------------------
 //------ Variables, Constants and Objects
@@ -40,6 +41,7 @@ export const GameProps = {
   background: new libSprite.TSprite(spcvs, SpriteInfoList.Background),
   hero: null,
   ball: null,
+  bricks: [],
 }
   
 
@@ -52,6 +54,7 @@ function newGame() {
   
   GameProps.hero = new THero(spcvs);
   GameProps.ball = new TBall(spcvs);
+  createBricks();
   if(hndUpdateGame !== null) {
     clearInterval(hndUpdateGame);
   }
@@ -74,6 +77,7 @@ function drawGame() {
   GameProps.background.draw(0, 0);
   drawBounds();
   GameProps.hero.draw();
+  drawBricks();
   GameProps.ball.draw();
   requestAnimationFrame(drawGame);
 }
@@ -81,6 +85,20 @@ function drawGame() {
 function updateGame() {
   // Update game properties here:
   GameProps.ball.update();
+}
+
+function createBricks() {
+  for( let i = 0; i < 1; i++) {// Lager en mursten for å teste først
+    const brick = new TBrick(spcvs);
+    GameProps.bricks.push(brick);
+  }
+}
+
+function drawBricks() {
+  for( let i = 0; i < GameProps.bricks.length; i++){
+    const brick = GameProps.bricks[i];
+    brick.draw();
+  }
 }
 
 //--------------------------------------------------------------------------------------------------------------------

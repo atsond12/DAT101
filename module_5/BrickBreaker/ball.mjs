@@ -15,6 +15,6 @@ export class TBall extends libSprite.TSprite {
   }
 
   update() {
-    this.#physics.update(GameProps.bounds, GameProps.hero);
+    this.#physics.update(GameProps.bounds, GameProps.hero, GameProps.bricks);
   }
 }

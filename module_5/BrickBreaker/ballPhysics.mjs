@@ -68,52 +68,12 @@ class TBallPhysics {
   }
 
   #collidedWithBrick(aBrick){
-    if(aBrick == null) return false;
-    const brickShape = aBrick.shape;
-    const spriteShape = this.#sprite.shape;
-    if(spriteShape.right < brickShape.left) return false; // No collision if the sprite is to the left of the brick
-    if(spriteShape.left > brickShape.right) return false; // No collision if the sprite is to the right of the brick
-    if(spriteShape.bottom < brickShape.top) return false; // No collision if the sprite is above the brick
-    if(spriteShape.top > brickShape.bottom) return false; // No collision if the sprite is below the brick
-    // Check for collision
-    // check botom collition
-    if(spriteShape.top < brickShape.bottom){
-      this.#sprite.y = brickShape.bottom; // Move the sprite to the bottom of the brick
-      this.#directionVector.y *= -1; // Reverse the y direction
-    }
-    // check top collition
-    if(spriteShape.bottom > brickShape.top){
-      this.#sprite.y = brickShape.top - spriteShape.height; // Move the sprite to the top of the brick
-      this.#directionVector.y *= -1; // Reverse the y direction
-    }
-    // check left collition
-    if(spriteShape.right > brickShape.left){
-      this.#sprite.x = brickShape.left - spriteShape.width; // Move the sprite to the left of the brick
-      this.#directionVector.x *= -1; // Reverse the x direction
-    }
-    // check right collition
-    if(spriteShape.left < brickShape.right){
-      this.#sprite.x = brickShape.right; // Move the sprite to the right of the brick
-      this.#directionVector.x *= -1; // Reverse the x direction
-    }
-    // Calculate the new speed vector based on the new direction vector and speed
-    // This is important to ensure the ball bounces off the brick at the correct angle and speed
-    this.#speedVector.calculateMovement(this.#directionVector, this.#speed);
-    return true; // Collision detected
+    return false; // Collision detected
   }
 
 
-  #collidedWithBricks(aBrics) {
-    let brickIndex = -1;
-    aBrics.every((aBrick, aIndex) => {
-      if (this.#collidedWithBrick(aBrick)) {
-        // Remove the brick from the array if it is hit
-        brickIndex = aIndex;
-        return false; // Stop checking other bricks
-      }
-      return true; // Continue checking other bricks
-    });
-    return brickIndex !== -1; // Return true if any brick was hit  
+  #collidedWithBricks(aBricks) {
+    return false;    
   }
 
   update(aBounds, aHero, aBricks) {
