@@ -7,9 +7,10 @@ import { SpriteInfoList, GameProps } from "./BrickBreaker.mjs";
 export class TBrick extends libSprite.TSprite {
   constructor(aSpriteCanvas){
     const bounds = GameProps.bounds;
-    const pos = new lib2d.TPoint(0, 0);
-    pos.x = bounds.x;
-    pos.y = bounds.y;
+    let centerX = (bounds.right - bounds.left) / 2;
+    centerX -= (SpriteInfoList.BrickBlue.width / 2);
+    const pos = new lib2d.TPoint(centerX, bounds.top + 200);
+  
     super(aSpriteCanvas, SpriteInfoList.BrickBlue, pos);
   }
 }

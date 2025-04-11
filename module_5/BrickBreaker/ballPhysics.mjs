@@ -68,12 +68,49 @@ class TBallPhysics {
   }
 
   #collidedWithBrick(aBrick){
-    return false; // Collision detected
+    //Tester om ballen er helt til venstre for mursteinen
+    if(this.#sprite.right < aBrick.left) return false; //Kan ikke treffe!
+    //Tester om ballen er helt til høyre for mursteinen
+    if(this.#sprite.left > aBrick.right) return false; //Kan ikke treffe!
+    //Tester om ballen er helt under mursteinen
+    if(this.#sprite.top > aBrick.bottom) return false; //Kan ikke treffe!
+    //Tester om ballen er helt over mursteinen
+    if(this.#sprite.bottom < aBrick.top) return false; //Kan ikke treffe!
+
+    //Hvor har ballen truffet mursteinen?
+    //har ballen truffet bunnen av mursteinen?
+    if(this.#sprite.top < aBrick.bottom && this.#sprite.bottom > aBrick.bottom){
+      this.#sprite.y = aBrick.bottom;
+      this.#directionVector.y *= -1;
+    }else if(this.#sprite.bottom > aBrick.top && this.#sprite.top < aBrick.top){
+      //Ballen her truffet toppen av mursteinen!
+      this.#sprite.y = aBrick.top - this.#sprite.height;
+      this.#directionVector.y *= -1;
+    }else if(this.#sprite.left < aBrick.right && this.#sprite.right > aBrick.right){
+      //Ballen har truffet høyre siden av mursteinen!
+      this.#sprite.x = aBrick.right;
+      this.#directionVector.x *= -1;
+    }else if(this.#sprite.right > aBrick.left && this.#sprite.left < aBrick.left){
+      //Ballen har truffet venstre siden av mursteinen!
+      this.#sprite.x = aBrick.left - this.#sprite.width;
+      this.#directionVector.x *= -1;
+    }
+
+    this.#speedVector.calculateMovement(this.#directionVector, this.#speed);
+    return true; //Ballen treffer mursteinen
   }
 
 
   #collidedWithBricks(aBricks) {
-    return false;    
+    for(let i = 0; i < aBricks.length; i++){
+      const brick = aBricks[i];
+      let hasCollided = this.#collidedWithBrick(brick);
+      if(hasCollided) {
+        console.log("Ballen traff mursteinen!");
+        return i; // Returnerer indeksen til mursteinen som ble truffet
+      }
+    }
+    return -1; // Ingen kollisjon med mursteinene
   }
 
   update(aBounds, aHero, aBricks) {
