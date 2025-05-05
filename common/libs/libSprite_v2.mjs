@@ -98,7 +98,7 @@ class TSpriteCanvas {
 
   #mouseClick = (aEvent) => {
     if (this.activeSprite !== null && this.activeSprite.onClick !== null) {
-      this.activeSprite.onClick(aEvent);
+      this.activeSprite.onClick(aEvent, this.activeSprite);
     }
   };
 
@@ -148,6 +148,9 @@ class TSpriteCanvas {
     const dy = shape.y;
     const dw = shape.width;
     const dh = shape.height;
+    if (aSprite.alpha) {
+      this.#ctx.globalAlpha = aSprite.alpha;
+    }
     if (rot !== 0) {
       //Center of rotation, relative to canvas top left corner
       const px = aSprite.pivot ? aSprite.pivot.x : aSprite.center.x;
@@ -178,6 +181,7 @@ class TSpriteCanvas {
       }
       this.#ctx.strokeStyle = oldStrokeStyle;
     }
+    this.#ctx.globalAlpha = 1.0; //Reset alpha to 1.0
     if (aSprite.onCustomDraw) {
       aSprite.onCustomDraw(this.#ctx);
     }
@@ -246,6 +250,7 @@ class TSprite {
     this.visible = true;
     this.lastCollision = null;
     this.debug = false;
+    this.alpha = 1.0; //Alpha value for the sprite, 0.0 = transparent, 1.0 = opaque
   }
 
   draw() {
@@ -545,6 +550,9 @@ class TSpriteNumber {
   #value;
   #spNumbers;
   #justify;
+  #visible;
+  #scale;
+  #alpha;
   constructor(aSpriteCanvas, aSpriteInfo, aPosition, aShapeClass) {
     this.#spcvs = aSpriteCanvas;
     this.#spi = aSpriteInfo;
@@ -554,6 +562,9 @@ class TSpriteNumber {
     this.digits = 0; //if Digit is 0, then the number of digits is the length of the value
     this.#spNumbers = [];
     this.#justify = ESpriteNumberJustifyType.Left;
+    this.#visible = true;
+    this.#scale = 1.0;
+    this.#alpha = 1.0;
     this.value = 0;
   }
 
@@ -576,8 +587,13 @@ class TSpriteNumber {
       const addDigit = digits > this.#spNumbers.length;
       if (addDigit) {
         //assume the number is left justified, so add new digit sprite to the right
-        const nextPosition = { x: this.#position.x + this.#spNumbers.length * this.#spi.width, y: this.#position.y };
-        this.#spNumbers.push(new TSprite(this.#spcvs, this.#spi, nextPosition, this.#shapeClass));
+        const nextPosition = { x: this.#position.x + this.#spNumbers.length * this.#spi.width * this.#scale,  y: this.#position.y };
+
+        const newSprite = new TSprite(this.#spcvs, this.#spi, nextPosition, this.#shapeClass);
+        newSprite.visible = this.#visible;
+        newSprite.alpha = this.#alpha;
+        newSprite.scale = this.#scale;
+        this.#spNumbers.push(newSprite);
       } else {
         this.#spNumbers.pop();
       }
@@ -608,21 +624,21 @@ class TSpriteNumber {
     switch (this.#justify) {
       case ESpriteNumberJustifyType.Left:
         this.#spNumbers.forEach((aSprite, aIndex) => {
-          aSprite.x = this.#position.x + aIndex * this.#spi.width;
+          aSprite.x = this.#position.x + aIndex * this.#spi.width * this.#scale;
           aSprite.y = this.#position.y;
         });
         break;
       case ESpriteNumberJustifyType.Center:
         const center = (this.#spNumbers.length * this.#spi.width) / 2;
         this.#spNumbers.forEach((aSprite, aIndex) => {
-          aSprite.x = this.#position.x - center + aIndex * this.#spi.width;
+          aSprite.x = this.#position.x - center + aIndex * this.#spi.width * this.#scale;
           aSprite.y = this.#position.y;
         });
         break;
       case ESpriteNumberJustifyType.Right:
         //If right justify, then move all sprites to the right
         this.#spNumbers.forEach((aSprite, aIndex) => {
-          aSprite.x = this.#position.x - (this.#spNumbers.length - aIndex - 1) * this.#spi.width;
+          aSprite.x = this.#position.x - (this.#spNumbers.length - aIndex - 1) * this.#spi.width * this.#scale;
           aSprite.y = this.#position.y;
         });
         break;
@@ -638,6 +654,39 @@ class TSpriteNumber {
     this.#justify = aJustify;
     this.#UpdatePosition();
   }
+
+  get visible() {
+    return this.#visible
+  }
+
+  set visible(aVisible) {
+    this.#visible = aVisible;
+    this.#spNumbers.forEach((aSprite) => {
+      aSprite.visible = aVisible;
+    });
+  }
+
+  get alpha() {
+    return this.#alpha;
+  }
+
+  set alpha(aAlpha) {
+    this.#alpha = aAlpha;
+    this.#spNumbers.forEach((aSprite) => {
+      aSprite.alpha = aAlpha;
+    });
+  }
+  get scale() {
+    return this.#scale;
+  }
+
+  set scale(aScale) {
+    this.#scale = aScale;
+    this.#spNumbers.forEach((aSprite) => {
+      aSprite.scale = aScale;
+    });
+  }
+
 }
 
 export default {

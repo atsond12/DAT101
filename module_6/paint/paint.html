@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="no" style="display: table; margin: auto;">
+<head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    
+    <title>Paint</title>
+    <link rel="stylesheet" href="paint.css">
+    <script src="./paint.mjs" type="module" defer></script>
+</head>
+<body>
+<h2><label for="cvsMenu">Paint</label></h2>
+<table>
+    <tr>
+        <td>
+            <canvas id="cvsMenu" width="775" height="115"
+                    style="background-color: floralwhite; border: thin  gray solid"></canvas>
+        </td>
+        <td>
+            <div id="paintObjectList">
+                <div id="divPaintObject" class="paintObject">Shape-1</div>
+            </div>
+        </td>
+    </tr>
+</table>
+<br/>
+<canvas id="cvsPaint" width="1000" height="500" style="background-color: ghostwhite; border: thin  gray solid"></canvas>
+<h4>Press F12 to debug (Chrome and Firefox)</h4>
+</body>
+</html>

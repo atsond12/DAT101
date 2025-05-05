@@ -1,0 +1,49 @@
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#paintObjectList{
+    text-align: left;
+    width:210px;
+    height:109px;
+    line-height:1em;
+    overflow:scroll;
+    padding:5px;
+    background-color:antiquewhite;
+    color:#714D03;
+    scrollbar-base-color:#DEBB07;
+}
+
+.paintObject {
+    padding: 3px 3px 3px;
+    cursor: pointer;
+}
+
+.selected {
+    padding: 0;
+    background-color: dodgerblue;
+    color: white;
+    background-clip: content-box;
+    border: 3px darkred solid;
+}
+
+.paintObject:hover {
+    padding: 0;
+    background-color: dodgerblue;
+    color: white;
+    background-clip: content-box;
+    border: 3px darkred solid;
+}
+
+.prevent-select {
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+  }
