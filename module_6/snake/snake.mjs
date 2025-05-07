@@ -185,11 +185,14 @@ class TSnakeBody extends TSnakePart {
 
 
 class TSnakeTail extends TSnakePart {
-  constructor(aSpriteCanvas, aCol, aRow) {
-    super(aSpriteCanvas, SheetData.Tail, aCol, aRow);
+  constructor(aSpriteCanvas,aBoardCell) {
+    super(aSpriteCanvas, SheetData.Tail, aBoardCell);
   }
 
   update(){
+    let boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
+    boardCellInfo.infoType = EBoardCellInfoType.Empty; // Clear the cell, before moving the tail
+  
     switch (this.direction) {
       case EDirection.Up:
         this.boardCell.row--;
@@ -204,9 +207,8 @@ class TSnakeTail extends TSnakePart {
         this.boardCell.row++;
         break;
     }
-    const boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
-    boardCellInfo.infoType = EBoardCellInfoType.Empty; // Clear the cell, when the tail moves
-    this.direction = boardCellInfo.direction;
+    boardCellInfo = GameProps.gameBoard.getCell(this.boardCell.row, this.boardCell.col);
+    this.direction = boardCellInfo.direction; // Update the direction of the tail based on the new cell
     this.index = this.direction;
     super.update();
   }
