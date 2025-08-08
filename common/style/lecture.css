@@ -1,0 +1,20 @@
+/* Styles for all lecture pages */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#txtOut {
+  padding: 10px;
+  min-width: 512px;
+  min-height: 128px;
+  border: darkblue thin solid;
+  background-color: antiquewhite;
+  font-family: Consolas, "Courier New", monospace, serif;
+  white-space: nowrap;
+  overflow: auto;
+}

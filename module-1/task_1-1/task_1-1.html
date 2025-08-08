@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" style="display: table; margin: auto">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Task 1.1</title>
+  </head>
+  <body style="display: table-cell; vertical-align: middle; zoom: 1.2;">
+    <label for="txtOut"></label>
+    <div style="padding: 10px; margin-top: 50px; min-width: 12px; border: darkblue thin solid; background-color: antiquewhite">
+      <h1 id="txtOut" style="white-space: nowrap"></h1>
+    </div>
+    <script defer>
+      "use strict";
+      if (!(window.location.protocol === "http:" || window.location.protocol === "https:")) {
+        document.body.innerHTML = `
+        <div style="padding: 20px; margin: 20px auto; border: 1px solid red; max-width: 600px; background-color: #ffe6e6; color: #cc0000;">
+            <h3>Dear Student!</h3>
+            <p>This is a message from your Lecturer. It seems you haven't run this file correctly.</p>
+            <p>Try to read the assignment even more carefully, especially the section on Live Server.</p>
+            <p>
+              Or you can watch this YouTube tutorial:<br />
+              <a href="https://www.youtube.com/watch?v=_Tl-6HeV0Rc" target="_blank">
+                <em>Live Server Extension for Visual Studio Code | Full Tutorial</em>
+              </a>
+            <p>Good luck, and remember, even the best programmers have to start somewhere! 🙂</p>
+        </div>
+        `;
+      }
+    </script>
+    <script type="module" src="./task_1-1.mjs" defer></script>
+  </body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="no" style="display: table; margin: auto;">
+<head>
+  <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1.0">
+  <title>Task 4.3</title>
+</head>
+<body style="display: table-cell; vertical-align: middle;">
+<h2>Task 4.3:</h2>
+<p></p>
+<fieldset>
+  <legend>Task 1: Rectangle</legend>
+  <label for="txtRectWidth">Width:</label>
+  <input type="number" id="txtRectWidth" value="0" style="width:4em">
+  <label for="txtRectHeight">Height:</label>
+  <input type="number" id="txtRectHeight" value="0" style="width:4em">
+  <input type="button" id="cmbTask1Calculate" value="Calculate">
+  <p id="txtTask1Output">
+    Circumference = 0, Area = 0
+  </p>
+</fieldset>
+<p></p>
+<fieldset>
+  <legend>Task 2: Text</legend>
+  <label for="txtTask2Word">Type a word:</label>
+  <input type="text" id="txtTask2Word" value="" style="width: 10em"> (hit enter!)
+  <p id="txtTask2Output">Number of words = 0</p>
+</fieldset>
+<p></p>
+<fieldset>
+  <legend>Task 3: Text</legend>
+  <p>Check one or more as you please</p>
+  <label><input type="checkbox" name="chkTask3" value="1">1: Cat is an animal!<br/></label>
+  <label><input type="checkbox" name="chkTask3" value="2">2: Volvo is a car!<br/></label>
+  <label><input type="checkbox" name="chkTask3" value="3">3: Rose is a flower!<br/></label>
+  <label><input type="checkbox" name="chkTask3" value="4">4: Donald Trump is a human being!<br/></label>
+  <label><input type="checkbox" name="chkTask3" value="5">5: Dette er en test<br/></label>
+  <input type="button" id="cmbTask3CheckAnswer" value="Check Answer!"><br/>
+  <p id="txtTask3Output"></p>
+</fieldset>
+<p></p>
+<fieldset>
+  <legend>Task 4: Cars</legend>
+  <p>Please select your favorite car brand!</p>
+  <div id="divTask4Cars">
+  </div>
+  <p id="txtTask4Output"></p>
+</fieldset>
+<p></p>
+<fieldset>
+  <legend>Task 5: Animals</legend>
+  <label for="selectTask5Animals">Choose a animal:</label>
+  <select id="selectTask5Animals">
+    <option value="1" selected="selected">Giraffe</option>
+    <option value="2">Peacock</option>
+    <option value="3">Llama</option>
+    <option value="4">Chinchilla</option>
+    <option value="5">Dog</option>
+    <option value="6">Cat</option>
+    <option value="7">Duck</option>
+    <option value="8">Elephant</option>
+  </select>
+  <p id="txtTask5Output"></p>
+</fieldset>
+<p></p>
+<fieldset>
+  <legend>Task 6: Names</legend>
+  <label for="selectTask6Girls">Choose a name:</label>
+  <select id="selectTask6Girls">
+  </select>
+  <p id="txtTask6Output">You selected: </p>
+</fieldset>
+<p></p>
+<fieldset>
+  <legend>Task 7: Movies</legend>
+  <label for="txtMovieTitle">Title: </label>
+  <input type="text" id="txtMovieTitle" style="width: 15em">
+  <label for="selectMovieGenre">Genre: </label>
+  <select id="selectMovieGenre" style="width: 10em"></select>
+  <p></p>
+  <label for="txtMovieDirector">Director: </label>
+  <input type="text" id="txtMovieDirector" style="width: 21em">
+  <label for="txtMovieRate">Rate: </label>
+  <input type="number" id="txtMovieRate" min="1" max="10" value="5" style="width: 3em">
+  <p></p>
+  <input type="button" id="cmbAddMovie" value="Add Movie!">
+  <div>
+    <h3>My movies:</h3>
+    <table id="tblMovies">
+      <tr>
+        <th>Nr:</th>
+        <th>Title:</th>
+        <th>Genre:</th>
+        <th>Director:</th>
+        <th>Rate:</th>
+      </tr>
+    </table>
+  </div>
+</fieldset>
+<ol>
+  <li>[Write the question here, and copy this for more questions]</li>
+  <p>[Write your answer here, and copy this for more answers]</p>
+</ol>
+<script type="module" src="./task_4-3.mjs" defer></script>
+</body>
+</html>
