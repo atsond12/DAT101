@@ -55,8 +55,22 @@ printOut("6,322.52 minutes is " +
   printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
+printOut(`
+Convert 54 dollars to Norwegian kroner, and print the price for both: <br>
+NOK → USD and USD → NOK.<br>
+Use 76 NOK = 8.6 USD as the exchange rate.<br>
+The answer must be in whole "Kroner" and whole "dollars"<br>
+`);
+
+const NOKRate = 76 / 8.6
+let USD = 54;
+let NOK = USD * NOKRate;
+printOut("USD -> NOK = " + NOK.toFixed(2));
+const USDRate = 8.6 / 76;
+USD = NOK * USDRate;
+printOut("NOK -> USD = " + USD.toFixed(2));
+
+
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
