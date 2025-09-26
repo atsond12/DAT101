@@ -65,7 +65,6 @@ printOut("number of guesses: " + part3Count);
 const part3DeltaTime = Date.now() - part3Time;
 printOut("number of mSec: " + part3DeltaTime);
 
-printOut("Replace this with you answer!");
 printOut(newLine);
 
 printOut("--- Part 4 ----------------------------------------------------------------------------------------------");
