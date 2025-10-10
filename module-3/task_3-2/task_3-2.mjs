@@ -88,17 +88,227 @@ printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+printOut(`
+Create two loops that print 9 columns and 7 rows with the text "K1, R1" for the first cell, <br>
+"K2, R1" for the second cell, and so on. <br>
+ * Hint: Use what we call nested loops. This is a "for" loop within another "for" loop.<br>
+Use the provided printOut function to print each row with its sets of columns;<br>
+remember to place this in the right level of the nested for loops.<br>
+The output should look like this:<br>
+K1R1 K2R1 K3R1 K4R1 K5R1 K6R1 K7R1 K8R1 K9R1<br>
+K1R2 K2R2 K3R2 K4R2 K5R2 K6R2 K7R2 K8R2 K9R2<br>
+K1R3 K2R3 K3R3 K4R3 K5R3 K6R3 K7R3 K8R3 K9R3<br>
+K1R4 K2R4 K3R4 K4R4 K5R4 K6R4 K7R4 K8R4 K9R4<br>
+K1R5 K2R5 K3R5 K4R5 K5R5 K6R5 K7R5 K8R5 K9R5<br>
+K1R6 K2R6 K3R6 K4R6 K5R6 K6R6 K7R6 K8R6 K9R6<br>
+K1R7 K2R7 K3R7 K4R7 K5R7 K6R7 K7R7 K8R7 K9R7<br>
+`);
+
+let textPart5 = "";
+for (let row = 1; row <= 7; row++) {
+  let line = "";
+  for (let col = 1; col <= 9; col++){
+    line += "K" + col + "R" + row + " ";
+  }
+  textPart5 += line + newLine;
+}
+printOut(textPart5);
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
+printOut(`
+Simulate 5 student grades using the Math.random() function, from 1 to 236 (inclusive).<br>
+For each grade, print the student's grade (A to F) based on the point distribution provided:<br>
+<ul>
+<li>A: 89% - 100%</li>
+<li>B: 77% - 88%</li>
+<li>C: 65% - 76%</li>
+<li>D: 53% - 64%</li>
+<li>E: 41% - 52%</li>
+<li>F: &nbsp;0% - 40%</li>
+</ul>
+`);
+
+const students = 5;
+const grade1 = (Math.ceil(Math.random() * 236) / 236 * 100).toFixed(2);
+const grade2 = (Math.ceil(Math.random() * 236) / 236 * 100).toFixed(2);
+const grade3 = (Math.ceil(Math.random() * 236) / 236 * 100).toFixed(2);
+const grade4 = (Math.ceil(Math.random() * 236) / 236 * 100).toFixed(2);
+const grade5 = (Math.ceil(Math.random() * 236) / 236 * 100).toFixed(2);
+let textPart6 = "";
+if(grade1 >= 89) {
+  textPart6 += "Student 1: " + grade1 + "% - A";
+} else if(grade1 >= 77) {
+  textPart6 += "Student 1: " + grade1 + "% - B";
+} else if(grade1 >= 65) {
+  textPart6 += "Student 1: " + grade1 + "% - C";
+} else if(grade1 >= 53) {
+  textPart6 += "Student 1: " + grade1 + "% - D";
+} else if(grade1 >= 41) {
+  textPart6 += "Student 1: " + grade1 + "% - E";
+} else {
+  textPart6 += "Student 1: " + grade1 + "% - F";
+}
+printOut(textPart6);
+textPart6 = "Student 2: "
+if(grade2 >= 89) {
+  textPart6 += grade2 + "% - A";
+} else if(grade2 >= 77) {
+  textPart6 += grade2 + "% - B";
+} else if(grade2 >= 65) {
+  textPart6 += grade2 + "% - C";
+} else if(grade2 >= 53) {
+  textPart6 += grade2 + "% - D";
+} else if(grade2 >= 41) {
+  textPart6 += grade2 + "% - E";
+} else {
+  textPart6 += grade2 + "% - F";
+}
+printOut(textPart6);
+textPart6 = "Student 3: "
+if(grade3 >= 89) {
+  textPart6 += grade3 + "% - A";
+} else if(grade3 >= 77) {
+  textPart6 += grade3 + "% - B";
+} else if(grade3 >= 65) {
+  textPart6 += grade3 + "% - C";
+} else if(grade3 >= 53) {
+  textPart6 += grade3 + "% - D";
+} else if(grade3 >= 41) {
+  textPart6 += grade3 + "% - E";
+} else {
+  textPart6 += grade3 + "% - F";
+}
+printOut(textPart6);
+
+textPart6 = "Student 4: "
+if(grade4 >= 89) {
+  textPart6 += grade4 + "% - A";
+} else if(grade4 >= 77) {
+  textPart6 += grade4 + "% - B";
+} else if(grade4 >= 65) {
+  textPart6 += grade4 + "% - C";
+} else if(grade4 >= 53) {
+  textPart6 += grade4 + "% - D";
+} else if(grade4 >= 41) {
+  textPart6 += grade4 + "% - E";
+} else {
+  textPart6 += grade4 + "% - F";
+}
+printOut(textPart6);
+
+textPart6 = "Student 5: "
+if(grade5 >= 89) {
+  textPart6 += grade5 + "% - A";
+} else if(grade5 >= 77) {
+  textPart6 += grade5 + "% - B";
+} else if(grade5 >= 65) {
+  textPart6 += grade5 + "% - C";
+} else if(grade5 >= 53) {
+  textPart6 += grade5 + "% - D";
+} else if(grade5 >= 41) {
+  textPart6 += grade5 + "% - E";
+} else {
+  textPart6 += grade5 + "% - F";
+}
+printOut(textPart6);
+
+for(let i = 1; i < students; i++){
+  let grade = 0;
+  switch(i){
+    case 1:
+      grade = grade1;
+      break;
+    case 2:
+      grade = grade2;
+      break;
+    case 3:
+      grade = grade3;
+      break;
+    case 4:
+      grade = grade4;
+      break;
+    case 5:
+      grade = grade5;
+      break;
+  }
+  let j = i - 1;
+  do{
+    let gradeCompare = 0;
+    
+    j--
+  }while(j > 0);
+}
+
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+printOut(`
+Part 7 Dice Rolling Extravaganza (20 points)<br>
+Simulate 6 dice and print how many "throws" it takes to get:<br>
+<ul>
+<li>1 2 3 4 5 6 (full straight)</li>
+<li>3 pairs</li>
+<li>2 of a kind and 4 of a kind (tower)</li>
+<li>All the same (Yahtzee)</li>
+</ul>
+`);
+
+function matchNumber(aText, aNumber){
+  let count = 0;
+  for(let i = 0; i < aText.length; i++){
+    if(aText.charAt(i) === aNumber.toString()){
+      count++;
+    }
+  }
+  return count;
+}
+
+let fullStraight = false;
+let yahtzee = false;
+do{
+const d1 = Math.ceil(Math.random() * 6);
+const d2 = Math.ceil(Math.random() * 6);
+const d3 = Math.ceil(Math.random() * 6);
+const d4 = Math.ceil(Math.random() * 6);
+const d5 = Math.ceil(Math.random() * 6);
+const d6 = Math.ceil(Math.random() * 6);
+const t = d1.toString() + d2.toString() +d3.toString() + d4.toString() + d5.toString() + d6.toString();
+
+let c1 = matchNumber(t, 1);
+let c2 = matchNumber(t, 2);
+let c3 = matchNumber(t, 3);
+let c4 = matchNumber(t, 4);
+let c5 = matchNumber(t, 5);
+let c6 = matchNumber(t, 6);
+const t2 = c1.toString() + c2.toString() +c3.toString() + c4.toString() + c5.toString() + c6.toString();
+
+const cm1 = matchNumber(t2, 1);
+const cm2 = matchNumber(t2, 2);
+const cm4 = matchNumber(t2, 4);
+const cm6 = matchNumber(t2, 6);
+// Check for full straight
+if(cm1 === 6 && !fullStraight){
+  // We have a full straight
+  fullStraight = true;
+  printOut("Full straight: " + t);
+  printOut("Counts: " + t2);
+}
+// Check for yahtzee
+if(cm6 === 1 && !yahtzee){
+  // We have yahtzee
+  yahtzee = true;
+  printOut("Yahtzee: " + t);
+  printOut("Counts: " + t2);
+}
+//check for tower
+if(cm4 === 1 && cm2 === 1){
+  // We have a tower
+  printOut("Tower: " + t);
+  printOut("Counts: " + t2);
+}
+}while(!fullStraight || !yahtzee);
 printOut(newLine);
 
 printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
