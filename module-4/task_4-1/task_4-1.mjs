@@ -8,6 +8,19 @@ const AccountTypes = {
   Pensjon: "Pensjonskonto",
 };
 
+const CurrencyTypes = {
+  NOK: { value: 1.0000, name: "Norske kroner", denomination: "kr" },
+  EUR: { value: 0.0985, name: "Europeiske euro", denomination: "€" },
+  USD: { value: 0.1091, name: "United States dollar", denomination: "$" },
+  GBP: { value: 0.0847, name: "Pound sterling", denomination: "£" },
+  INR: { value: 7.8309, name: "Indiske rupee", denomination: "₹" },
+  AUD: { value: 0.1581, name: "Australske dollar", denomination: "A$" },
+  PHP: { value: 6.5189, name: "Filippinske peso", denomination: "₱" },
+  SEK: { value: 1.0580, name: "Svenske kroner", denomination: "kr" },
+  CAD: { value: 0.1435, name: "Canadiske dollar", denomination: "C$" },
+  THB: { value: 3.3289, name: "Thai baht", denomination: "฿" }
+};
+
 class TBankAccount {
   #type = 0;
   #balance = 0;
@@ -22,6 +35,7 @@ class TBankAccount {
   }
 
   setType(aType) {
+    this.#withdrawCount = 0;
     let txtOut = "The account type has change from " + this.toString();
     this.#type = aType;
     txtOut += " to " + this.toString();
@@ -45,7 +59,7 @@ class TBankAccount {
         return;
       case AccountTypes.Saving:
         this.#withdrawCount++;
-        if(this.#withdrawCount <= 3){
+        if(this.#withdrawCount > 3){
           printOut("You can not withdraw from " + this.#type + " more than three times");
           return;
         }
@@ -89,6 +103,8 @@ myAccount.deposit(25);
 myAccount.withdraw(30);
 myAccount.withdraw(30);
 myAccount.withdraw(30);
+myAccount.withdraw(30);
+myAccount.setType(AccountTypes.Pensjon);
 myAccount.withdraw(30);
 
 printOut(newLine);
