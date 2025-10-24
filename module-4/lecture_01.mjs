@@ -23,3 +23,4 @@ for(let i = 0; i < persons.length; i++){
 }
 
 printOut(text);
+

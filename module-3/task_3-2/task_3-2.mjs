@@ -289,11 +289,9 @@ do {
   let c6 = matchNumber(t, 6);
   const t2 = c1.toString() + c2.toString() + c3.toString() + c4.toString() + c5.toString() + c6.toString();
 
-  const cm1 = matchNumber(t2, 1); // count of numbers that appear once
-  const cm2 = matchNumber(t2, 2); // count of numbers that appear twice
-  const cm3 = matchNumber(t2, 3); // count of numbers that appear thrice
-  const cm4 = matchNumber(t2, 4); // count of numbers that appear four times
-  const cm5 = matchNumber(t2, 5); // count of numbers that appear five times
+  const cm1 = matchNumber(t2, 1); // count of numbers that appear once, used for full straight
+  const cm2 = matchNumber(t2, 2); // count of numbers that appear twice, used for three pairs and tower
+  const cm4 = matchNumber(t2, 4); // count of numbers that appear four times, used for tower
   const cm6 = matchNumber(t2, 6); // count of numbers that appear six times
   // Check for full straight
   if (cm1 === 6 && !fullStraight) {
