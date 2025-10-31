@@ -25,9 +25,11 @@ class TBankAccount {
   #type = 0;
   #balance = 0;
   #withdrawCount = 0;
+  #currency = null;
 
   constructor(aType) {
     this.#type = aType;
+    this.#currency = CurrencyTypes.NOK;
   }
 
   toString() {
@@ -68,6 +70,14 @@ class TBankAccount {
     this.#balance -= aAmount;
     printOut("Withdraw of " + aAmount + ", new balance is " + this.#balance);
   }
+
+  setCurrencyType(aType){
+    if(this.#currency === aType){
+      return;
+    }
+    printOut("The currency has changed from " + this.#currency.name + " to " + aType.name);
+  }
+
 }
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
