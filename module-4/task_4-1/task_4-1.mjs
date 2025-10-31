@@ -8,6 +8,7 @@ const AccountTypes = {
   Pensjon: "Pensjonskonto",
 };
 
+// This regards part 5! You can find this on gitHub.
 const CurrencyTypes = {
   NOK: { value: 1.0000, name: "Norske kroner", denomination: "kr" },
   EUR: { value: 0.0985, name: "Europeiske euro", denomination: "€" },
@@ -32,6 +33,10 @@ class TBankAccount {
     this.#currency = CurrencyTypes.NOK;
   }
 
+  #currencyConvert(aType){
+    return CurrencyTypes.NOK.value / this.#currency.value * aType.value;
+  }
+
   toString() {
     return this.#type;
   }
@@ -45,16 +50,20 @@ class TBankAccount {
   }
 
   getBalance() {
-    return this.#balance;
+    return this.#balance.toFixed(2);
   }
 
-  deposit(aAmount) {
+  deposit(aAmount, aCurrencyType = CurrencyTypes.NOK) {
     this.#withdrawCount = 0;
-    this.#balance += aAmount;
-    printOut("Deposit of " + aAmount + ", new balance is " + this.#balance);
+    const exchange = this.#currencyConvert(aCurrencyType);
+    const newAmount = aAmount / exchange;
+    this.#balance += newAmount;
+    const den = this.#currency.denomination;
+    const name = aCurrencyType.name;
+    printOut("Deposit of " + aAmount + " " + name + ", new balance is " + this.#balance.toFixed(2) + den);
   }
 
-  withdraw(aAmount) {
+  withdraw(aAmount, aCurrencyType = CurrencyTypes.NOK) {
     switch (this.#type) {
       case AccountTypes.Pensjon:
         printOut("You can not withdraw from " + this.#type);
@@ -67,8 +76,12 @@ class TBankAccount {
         }
         break;
     }
-    this.#balance -= aAmount;
-    printOut("Withdraw of " + aAmount + ", new balance is " + this.#balance);
+    const exchange = this.#currencyConvert(aCurrencyType);
+    const newAmount = aAmount / exchange;
+    this.#balance -= newAmount;
+    const den = this.#currency.denomination;
+    const name = aCurrencyType.name;
+    printOut("Withdraw of " + aAmount + " " + name + ", new balance is " + this.#balance.toFixed(2) + den);
   }
 
   setCurrencyType(aType){
@@ -76,8 +89,11 @@ class TBankAccount {
       return;
     }
     printOut("The currency has changed from " + this.#currency.name + " to " + aType.name);
+    const exchange = this.#currencyConvert(aType);
+    this.#currency = aType;
+    this.#balance *= exchange;
+    printOut("New balance is " + this.#balance.toFixed(2) + this.#currency.denomination);
   }
-
 }
 
 printOut("--- Part 1 ----------------------------------------------------------------------------------------------");
@@ -116,20 +132,28 @@ myAccount.withdraw(30);
 myAccount.withdraw(30);
 myAccount.setType(AccountTypes.Pensjon);
 myAccount.withdraw(30);
+myAccount.setType(AccountTypes.Normal);
+myAccount.withdraw(10);
 
 printOut(newLine);
 
 printOut("--- Part 5 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+myAccount.deposit(150);
 printOut(newLine);
 
 printOut("--- Part 6 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+myAccount.setCurrencyType(CurrencyTypes.SEK);
+myAccount.setCurrencyType(CurrencyTypes.USD);
+myAccount.setCurrencyType(CurrencyTypes.NOK);
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
 /* Put your code below here!*/
-printOut("Replace this with you answer!");
+myAccount.deposit(12, CurrencyTypes.USD);
+myAccount.withdraw(10, CurrencyTypes.GBP);
+myAccount.setCurrencyType(CurrencyTypes.CAD);
+myAccount.setCurrencyType(CurrencyTypes.INR);
+myAccount.withdraw(150.1585, CurrencyTypes.SEK);
 printOut(newLine);
