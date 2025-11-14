@@ -132,11 +132,11 @@ For each grade, print the student's grade (A to F) based on the point distributi
 `);
 
 const students = 5;
-const grade1 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-const grade2 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-const grade3 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-const grade4 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-const grade5 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
+let grade1 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
+let grade2 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
+let grade3 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
+let grade4 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
+let grade5 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
 let textPart6 = "";
 if (grade1 >= 89) {
   textPart6 += "Student 1: " + grade1 + "% - A";
@@ -215,6 +215,7 @@ if (grade5 >= 89) {
 }
 printOut(textPart6);
 
+//Print out the grades in descending order
 for (let i = 1; i < students; i++) {
   let grade = 0;
   switch (i) {
@@ -234,13 +235,57 @@ for (let i = 1; i < students; i++) {
       grade = grade5;
       break;
   }
-  let j = i - 1;
+  let j = 0;
   do {
     let gradeCompare = 0;
-
-    j--;
-  } while (j > 0);
+    switch (j) {
+      case 1:
+        // swap with grade1
+        if (grade < grade1) {
+          let temp = grade;
+          grade = grade1;
+          grade1 = temp;
+        }
+        break;
+      case 2:
+        if (grade < grade2) {
+          let temp = grade;
+          grade = grade2;
+          grade2 = temp;
+        }
+        break;
+      case 3:
+        if (grade < grade3) {
+          let temp = grade;
+          grade = grade3;
+          grade3 = temp;
+        }
+        break;
+      case 4:
+        if (grade < grade4) {
+          let temp = grade;
+          grade = grade4;
+          grade4 = temp;
+        }
+        break;
+      case 5:
+        if (grade < grade5) {
+          let temp = grade;
+          grade = grade5;
+          grade5 = temp;
+        }
+        break;
+    }
+    j++;
+  } while (j < students);
 }
+
+printOut("Grades sorted descending:");
+printOut("Grade 1: " + grade1 + "%");
+printOut("Grade 2: " + grade2 + "%");
+printOut("Grade 3: " + grade3 + "%");
+printOut("Grade 4: " + grade4 + "%");
+printOut("Grade 5: " + grade5 + "%");
 
 printOut(newLine);
 
