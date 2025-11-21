@@ -64,10 +64,10 @@ cmbTask1Calculate.onclick = cmbTask1CalculateClick;
 //--- Part 2 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
 
-function txtTask2WordKeyPress(aEvent){
+function txtTask2WordKeyPress(aEvent) {
   const txtTask2Output = document.getElementById("txtTask2Output");
   //txtTask2Output.innerHTML = `You pressed the key: ${aEvent.key}`;
-  if(aEvent.key === "Enter"){
+  if (aEvent.key === "Enter") {
     const word = txtTask2Word.value;
     task2Words.push(word);
     txtTask2Output.innerHTML = `You have entered ${task2Words.length} words: <br/>`;
@@ -80,14 +80,47 @@ const txtTask2Word = document.getElementById("txtTask2Word");
 txtTask2Word.addEventListener("keypress", txtTask2WordKeyPress);
 const task2Words = [];
 
-
 //--- Part 3 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
-
-
+const chkTask3 = document.getElementsByName("chkTask3");
+const cmbTask3CheckAnswer = document.getElementById("cmbTask3CheckAnswer");
+const txtTask3Output = document.getElementById("txtTask3Output");
+function cmbTask3CheckAnswerClick() {
+  txtTask3Output.innerHTML = "";
+  for (let i = 0; i < chkTask3.length; i++) {
+    const chkBox = chkTask3[i];
+    const text = `chkTask3[${i}].checked =  ${chkBox.checked}`;
+    txtTask3Output.innerHTML += text + "<br/>";
+  }
+}
+cmbTask3CheckAnswer.addEventListener("click", cmbTask3CheckAnswerClick);
 //--- Part 4 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
+function rdbCarNameSelect(aEvent){
+  const txtTask4Output = document.getElementById("txtTask4Output");
+  txtTask4Output.innerHTML =
+    `User select car type number: ${aEvent.target.value}`
+  ;
+} 
 
+const divTask4Cars = document.getElementById("divTask4Cars");
+for(let i = 0; i < CarTypes.length; i++){
+  const car = CarTypes[i];
+  const inpRadio = document.createElement("input");
+  inpRadio.type = "radio";
+  inpRadio.name = "rdbCarName";
+  inpRadio.value = car.value;
+  inpRadio.id = "rdbCarName" + i.toString();
+  inpRadio.addEventListener("change", rdbCarNameSelect);
+  const lblCaption = document.createElement("label");
+  lblCaption.for = inpRadio.id;
+  lblCaption.appendChild(document.createTextNode(car.caption));
+  divTask4Cars.appendChild(inpRadio);
+  divTask4Cars.appendChild(lblCaption);
+  divTask4Cars.appendChild(document.createElement("br"));
+
+  console.log(`CarTypes[${i}].value = ${car.value}, CarTypes[${i}].caption = ${car.caption}`)
+}
 //--- Part 5 ----------------------------------------------------------------------------------------------
 /* Put your code below here!*/
 
