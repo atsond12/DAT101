@@ -130,93 +130,98 @@ For each grade, print the student's grade (A to F) based on the point distributi
 <li>F: &nbsp;0% - 40%</li>
 </ul>
 `);
-
 const students = 5;
-let grade1 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-let grade2 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-let grade3 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-let grade4 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-let grade5 = ((Math.ceil(Math.random() * 236) / 236) * 100).toFixed(2);
-let textPart6 = "";
+// Lagre som numbers — ikke strings
+let grade1 = (Math.ceil(Math.random() * 236) / 236) * 100;
+let grade2 = (Math.ceil(Math.random() * 236) / 236) * 100;
+let grade3 = (Math.ceil(Math.random() * 236) / 236) * 100;
+let grade4 = (Math.ceil(Math.random() * 236) / 236) * 100;
+let grade5 = (Math.ceil(Math.random() * 236) / 236) * 100;
+
+let textPart6 = "Student 1: ";
 if (grade1 >= 89) {
-  textPart6 += "Student 1: " + grade1 + "% - A";
+  textPart6 += grade1.toFixed(2) + "% - A";
 } else if (grade1 >= 77) {
-  textPart6 += "Student 1: " + grade1 + "% - B";
+  textPart6 += grade1.toFixed(2) + "% - B";
 } else if (grade1 >= 65) {
-  textPart6 += "Student 1: " + grade1 + "% - C";
+  textPart6 += grade1.toFixed(2) + "% - C";
 } else if (grade1 >= 53) {
-  textPart6 += "Student 1: " + grade1 + "% - D";
+  textPart6 += grade1.toFixed(2) + "% - D";
 } else if (grade1 >= 41) {
-  textPart6 += "Student 1: " + grade1 + "% - E";
+  textPart6 += grade1.toFixed(2) + "% - E";
 } else {
-  textPart6 += "Student 1: " + grade1 + "% - F";
+  textPart6 += grade1.toFixed(2) + "% - F";
 }
 printOut(textPart6);
 textPart6 = "Student 2: ";
 if (grade2 >= 89) {
-  textPart6 += grade2 + "% - A";
+  textPart6 += grade2.toFixed(2) + "% - A";
 } else if (grade2 >= 77) {
-  textPart6 += grade2 + "% - B";
+  textPart6 += grade2.toFixed(2) + "% - B";
 } else if (grade2 >= 65) {
-  textPart6 += grade2 + "% - C";
+  textPart6 += grade2.toFixed(2) + "% - C";
 } else if (grade2 >= 53) {
-  textPart6 += grade2 + "% - D";
+  textPart6 += grade2.toFixed(2) + "% - D";
 } else if (grade2 >= 41) {
-  textPart6 += grade2 + "% - E";
+  textPart6 += grade2.toFixed(2) + "% - E";
 } else {
-  textPart6 += grade2 + "% - F";
+  textPart6 += grade2.toFixed(2) + "% - F";
 }
 printOut(textPart6);
 textPart6 = "Student 3: ";
 if (grade3 >= 89) {
-  textPart6 += grade3 + "% - A";
+  textPart6 += grade3.toFixed(2) + "% - A";
 } else if (grade3 >= 77) {
-  textPart6 += grade3 + "% - B";
+  textPart6 += grade3.toFixed(2) + "% - B";
 } else if (grade3 >= 65) {
-  textPart6 += grade3 + "% - C";
+  textPart6 += grade3.toFixed(2) + "% - C";
 } else if (grade3 >= 53) {
-  textPart6 += grade3 + "% - D";
+  textPart6 += grade3.toFixed(2) + "% - D";
 } else if (grade3 >= 41) {
-  textPart6 += grade3 + "% - E";
+  textPart6 += grade3.toFixed(2) + "% - E";
 } else {
-  textPart6 += grade3 + "% - F";
+  textPart6 += grade3.toFixed(2) + "% - F";
 }
 printOut(textPart6);
 
 textPart6 = "Student 4: ";
 if (grade4 >= 89) {
-  textPart6 += grade4 + "% - A";
+  textPart6 += grade4.toFixed(2) + "% - A";
 } else if (grade4 >= 77) {
-  textPart6 += grade4 + "% - B";
+  textPart6 += grade4.toFixed(2) + "% - B";
 } else if (grade4 >= 65) {
-  textPart6 += grade4 + "% - C";
+  textPart6 += grade4.toFixed(2) + "% - C";
 } else if (grade4 >= 53) {
-  textPart6 += grade4 + "% - D";
+  textPart6 += grade4.toFixed(2) + "% - D";
 } else if (grade4 >= 41) {
-  textPart6 += grade4 + "% - E";
+  textPart6 += grade4.toFixed(2) + "% - E";
 } else {
-  textPart6 += grade4 + "% - F";
+  textPart6 += grade4.toFixed(2) + "% - F";
 }
 printOut(textPart6);
 
 textPart6 = "Student 5: ";
 if (grade5 >= 89) {
-  textPart6 += grade5 + "% - A";
+  textPart6 += grade5.toFixed(2) + "% - A";
 } else if (grade5 >= 77) {
-  textPart6 += grade5 + "% - B";
+  textPart6 += grade5.toFixed(2) + "% - B";
 } else if (grade5 >= 65) {
-  textPart6 += grade5 + "% - C";
+  textPart6 += grade5.toFixed(2) + "% - C";
 } else if (grade5 >= 53) {
-  textPart6 += grade5 + "% - D";
+  textPart6 += grade5.toFixed(2) + "% - D";
 } else if (grade5 >= 41) {
-  textPart6 += grade5 + "% - E";
+  textPart6 += grade5.toFixed(2) + "% - E";
 } else {
-  textPart6 += grade5 + "% - F";
+  textPart6 += grade5.toFixed(2) + "% - F";
 }
 printOut(textPart6);
 
+let bigOCount = 0; // Count of operations for sorting
+
 //Print out the grades in descending order
+printOut("Grades sorted descending:");
 for (let i = 1; i < students; i++) {
+  // Outer loop to select the grade to compare
   let grade = 0;
   switch (i) {
     case 1:
@@ -235,58 +240,90 @@ for (let i = 1; i < students; i++) {
       grade = grade5;
       break;
   }
-  let j = 0;
+  let j = i + 1; // Set the inner loop counter to the next grade
+  let foundHighest = false;
   do {
-    let gradeCompare = 0;
+    // Inner loop to compare with the other grades, until we find a higher one
+    let nextGrade = 0;
+    // Get the next grade to compare
     switch (j) {
       case 1:
-        // swap with grade1
-        if (grade < grade1) {
-          let temp = grade;
-          grade = grade1;
-          grade1 = temp;
-        }
+        nextGrade = grade1;
         break;
       case 2:
-        if (grade < grade2) {
-          let temp = grade;
-          grade = grade2;
-          grade2 = temp;
-        }
+        nextGrade = grade2;
         break;
       case 3:
-        if (grade < grade3) {
-          let temp = grade;
-          grade = grade3;
-          grade3 = temp;
-        }
+        nextGrade = grade3;
         break;
       case 4:
-        if (grade < grade4) {
-          let temp = grade;
-          grade = grade4;
-          grade4 = temp;
-        }
+        nextGrade = grade4;
         break;
       case 5:
-        if (grade < grade5) {
-          let temp = grade;
-          grade = grade5;
-          grade5 = temp;
-        }
+        nextGrade = grade5;
         break;
     }
+    if (nextGrade > grade) {
+      // We have a new highest grade, swap them, but store current grade in temp
+      let temp;
+      switch (i) {
+        case 1:
+          temp = grade1;
+          grade1 = nextGrade;
+          break;
+        case 2:
+          temp = grade2;
+          grade2 = nextGrade;
+          break;
+        case 3:
+          temp = grade3;
+          grade3 = nextGrade;
+          break;
+        case 4:
+          temp = grade4;
+          grade4 = nextGrade;
+          break;
+        case 5:
+          temp = grade5;
+          grade5 = nextGrade;
+          break;
+      }
+      // put temp in the position of nextGrade
+      switch (j) {
+        case 1:
+          grade1 = temp;
+          break;
+        case 2:
+          grade2 = temp;
+          break;
+        case 3:
+          grade3 = temp;
+          break;
+        case 4:
+          grade4 = temp;
+          break;
+        case 5:
+          grade5 = temp;
+          break;
+      }
+      // You have done a swap.
+      // reset outer loop to start over
+      i = 0; // Remember the for loop will increment i, on next pass it will be 1
+      foundHighest = true;
+      bigOCount++; // Count the operation O(n^2)
+    }
     j++;
-  } while (j < students);
+  } while (j <= students && !foundHighest);
 }
 
-printOut("Grades sorted descending:");
-printOut("Grade 1: " + grade1 + "%");
-printOut("Grade 2: " + grade2 + "%");
-printOut("Grade 3: " + grade3 + "%");
-printOut("Grade 4: " + grade4 + "%");
-printOut("Grade 5: " + grade5 + "%");
-
+// Students number is now lost, but grades are sorted
+printOut("Grade #1: " + grade1.toFixed(2) + "%");
+printOut("Grade #2: " + grade2.toFixed(2) + "%");
+printOut("Grade #3: " + grade3.toFixed(2) + "%");
+printOut("Grade #4: " + grade4.toFixed(2) + "%");
+printOut("Grade #5: " + grade5.toFixed(2) + "%");
+printOut("");
+printOut(`Big O operations count for sorting: O(n^2) = ${bigOCount}, worst case scenario for bubble sort with ${students} students is 25 operations.`);
 printOut(newLine);
 
 printOut("--- Part 7 ----------------------------------------------------------------------------------------------");
@@ -302,81 +339,66 @@ Simulate 6 dice and print how many "throws" it takes to get:<br>
 </ul>
 `);
 
-function matchNumber(aText, aNumber) {
+function matchNumber(aN1, aN2, aN3, aN4, aN5, aN6, aNumber) {
   let count = 0;
-  for (let i = 0; i < aText.length; i++) {
-    if (aText.charAt(i) === aNumber.toString()) {
-      count++;
-    }
-  }
+  if (aN1 === aNumber) count++;
+  if (aN2 === aNumber) count++;
+  if (aN3 === aNumber) count++;
+  if (aN4 === aNumber) count++;
+  if (aN5 === aNumber) count++;
+  if (aN6 === aNumber) count++;
   return count;
 }
-let throws = 0;
-let fullStraight = false;
-let yahtzee = false;
+
+let throws = 0; // Number of throws
+let fullStraight = false; // 1 2 3 4 5 6
+let yahtzee = false; // All the same
 let tower = false; // 2 + 4 of a kind
 let threePairs = false; // 3 pairs e.g., 112233
 do {
-  const d1 = Math.ceil(Math.random() * 6);
-  const d2 = Math.ceil(Math.random() * 6);
-  const d3 = Math.ceil(Math.random() * 6);
-  const d4 = Math.ceil(Math.random() * 6);
-  const d5 = Math.ceil(Math.random() * 6);
-  const d6 = Math.ceil(Math.random() * 6);
+  const d1 = Math.ceil(Math.random() * 6); // Roll dice 1
+  const d2 = Math.ceil(Math.random() * 6); // Roll dice 2
+  const d3 = Math.ceil(Math.random() * 6); // Roll dice 3
+  const d4 = Math.ceil(Math.random() * 6); // Roll dice 4
+  const d5 = Math.ceil(Math.random() * 6); // Roll dice 5
+  const d6 = Math.ceil(Math.random() * 6); // Roll dice 6
   throws++;
-  const t = d1.toString() + d2.toString() + d3.toString() + d4.toString() + d5.toString() + d6.toString();
+  // Do the matching, and check for the combinations
 
-  let c1 = matchNumber(t, 1);
-  let c2 = matchNumber(t, 2);
-  let c3 = matchNumber(t, 3);
-  let c4 = matchNumber(t, 4);
-  let c5 = matchNumber(t, 5);
-  let c6 = matchNumber(t, 6);
-  const t2 = c1.toString() + c2.toString() + c3.toString() + c4.toString() + c5.toString() + c6.toString();
+  const c1 = matchNumber(d1, d2, d3, d4, d5, d6, 1);
+  const c2 = matchNumber(d1, d2, d3, d4, d5, d6, 2);
+  const c3 = matchNumber(d1, d2, d3, d4, d5, d6, 3);
+  const c4 = matchNumber(d1, d2, d3, d4, d5, d6, 4);
+  const c5 = matchNumber(d1, d2, d3, d4, d5, d6, 5);
+  const c6 = matchNumber(d1, d2, d3, d4, d5, d6, 6);
 
-  const cm1 = matchNumber(t2, 1); // count of numbers that appear once, used for full straight
-  const cm2 = matchNumber(t2, 2); // count of numbers that appear twice, used for three pairs and tower
-  const cm4 = matchNumber(t2, 4); // count of numbers that appear four times, used for tower
-  const cm6 = matchNumber(t2, 6); // count of numbers that appear six times
+  const cm1 = matchNumber(c1, c2, c3, c4, c5, c6, 1); // Count of numbers that appear once, used for full straight
+  const cm2 = matchNumber(c1, c2, c3, c4, c5, c6, 2); // Count of numbers that appear twice, used for three pairs
+  const cm4 = matchNumber(c1, c2, c3, c4, c5, c6, 4); // Count of numbers that appear four times, used for tower
+  const cm6 = matchNumber(c1, c2, c3, c4, c5, c6, 6); // Count of numbers that appear six times, used for yahtzee
   // Check for full straight
   if (cm1 === 6 && !fullStraight) {
     // We have a full straight
     fullStraight = true;
-    printOut("Full straight: " + t + " (throws: " + throws + ")");
+    printOut(`Full straight: ${d1}${d2}${d3}${d4}${d5}${d6} (throws: ${throws})`);
   }
   // Check for yahtzee
   if (cm6 === 1 && !yahtzee) {
     // We have yahtzee
     yahtzee = true;
-    printOut("Yahtzee: " + t + " (throws: " + throws + ")");
+    printOut(`Yahtzee: ${d1}${d2}${d3}${d4}${d5}${d6} (throws: ${throws})`);
   }
   //check for tower
   if (cm4 === 1 && cm2 === 1 && !tower) {
     // We have a tower
     tower = true;
-    printOut("Tower: " + t + " (throws: " + throws + ")");
+    printOut(`Tower: ${d1}${d2}${d3}${d4}${d5}${d6} (throws: ${throws})`);
   }
   //check for three pairs
   if (cm2 === 3 && !threePairs) {
     // We have three pairs
     threePairs = true;
-    printOut("Three pairs: " + t + " (throws: " + throws + ")");
+    printOut(`Three pairs: ${d1}${d2}${d3}${d4}${d5}${d6} (throws: ${throws})`);
   }
 } while (!fullStraight || !yahtzee || !tower || !threePairs);
-printOut(newLine);
-
-printOut("--- Part 8 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
-
-printOut("--- Part 9 ----------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
-printOut(newLine);
-
-/* Task 10*/
-printOut("--- Part 10 ---------------------------------------------------------------------------------------------");
-/* Put your code below here!*/
-printOut("Replace this with you answer!");
 printOut(newLine);
