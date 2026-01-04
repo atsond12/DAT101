@@ -400,8 +400,3 @@ quiz_code
 fasit
 tut
 test
-module-5
-common/script/docs
-common/script/.vscode
-common/script
-!common/script/utils.mjs

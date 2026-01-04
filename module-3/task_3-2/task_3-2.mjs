@@ -338,6 +338,15 @@ Simulate 6 dice and print how many "throws" it takes to get:<br>
 <li>All the same (Yahtzee)</li>
 </ul>
 `);
+// This part has least two possible solutions, one using strings and one using numbers.
+
+const solveWithStrings = true; // Set to true to solve with strings, false to solve with numbers
+
+if(solveWithStrings) {
+  printOut("Solving with strings");
+} else {
+  printOut("Solving with numbers");
+}
 
 function matchNumber(aN1, aN2, aN3, aN4, aN5, aN6, aNumber) {
   let count = 0;
@@ -347,6 +356,17 @@ function matchNumber(aN1, aN2, aN3, aN4, aN5, aN6, aNumber) {
   if (aN4 === aNumber) count++;
   if (aN5 === aNumber) count++;
   if (aN6 === aNumber) count++;
+  return count;
+}
+
+function matchString(aString, aNumber) {
+  // Count how many times aNumber appears in aString
+  let count = 0;
+  for (let i = 0; i < aString.length; i++) {
+    if (parseInt(aString.charAt(i), 10) === aNumber) {
+      count++;
+    }
+  }
   return count;
 }
 
@@ -364,18 +384,37 @@ do {
   const d6 = Math.ceil(Math.random() * 6); // Roll dice 6
   throws++;
   // Do the matching, and check for the combinations
-
-  const c1 = matchNumber(d1, d2, d3, d4, d5, d6, 1);
-  const c2 = matchNumber(d1, d2, d3, d4, d5, d6, 2);
-  const c3 = matchNumber(d1, d2, d3, d4, d5, d6, 3);
-  const c4 = matchNumber(d1, d2, d3, d4, d5, d6, 4);
-  const c5 = matchNumber(d1, d2, d3, d4, d5, d6, 5);
-  const c6 = matchNumber(d1, d2, d3, d4, d5, d6, 6);
-
-  const cm1 = matchNumber(c1, c2, c3, c4, c5, c6, 1); // Count of numbers that appear once, used for full straight
-  const cm2 = matchNumber(c1, c2, c3, c4, c5, c6, 2); // Count of numbers that appear twice, used for three pairs
-  const cm4 = matchNumber(c1, c2, c3, c4, c5, c6, 4); // Count of numbers that appear four times, used for tower
-  const cm6 = matchNumber(c1, c2, c3, c4, c5, c6, 6); // Count of numbers that appear six times, used for yahtzee
+  let c1, c2, c3, c4, c5, c6;
+  if (solveWithStrings) {
+    const diceString = "" + d1 + d2 + d3 + d4 + d5 + d6;
+    c1 = matchString(diceString, 1);
+    c2 = matchString(diceString, 2);
+    c3 = matchString(diceString, 3);
+    c4 = matchString(diceString, 4);
+    c5 = matchString(diceString, 5);
+    c6 = matchString(diceString, 6);
+  } else {
+    c1 = matchNumber(d1, d2, d3, d4, d5, d6, 1);
+    c2 = matchNumber(d1, d2, d3, d4, d5, d6, 2);
+    c3 = matchNumber(d1, d2, d3, d4, d5, d6, 3);
+    c4 = matchNumber(d1, d2, d3, d4, d5, d6, 4);
+    c5 = matchNumber(d1, d2, d3, d4, d5, d6, 5);
+    c6 = matchNumber(d1, d2, d3, d4, d5, d6, 6);
+  }
+  // Now check for the combinations
+  let cm1, cm2, cm4, cm6;
+  if (solveWithStrings) {
+    const matchingString = "" + c1 + c2 + c3 + c4 + c5 + c6;
+    cm1 = matchString(matchingString, 1);
+    cm2 = matchString(matchingString, 2);
+    cm4 = matchString(matchingString, 4);
+    cm6 = matchString(matchingString, 6);
+  } else {
+    cm1 = matchNumber(c1, c2, c3, c4, c5, c6, 1); // Count of numbers that appear once, used for full straight
+    cm2 = matchNumber(c1, c2, c3, c4, c5, c6, 2); // Count of numbers that appear twice, used for three pairs
+    cm4 = matchNumber(c1, c2, c3, c4, c5, c6, 4); // Count of numbers that appear four times, used for tower
+    cm6 = matchNumber(c1, c2, c3, c4, c5, c6, 6); // Count of numbers that appear six times, used for yahtzee
+  }
   // Check for full straight
   if (cm1 === 6 && !fullStraight) {
     // We have a full straight

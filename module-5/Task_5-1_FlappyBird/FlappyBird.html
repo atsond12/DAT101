@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Flappy Bird</title>
+    <style>
+      .prevent-select {
+        -webkit-user-select: none; /* Safari */
+        -ms-user-select: none; /* IE 10 and IE 11 */
+        user-select: none; /* Standard syntax */
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "libSprite": "../../common/script/libSprite.mjs",
+          "lib2d": "../../common/script/lib2d.mjs",
+          "libSound": "../../common/script/libSound.mjs"
+        }
+      }
+    </script>
+    <script type="module" src="./FlappyBird.mjs" defer></script>
+  </head>
+  <body class="prevent-select">
+    <canvas id="cvs" style="background-color: antiquewhite"></canvas>
+    <fieldset style="max-width: 550px; margin-top: 25px">
+      <legend>Game Settings</legend>
+      <fieldset style="margin-top: 5px">
+        <legend>Day or Night</legend>
+        <span><input type="radio" name="rbDayNight" checked="checked" value="1" style="margin-right: 10px" />Day</span>
+        <br />
+        <span><input type="radio" name="rbDayNight" value="0" style="margin-right: 10px" />Night</span>
+      </fieldset>
+      <p>
+        <input id="chkMuteSound" type="checkbox" />
+        <label for="chkMuteSound">Mute sound</label>
+      </p>
+    </fieldset>
+  </body>
+</html>
