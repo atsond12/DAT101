@@ -26,8 +26,22 @@
   <body class="prevent-select">
     <canvas id="cvs" style="background-color: antiquewhite" width="1024" height="512"></canvas>
   </body>
-  <script defer>
+  <script type="module" defer>
+    // Import libraries
+    import { TSpriteCanvas } from "libSprite";
+
+    // Global variables
     const cvs = document.getElementById("cvs");
     const ctx = cvs.getContext("2d");
+    const spcvs = new TSpriteCanvas(cvs);
+
+    // Functions
+    function sheetLoaded(){
+      console.log("Sheet loaded");
+    }
+
+    // Main application
+    spcvs.loadSpriteImage("sonic_sprite_sheet.png", sheetLoaded);
+
   </script>
 </html>
