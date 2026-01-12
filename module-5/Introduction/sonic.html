@@ -42,28 +42,78 @@
       sonic6: { x: 0, y: 575, width: 102, height: 125, count: 3},
       sonic7: { x: 0, y: 700, width: 102, height: 125, count: 2},
       sonic8: { x: 0, y: 825, width: 102, height: 125, count: 2},
-      sonic9: { x: 0, y: 950, width: 102, height: 125, count: 4}
+      sonic9: { x: 0, y: 955, width: 102, height: 140, count: 4}
     }
 
     const cvs = document.getElementById("cvs");
     const ctx = cvs.getContext("2d");
     const spcvs = new TSpriteCanvas(cvs);
-    const hero = new TSprite(spcvs, SpriteInfoList.sonic2, 0, 100);
+    const hero1 = new TSprite(spcvs, SpriteInfoList.sonic2, 0, 100);
+    const hero2 = new TSprite(spcvs, SpriteInfoList.sonic1, 100, 250);
+    const hero3 = new TSprite(spcvs, SpriteInfoList.sonic5, 300, 350);
+    const hero4 = new TSprite(spcvs, SpriteInfoList.sonic9, 500, 250);
 
     // Functions
 
     function drawCanvas(){
-      hero.draw();
+      // This is a high performance function
+      // Do not do any heavy calculation here
+
+      hero1.draw();
+      hero2.draw();
+      hero3.draw();
+      hero4.draw();
+    }
+
+    let dir = 1; // 1 = right, -1 = left
+    function animate(){
+      hero1.x += 3 * dir;
+      console.log(hero1.x);
+      if((hero1.x > cvs.width - hero1.width) || ( hero1.x + hero1.width < 0 && dir < 0)){
+        dir *= -1;
+        hero1.flipHorizontal();
+        hero2.hidden = !hero2.hidden;
+        hero3.hidden = !hero3.hidden;
+
+      }
     }
 
     function sheetLoaded(){
       console.log("Sheet loaded");
       spcvs.showFramerate = true;
       spcvs.onDraw = drawCanvas;
+      hero1.animationSpeed = 20;
+      hero1.rotation = 0;
+      hero2.animationSpeed = 10;
+      hero2.hidden = true;
+      hero3.animationSpeed = 15;
+      hero3.hidden = true;
+      hero4.animationSpeed = 15;
+      
+      // Start animation
+      setInterval(animate, 20);
+    }
+
+    function onKeyDown(aEvent){
+      switch(aEvent.code){
+        case "ArrowUp":
+          hero4.y -= 5;
+          break;
+        case "ArrowRight":
+          hero4.x += 5;
+          break;
+        case "ArrowDown":
+          hero4.y += 5;
+          break;
+        case "ArrowLeft":
+          hero4.x -= 5;
+          break;
+      }
     }
 
     // Main application
     spcvs.loadSpriteImage("sonic_sprite_sheet.png", sheetLoaded);
+    document.addEventListener("keydown", onKeyDown);
 
   </script>
 </html>
