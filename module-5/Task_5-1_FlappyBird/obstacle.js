@@ -1,5 +1,6 @@
 "use strict";
 import { TSprite } from "libSprite";
+import { hero, EGameStatus } from "./FlappyBird.mjs";
 
 const EasyFlyerGap = 150;
 const HardFlyerGap = 100;
@@ -48,6 +49,12 @@ export class TObstacle{
   animate(){
     this.#spDown.x--;
     this.#spUp.x--;
+    let hasCollided = hero.hasCollided(this.#spDown) || hero.hasCollided(this.#spUp);
+
+    if(hasCollided){
+      console.log("Collision with Hero!");
+      EGameStatus.state = EGameStatus.heroIsDead;
+    }
   }
 
 }// End of class TObstacle
