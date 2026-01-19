@@ -17,7 +17,7 @@ export class TObstacle{
     const gap = Math.ceil(Math.random() * (EasyFlyerGap - HardFlyerGap) + HardFlyerGap);
     const minTop = -this.#spi.height + MinimumProtrusion; // Minimum top position for upper obstacle
     const maxTop = -MinimumProtrusion; // Maximum top position for upper obstacle
-    // Genrate random top position for upper obstacle
+    // Generate random top position for upper obstacle
     let top = Math.ceil(Math.random() * (maxTop - minTop) + minTop);
     const minBottom = 400 - MinimumProtrusion; // Minimum bottom position for lower obstacle
     let topWithGap = this.#spi.height + top + gap; // Initial position of bottom obstacle based on the height of the sprite, gap, and top 

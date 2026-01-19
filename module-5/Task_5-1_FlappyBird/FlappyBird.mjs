@@ -50,7 +50,7 @@ function animateGame(){
   for(let i = 0; i < obstacles.length; i++){
     const obstacle = obstacles[i];
     obstacle.animate();
-    if(obstacle.x < -50){
+    if(obstacle.x < 100){
       deleteObstacle = true;
     }
   }
