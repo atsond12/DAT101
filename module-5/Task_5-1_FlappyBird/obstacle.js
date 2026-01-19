@@ -54,6 +54,8 @@ export class TObstacle{
     if(hasCollided){
       console.log("Collision with Hero!");
       EGameStatus.state = EGameStatus.heroIsDead;
+      hero.animationSpeed = 0;
+      hero.flap(); // Last flap of death!
     }
   }
 
