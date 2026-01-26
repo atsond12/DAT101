@@ -36,7 +36,7 @@ const background = new TBackground(spcvs, SpriteInfoList);
 export const hero = new THero(spcvs, SpriteInfoList.hero1);
 const obstacles = [];
 const baits = [];
-const menu = new TMenu(spcvs, SpriteInfoList);
+export const menu = new TMenu(spcvs, SpriteInfoList);
 
 //--------------- Functions ----------------------------------------------//
 export function startGame() {
@@ -76,6 +76,7 @@ function animateGame() {
   if (eaten >= 0) {
     console.log("Eaten!");
     baits.splice(eaten, 1);
+    hero.eat();
   }
 
   if (EGameStatus.state === EGameStatus.gaming) {
