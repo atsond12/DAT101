@@ -12,6 +12,7 @@ export class TMenu{
   #spCountDown;
   #sfCountDown;
   #sfRunning;
+  #spGameScore;
   constructor(aSpcvs, aSPI){
     this.#spTitle = new TSprite(aSpcvs, aSPI.flappyBird, 200, 100);
     this.#spPlayBtn = new TSpriteButton(aSpcvs, aSPI.buttonPlay, 240, 180);
@@ -20,6 +21,12 @@ export class TMenu{
     this.#spCountDown.visible = false;
     this.#sfCountDown = null;
     this.#sfRunning = null;
+    this.#spGameScore = new TSpriteNumber(aSpcvs, aSPI.numberSmall, 10, 10);
+    this.#spGameScore.alpha = 0.5;
+  }
+
+  incGameScore(aScore){
+    this.#spGameScore.value += aScore;
   }
 
   stopSound(){
@@ -30,6 +37,7 @@ export class TMenu{
     this.#spTitle.draw();
     this.#spPlayBtn.draw();
     this.#spCountDown.draw();
+    this.#spGameScore.draw();
   }
 
   countDown(){
