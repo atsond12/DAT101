@@ -13,7 +13,6 @@ export class TBait extends TSprite {
     this.#speed = Math.ceil(Math.random() * 10) / 10;
     this.y += this.#wave.value;
     this.animationSpeed = this.#speed * 50;
-    this.debug = true;
   }
 
   animate() {

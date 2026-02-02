@@ -20,7 +20,6 @@ export class THero extends TSprite {
     this.animationSpeed = 20;
     this.#gravity = 9.81 / 100;
     this.#speed = 0;
-    this.debug = true;
     this.#wave = new TSineWave(1, 1);
     this.y += this.#wave.value;
     this.#sfFood = null;
