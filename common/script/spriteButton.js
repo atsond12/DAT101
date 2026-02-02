@@ -113,7 +113,6 @@ export class TSpriteButton extends TSprite {
   isMouseOver(aPos) {
     return this.checkCollision(aPos);
   }
-
 }
 
 /**

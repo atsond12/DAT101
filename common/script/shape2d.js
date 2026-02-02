@@ -287,14 +287,14 @@ export class TCircle extends T2DShape {
       case E2DShapeType.RECT:
         return aShape.overlaps(this);
       case E2DShapeType.CIRCLE:
-        return this.distanceToPoint(aShape) < this.radius + aShape.radius;
+        return this.distanceToPoint(aShape.center) <= aShape.radius;
       case E2DShapeType.ELLIPSE:
         return aShape.overlaps(this);
       case E2DShapeType.POINT:
-        return this.distanceToPoint(aShape) < this.radius;
+        return this.distanceToPoint(aShape) <= 0;
       default:
         if (aShape.x !== undefined && aShape.y !== undefined) {
-          return this.distanceToPoint(aShape) < this.radius;
+          return this.distanceToPoint(aShape) <= 0;
         }
         throw new TypeError("Shape type not implemented.");
     }
@@ -306,7 +306,7 @@ export class TCircle extends T2DShape {
    * @returns {number} The distance between the circle and the point
    */
   distanceToPoint(aPoint) {
-    return Math.max(0, Math.hypot(this.x - aPoint.x, this.y - aPoint.y) - this.radius);
+    return Math.max(0, Math.hypot(this.center.x - aPoint.x, this.center.y - aPoint.y) - this.radius);
   }
 
   /**
@@ -379,18 +379,16 @@ export class TEllipse extends T2DShape {
    * @returns {boolean} True if the shapes overlap, false otherwise
    */
   overlaps(aShape) {
-    let delta;
     switch (aShape.type) {
       case E2DShapeType.RECT:
       case E2DShapeType.CIRCLE:
         return aShape.overlaps(this);
       case E2DShapeType.ELLIPSE:
-        delta = this.distanceToPoint(aShape);
-        return delta < this.radiusX + aShape.radiusX && delta < this.radiusY + aShape.radiusY;
+        return this.distanceToPoint(aShape.center) <= aShape.radiusX || this.distanceToPoint(aShape.center) <= aShape.radiusY;
       default:
         // Handle Points (generic objects with x, y)
         if (aShape.x !== undefined && aShape.y !== undefined) {
-          return this.distanceToPoint(aShape) === 0;
+          return this.distanceToPoint(aShape) <= 0;
         }
         throw new TypeError("Shape type not implemented.");
     }
@@ -402,8 +400,8 @@ export class TEllipse extends T2DShape {
    * @returns {number} The distance between the ellipse and the point
    */
   distanceToPoint(aPoint) {
-    let dx = Math.max(0, Math.abs(this.x - aPoint.x) - this.radiusX);
-    let dy = Math.max(0, Math.abs(this.y - aPoint.y) - this.radiusY);
+    let dx = Math.max(0, Math.abs(this.center.x - aPoint.x) - this.radiusX);
+    let dy = Math.max(0, Math.abs(this.center.y - aPoint.y) - this.radiusY);
     return Math.hypot(dx, dy);
   }
 
