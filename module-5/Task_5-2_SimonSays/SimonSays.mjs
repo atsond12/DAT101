@@ -26,6 +26,10 @@ export const gameProps = {
 };
 
 //--------------- Functions ----------------------------------------------//
+export function updateRound(aRound){
+  gameBoard.spRound.value = aRound;
+}
+
 export function gameOver(){
   EGameStatusType.state = EGameStatusType.GameOver;
   gameBoard.gameOver();
