@@ -36,6 +36,12 @@ export class TGameBoard extends TSprite{
     return this.#colorButtons;
   }
 
+  gameOver(){
+    this.#disableColorButtons(true);
+    this.#gameInfo.index = 1;
+    this.#gameInfo.hidden = false;
+  }
+
   draw(){
     super.draw();
     for(let i = 0; i < this.#colorButtons.length; i++){

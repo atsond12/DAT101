@@ -26,6 +26,11 @@ export const gameProps = {
 };
 
 //--------------- Functions ----------------------------------------------//
+export function gameOver(){
+  EGameStatusType.state = EGameStatusType.GameOver;
+  gameBoard.gameOver();
+}
+
 export function spawnColorButton(){
   EGameStatusType.state = EGameStatusType.Computer;
   const colorButtons = gameBoard.colorButtons;

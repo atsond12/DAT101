@@ -1,5 +1,5 @@
 "use strict";
-import { EGameStatusType, spawnColorButton } from "./SimonSays.mjs";
+import { EGameStatusType, spawnColorButton, gameOver} from "./SimonSays.mjs";
 
 let colorButton = null;
 let sequence = [];
@@ -28,7 +28,7 @@ export function testOfUserInput(aColorButton){
       spawnColorButton();
     }
   }else{
-    console.log("Oh no!");
+    gameOver();
   }
 }
 
@@ -45,6 +45,8 @@ function setButtonUp(){
     setTimeout(setButtonDown, 500);
   }else{
     EGameStatusType.state = EGameStatusType.Gamer;
+    seqIndex = 0; //NB: If not, the sequence starts to early.
+    colorButton = sequence[0];
   }
 }
 
