@@ -39,6 +39,14 @@ export class TColorButton extends TSpriteButton{
     }
   }
 
+  onMouseLeave(aEvent){
+    super.onMouseLeave(aEvent);
+    this.index = 0;
+    if(this.#sound){
+      this.#sound.stop();
+    }
+  }
+
   onMouseUp(){
     this.index = 0;
     if(this.#sound){
