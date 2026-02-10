@@ -98,7 +98,7 @@ const newShapeType = { ShapeType: EShapeType.Line, FillColor: EColorType.Black, 
  */
 const menu = new TMenu(newShapeType);
 
-// 🖼️ Access the paint canvas and drawing context
+// 🖼️ Access the paint canvas and drawing context, move this to your new JavaScript file.
 const cvsPaint = document.getElementById("cvsPaint");
 const ctxPaint = cvsPaint.getContext("2d");
 
