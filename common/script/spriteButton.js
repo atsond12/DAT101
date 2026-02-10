@@ -2,7 +2,7 @@ import { TPoint } from "./point2d.js";
 import { TSprite } from "./sprite.js";
 import { TEventListenerList } from "./eventListener.js";
 
-const ESpriteButtonEventNames = { CLICK: "click", MOUSEENTER: "mouseenter", MOUSELEAVE: "mouseleave",  MOUSEDOWN: "mousedown", MOUSEUP: "mouseup" };
+const ESpriteButtonEventNames = { CLICK: "click", MOUSEENTER: "mouseenter", MOUSELEAVE: "mouseleave", MOUSEDOWN: "mousedown", MOUSEUP: "mouseup" };
 
 export class TSpriteButton extends TSprite {
   // ============================================================
@@ -22,23 +22,21 @@ export class TSpriteButton extends TSprite {
    * @param {number} aX - The x position of the button
    * @param {number} aY - The y position of the button
    * @param {class} aShapeClass - Optional shape class for collision detection, defaults to TRectangle
-  */
+   */
   constructor(aSpriteCanvas, aSpriteInfo, aX, aY, aShapeClass) {
     super(aSpriteCanvas, aSpriteInfo, aX, aY, aShapeClass);
     this.#eventHandlers = new TEventListenerList();
     this.spcvs.addGUISprite(this);
-    this.disabled = false;
+    // Note: Don't initialize this.disabled here - child classes may override with private fields
   }
 
   // ============================================================
   //  PRIVATE FUNCTIONS
   // ============================================================
-  
 
   // ============================================================
   //  PUBLIC ATTRIBUTES (GETTERS / SETTERS)
   // ============================================================
-
 
   // ============================================================
   //  PUBLIC FUNCTIONS
@@ -48,7 +46,7 @@ export class TSpriteButton extends TSprite {
    * @description Adds an event listener to the button
    * @param {string} aEventName - The name of the event
    * @param {function} aHandler - The event handler function
-  */
+   */
   addEventListener(aEventName, aHandler) {
     this.#eventHandlers.addListener(aEventName, aHandler);
   }
@@ -57,14 +55,14 @@ export class TSpriteButton extends TSprite {
    * @description Removes an event listener from the button
    * @param {string} aEventName - The name of the event
    * @param {function} aHandler - The event handler function
-  */
+   */
   removeEventListener(aEventName, aHandler) {
     this.#eventHandlers.removeListener(aEventName, aHandler);
   }
 
   /**
-   * 
-  * @description Internal function called when the button is clicked. DO NOT CALL DIRECTLY.
+   *
+   * @description Internal function called when the button is clicked. DO NOT CALL DIRECTLY.
    */
   onClick(aEvent) {
     aEvent.target = this;
@@ -78,7 +76,7 @@ export class TSpriteButton extends TSprite {
     aEvent.target = this;
     this.#eventHandlers.callAll(aEvent, ESpriteButtonEventNames.MOUSEDOWN);
   }
-  
+
   /**
    * @description Internal function called when the mouse button is released on the button. DO NOT CALL DIRECTLY.
    */
@@ -113,6 +111,11 @@ export class TSpriteButton extends TSprite {
   isMouseOver(aPos) {
     return this.checkCollision(aPos);
   }
+
+  press(aDuration = 500) {
+    this.onMouseDown();
+    new Promise((resolve) => setTimeout(resolve, aDuration)).then(() => this.onMouseUp());
+  }
 }
 
 /**
@@ -129,7 +132,8 @@ export class TSpriteButtonHaptic extends TSpriteButton {
   // ============================================================
   //  PRIVATE ATTRIBUTES
   // ============================================================
-  #disabledState;
+  // Note: Parent constructor sets 'this.disabled = false', which triggers our setter below.
+  #disabledState = false;
 
   // ============================================================
   //  CONSTRUCTOR
@@ -145,9 +149,6 @@ export class TSpriteButtonHaptic extends TSpriteButton {
   constructor(aSpriteCanvas, aSpriteInfo, aX, aY, aShapeClass) {
     // Parent expects (canvas, info, x, y, shapeClass)
     super(aSpriteCanvas, aSpriteInfo, aX, aY, aShapeClass);
-    // Initialize private backing field. 
-    // Note: Parent constructor sets 'this.disabled = false', which triggers our setter below.
-    this.#disabledState = false;
   }
 
   // ============================================================
@@ -222,7 +223,6 @@ export class TSpriteButtonHaptic extends TSpriteButton {
   }
 } // End of TSpriteButtonHaptic class
 
-
 /**
  * @description Helper class to define snap positions.
  * @class TSnapTo
@@ -295,7 +295,7 @@ export class TSpriteDraggable extends TSpriteButton {
     this.#canDrop = true;
     this.snapTo = null; // Instance of TSnapTo
     this.#dropPos = null;
-    
+
     // Delegates for user callbacks
     this.onDrop = null;
     this.onCancelDrop = null;
@@ -329,7 +329,7 @@ export class TSpriteDraggable extends TSpriteButton {
     if (!this.#offset) {
       // Store initial position for cancelling
       this.#startDragPos = new TPosition(this.x, this.y);
-      
+
       // Calculate offset: Sprite Position - Mouse Position
       // Use aEvent properties as they are normalized by TSpriteCanvas
       this.#offset = new TPosition(this.x - aEvent.x, this.y - aEvent.y);
@@ -379,7 +379,7 @@ export class TSpriteDraggable extends TSpriteButton {
     if (this.snapTo) {
       // Create a temporary point to check against snap targets
       // We check where the sprite *would* be
-      const potentialPos = { x: newX, y: newY }; 
+      const potentialPos = { x: newX, y: newY };
       const snappedPos = this.snapTo.doSnap(potentialPos);
 
       if (snappedPos) {
@@ -387,7 +387,7 @@ export class TSpriteDraggable extends TSpriteButton {
         newY = snappedPos.y;
         this.#dropPos = snappedPos;
         // If we snapped, we implicitly allow the drop there (unless specific logic says otherwise)
-        this.#canDrop = true; 
+        this.#canDrop = true;
       } else {
         this.#dropPos = null;
       }
@@ -399,15 +399,15 @@ export class TSpriteDraggable extends TSpriteButton {
 
     // 3. Validate Drop
     // Note: lastCollisionSprite is the correct property name from sprite.js
-    let collisionFree = (this.lastCollisionSprite === null);
-    
+    let collisionFree = this.lastCollisionSprite === null;
+
     // If user provided a custom validator, use it, otherwise default to true
     if (this.onCanDrop) {
       this.#canDrop = this.onCanDrop(new TPosition(this.x, this.y));
     } else {
       // Default behavior: drop is valid if no collision
       // (You might want to remove the collision check if overlapping is allowed)
-      this.#canDrop = true; 
+      this.#canDrop = true;
     }
 
     // 4. Update Cursor Feedback

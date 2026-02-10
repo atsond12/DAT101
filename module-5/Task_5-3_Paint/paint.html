@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="./paint.css" />
+  <title>Paint</title>
+  <style>
+    .prevent-select {
+      -webkit-user-select: none;
+      /* Safari */
+      -ms-user-select: none;
+      /* IE 10 and IE 11 */
+      user-select: none;
+      /* Standard syntax */
+    }
+  </style>
+  <script type="importmap">
+      {
+        "imports": {
+          "libSprite": "../../common/script/libSprite.mjs",
+          "lib2d": "../../common/script/lib2d.mjs",
+          "libSound": "../../common/script/libSound.mjs"
+        }
+      }
+    </script>
+  <script src="./paint.mjs" type="module" defer></script>
+</head>
+<table>
+    <tr>
+        <td>
+            <canvas id="cvsMenu" width="775" height="115"
+                    style="background-color: floralwhite; border: thin  gray solid"></canvas>
+        </td>
+        <td>
+            <div id="paintObjectList">
+                <div id="divPaintObject" class="paintObject">Shape-1</div>
+            </div>
+        </td>
+    </tr>
+</table>
+<br/>
+<canvas id="cvsPaint" width="1000" height="500" style="background-color: ghostwhite; border: thin  gray solid"></canvas>
+<h4>Press F12 to debug (Chrome and Firefox)</h4>
+</body>
+
+</html>

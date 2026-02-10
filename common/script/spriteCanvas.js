@@ -199,7 +199,7 @@ export class TSpriteCanvas {
       if (newActiveGUISprite) {
         const newEvent = {
           ...aEvent,
-          target: this,
+          target: newActiveGUISprite,
           x: this.#mousePos.x,
           y: this.#mousePos.y,
         };
@@ -215,7 +215,7 @@ export class TSpriteCanvas {
     if (this.#activeGUISprite) {
       const newEvent = {
         ...aEvent,
-        target: this,
+        target: this.#activeGUISprite,
         x: this.#mousePos.x,
         y: this.#mousePos.y,
       };
@@ -230,7 +230,7 @@ export class TSpriteCanvas {
     if (this.#mouseDownGUISprite) {
       const newEvent = {
         ...aEvent,
-        target: this,
+        target: this.#mouseDownGUISprite,
         x: this.#mousePos.x,
         y: this.#mousePos.y,
       };
@@ -246,7 +246,7 @@ export class TSpriteCanvas {
       // Only trigger mouse up if the mouse is still over the same sprite that received mousedown
       const newEvent = {
         ...aEvent,
-        target: this,
+        target: this.#mouseUpGUISprite,
         x: this.#mousePos.x,
         y: this.#mousePos.y,
       };
@@ -267,7 +267,7 @@ export class TSpriteCanvas {
     if (this.#activeGUISprite) {
       const newEvent = {
         ...aEvent,
-        target: this,
+        target: this.#activeGUISprite,
         x: this.#mousePos.x,
         y: this.#mousePos.y,
       };
@@ -395,6 +395,7 @@ export class TSpriteCanvas {
    * @returns {boolean} True if the listener was added successfully, false otherwise.
    */
   addEventListener(aEventName, aHandler) {
+    this.#cvs.addEventListener(aEventName, aHandler);
     return this.#eventHandlers.addListener(aEventName, aHandler);
   }
 
@@ -403,6 +404,7 @@ export class TSpriteCanvas {
    * @param {string} aEventName - The name of the event.
    */
   removeEventListener(aEventName) {
+    this.#cvs.removeEventListener(aEventName, this.#eventHandlers.getHandler(aEventName));
     this.#eventHandlers.removeListener(aEventName);
   }
 
