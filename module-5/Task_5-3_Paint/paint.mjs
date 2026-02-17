@@ -1,7 +1,7 @@
 "use strict";
 
 import { TMenu, EActionType, EColorType, EShapeType, EStrokeSizeType } from "./menu.js";
-
+import { } from "./shape.js"
 /*
 📝 TODO: Create a Shape System
 ═══════════════════════════════════════════════════════════════════
@@ -97,12 +97,6 @@ const newShapeType = { ShapeType: EShapeType.Line, FillColor: EColorType.Black, 
  * E.g. index {0, 1, 2, 3} for normal, hover, mouse down, disabled states.
  */
 const menu = new TMenu(newShapeType);
-
-// 🖼️ Access the paint canvas and drawing context, move this to your new JavaScript file.
-const cvsPaint = document.getElementById("cvsPaint");
-const ctxPaint = cvsPaint.getContext("2d");
-
-
 
 /**
  * 📢 MENU BUTTON HANDLER

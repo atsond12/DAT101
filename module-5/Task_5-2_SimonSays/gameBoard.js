@@ -27,7 +27,6 @@ export class TGameBoard extends TSprite{
     let posY = center.y - aSPI.ButtonStartEnd.height / 2;
 
     this.#gameInfo = new TSpriteButton(aSpcvs, aSPI.ButtonStartEnd, posX, posY, TCircle);
-    this.#gameInfo.debug = true;
     this.#gameInfo.onClick = this.#gameInfoClick.bind(this);
     this.#disableColorButtons(true);
     this.#isSoundEnabled = false;
