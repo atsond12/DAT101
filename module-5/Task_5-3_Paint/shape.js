@@ -123,19 +123,97 @@ export class TRectangleShape extends TShape{
   }
 
   #calcSize(){
-    this.#width = Math.abs(mousePos.x - this.posStart.x);
-    this.#height = Math.abs(mousePos.y - this.posStart.y);
+    this.#width = mousePos.x - this.posStart.x;
+    this.#height = mousePos.y - this.posStart.y;
   }
 
 
 } // End of TRectangleShape
             
+export class TPenShape extends TShape{
+  #points;
+  constructor(aX, aY){
+    super(aX, aY)
+    this.#points = [];
+  }
 
+  addPos(aX, aY){
+    const pos = new TPoint(aX, aY);
+    this.#points.push(pos);
+  }
+
+  draw(){
+    ctxPaint.beginPath();
+    ctxPaint.moveTo(this.posStart.x, this.posStart.y);
+    
+    for(let i = 0; i < this.#points.length; i++){
+      const pos = this.#points[i];
+      ctxPaint.lineTo(pos.x, pos.y);
+    }
+    
+    if(this.posEnd){
+      ctxPaint.lineTo(this.posEnd.x, this.posEnd.y);
+    }
+    ctxPaint.stroke();
+  }
+
+} // End of TPenShape
+
+export class TPolygonShape extends TShape{
+  #points;
+  constructor(aX, aY){
+    super(aX, aY)
+    this.#points = [];
+    this.snap = false;
+  }
+
+  addPos(aX, aY){
+    const pos = new TPoint(aX, aY);
+    this.#points.push(pos);
+  }
+
+  draw(){
+    ctxPaint.beginPath();
+    ctxPaint.moveTo(this.posStart.x, this.posStart.y);
+    
+    for(let i = 0; i < this.#points.length; i++){
+      const pos = this.#points[i];
+      ctxPaint.lineTo(pos.x, pos.y);
+    }
+    
+    if(this.posEnd){
+      ctxPaint.lineTo(this.posEnd.x, this.posEnd.y);
+    }else{
+      ctxPaint.lineTo(mousePos.x, mousePos.y);
+    }
+    ctxPaint.stroke();
+  }
+
+} // End of TPolygonShape
 
 function updateMousePos(aEvent){
   const rect = cvsPaint.getBoundingClientRect();
   mousePos.x = Math.round(aEvent.clientX - rect.left);
   mousePos.y = Math.round(aEvent.clientY - rect.top);
+  if(shape !== null){
+    if(newShapeType.ShapeType === EShapeType.Pen){
+      shape.addPos(mousePos.x, mousePos.y);
+    }else if(newShapeType.ShapeType === EShapeType.Polygon){
+      if(shape.posEnd === null){
+        const dx = shape.posStart.x - mousePos.x;
+        const dy = shape.posStart.y - mousePos.y;
+        const hyp = Math.hypot(dx, dy);
+        if(hyp <= 10){
+          mousePos.x = shape.posStart.x;
+          mousePos.y = shape.posStart.y;
+          shape.snap = true;
+        }else{
+          shape.snap = false;
+        }
+      }
+    }
+  }
+
 }
 
 function mouseDown(aEvent){
@@ -153,6 +231,24 @@ function mouseDown(aEvent){
         break;
       case EShapeType.Rectangle:
         shape = new TRectangleShape(mousePos.x, mousePos.y);
+        break;
+      case EShapeType.Pen:
+        shape = new TPenShape(mousePos.x, mousePos.y);
+        break;
+      case EShapeType.Polygon:
+        shape = new TPolygonShape(mousePos.x, mousePos.y);
+        break;
+    }
+  }else{
+    // Test if we are creating a new polygon, if true, add mouse position.
+    if(newShapeType.ShapeType === EShapeType.Polygon){
+      if(shape.snap){
+        shape.setEndPos(mousePos.x, mousePos.y);
+        shapes.push(shape);
+        shape = null;
+      }else{
+        shape.addPos(mousePos.x, mousePos.y);
+      }
     }
   }
 }
@@ -164,9 +260,11 @@ function mouseMove(aEvent){
 function mouseUp(aEvent){
   updateMousePos(aEvent);
   if(shape){
-    shape.setEndPos(mousePos.x, mousePos.y);
-    shapes.push(shape);
-    shape = null;
+    if(newShapeType.ShapeType !== EShapeType.Polygon){
+      shape.setEndPos(mousePos.x, mousePos.y);
+      shapes.push(shape);
+      shape = null;
+    }
   }
 }
 
