@@ -1,5 +1,7 @@
 "use strict";
 import { TPoint } from "lib2d";
+import { newShapeType } from "./paint.mjs";
+import { EShapeType } from "./menu.js";
 
 // 🖼️ Access the paint canvas and drawing context, move this to your new JavaScript file.
 const cvsPaint = document.getElementById("cvsPaint");
@@ -21,6 +23,17 @@ class TShape{
     this.posEnd = new TPoint(aX, aY);
   }
 
+  draw(){ } //Abstract function
+
+} // End of TShape
+
+
+export class TLineShape extends TShape{
+  constructor(aX, aY){
+    super(aX, aY)
+
+  }
+
   draw(){
     ctxPaint.beginPath();
     ctxPaint.moveTo(this.posStart.x, this.posStart.y);
@@ -32,7 +45,92 @@ class TShape{
     ctxPaint.stroke();
   }
 
-}
+} // End of TLineShape
+            
+export class TCircleShape extends TShape{
+  #radius;
+  constructor(aX, aY){
+    super(aX, aY)
+    this.#radius = 0;
+  }
+  draw(){
+    ctxPaint.beginPath();
+    //ctxPaint.moveTo(this.posStart.x, this.posStart.y);
+    if(!this.posEnd){
+      this.#calcRadius();
+    }
+    ctxPaint.arc(this.posStart.x, this.posStart.y, this.#radius, 0, 2*Math.PI);
+    ctxPaint.stroke();
+  }
+
+  #calcRadius(){
+    const dx = mousePos.x - this.posStart.x;
+    const dy = mousePos.y - this.posStart.y;
+    let hyp = Math.pow(dx,2) + Math.pow(dy,2);
+    hyp = Math.sqrt(hyp);
+    this.#radius = hyp;
+  }
+
+} // End TCircleShape
+
+export class TEllipseShape extends TShape{
+  #radius1;
+  #radius2;
+  constructor(aX, aY){
+    super(aX, aY)
+    this.#radius1 = 0;
+    this.#radius2 = 0;
+  }
+  draw(){
+    ctxPaint.beginPath();
+    if(!this.posEnd){
+      this.#calcRadius();
+    }
+    ctxPaint.ellipse(
+      this.posStart.x, this.posStart.y,
+      this.#radius1, this.#radius2, 0, 0, 2*Math.PI);
+    ctxPaint.stroke();
+  }
+
+  #calcRadius(){
+    const dx = Math.abs(mousePos.x - this.posStart.x);
+    const dy = Math.abs(mousePos.y - this.posStart.y);
+    //let hyp = Math.pow(dx,2) + Math.pow(dy,2);
+    //hyp = Math.sqrt(hyp);
+    this.#radius1 = dx;
+    this.#radius2 = dy;
+  }
+
+} // End TCircleShape
+
+export class TRectangleShape extends TShape{
+  #width;
+  #height;
+  constructor(aX, aY){
+    super(aX, aY)
+    this.#width = 0;
+    this.#height = 0;
+  }
+
+  draw(){
+    ctxPaint.beginPath();
+    ctxPaint.moveTo(this.posStart.x, this.posStart.y);
+    if(!this.posEnd){
+      this.#calcSize();
+    }
+    ctxPaint.rect(this.posStart.x, this.posStart.y, this.#width, this.#height)
+    ctxPaint.stroke();
+  }
+
+  #calcSize(){
+    this.#width = Math.abs(mousePos.x - this.posStart.x);
+    this.#height = Math.abs(mousePos.y - this.posStart.y);
+  }
+
+
+} // End of TRectangleShape
+            
+
 
 function updateMousePos(aEvent){
   const rect = cvsPaint.getBoundingClientRect();
@@ -43,7 +141,19 @@ function updateMousePos(aEvent){
 function mouseDown(aEvent){
   updateMousePos(aEvent);
   if(shape === null){
-    shape = new TShape(mousePos.x, mousePos.y);
+    switch(newShapeType.ShapeType){
+      case EShapeType.Line:
+          shape = new TLineShape(mousePos.x, mousePos.y);
+        break;
+      case EShapeType.Circle:
+        shape = new TCircleShape(mousePos.x, mousePos.y);
+        break;
+      case EShapeType.Oval:
+        shape = new TEllipseShape(mousePos.x, mousePos.y);
+        break;
+      case EShapeType.Rectangle:
+        shape = new TRectangleShape(mousePos.x, mousePos.y);
+    }
   }
 }
 
