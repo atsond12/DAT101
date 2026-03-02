@@ -1,7 +1,7 @@
 "use strict";
 
 import { TMenu, EActionType, EColorType, EShapeType, EStrokeSizeType } from "./menu.js";
-import { newDrawing } from "./shape.js"
+import { newDrawing, deleteShape, moveUp, moveDown } from "./shape.js"
 /*
 📝 TODO: Create a Shape System
 ═══════════════════════════════════════════════════════════════════
@@ -126,15 +126,19 @@ function menuButtonClick(aEvent) {
       switch (value) {
         case EActionType.New:
           console.log("✨ New button clicked → Clear the canvas!");
+          newDrawing();
           break;
         case EActionType.Eraser:
           console.log("🗑️  Eraser button clicked → Delete selected shape");
+          deleteShape();
           break;
         case EActionType.MoveUp:
           console.log("⬆️  Move Up button clicked → Bring selected shape to front");
+          moveUp();
           break;
         case EActionType.MoveDown:
           console.log("⬇️  Move Down button clicked → Send selected shape to back");
+          moveDown();
           break;
       }
       break;
