@@ -1,7 +1,7 @@
 "use strict";
 
 import { TMenu, EActionType, EColorType, EShapeType, EStrokeSizeType } from "./menu.js";
-import { } from "./shape.js"
+import { newDrawing } from "./shape.js"
 /*
 📝 TODO: Create a Shape System
 ═══════════════════════════════════════════════════════════════════
@@ -159,3 +159,4 @@ function menuButtonClick(aEvent) {
 
 // 🔗 Listen for menu button clicks
 menu.addEventListener("menuButtonClick", menuButtonClick);
+newDrawing();

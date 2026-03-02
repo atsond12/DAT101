@@ -16,12 +16,14 @@ const paintObjectList = document.getElementById("paintObjectList");
 
 
 class TShape {
-  constructor(aX, aY) {
+  #name;
+  constructor(aX, aY, aName) {
     this.posStart = new TPoint(aX, aY);
     this.posEnd = null;
     this.lineWidth = newShapeType.StrokeSize;
     this.strokeStyle = newShapeType.StrokeColor;
     this.fillStyle = newShapeType.FillColor;
+    this.#name = aName;
   }
 
   setEndPos(aX, aY) {
@@ -30,7 +32,7 @@ class TShape {
     div.name="paint-shape-obj";
     div.classList.add("paintObject");
     div.appendChild(
-      document.createTextNode("Shape")
+      document.createTextNode(this.#name)
     );
     paintObjectList.appendChild(div);
   }
@@ -44,7 +46,7 @@ class TShape {
 
 export class TLineShape extends TShape {
   constructor(aX, aY) {
-    super(aX, aY);
+    super(aX, aY, "Line");
   }
 
   draw() {
@@ -63,7 +65,7 @@ export class TLineShape extends TShape {
 export class TCircleShape extends TShape {
   #radius;
   constructor(aX, aY) {
-    super(aX, aY);
+    super(aX, aY, "Circle");
     this.#radius = 0;
   }
   draw() {
@@ -292,7 +294,12 @@ function drawCanvas() {
   requestAnimationFrame(drawCanvas);
 }
 
+export function newDrawing(){
+  paintObjectList.innerHTML = "";
+}
+
 cvsPaint.addEventListener("mousedown", mouseDown);
 cvsPaint.addEventListener("mouseup", mouseUp);
 cvsPaint.addEventListener("mousemove", mouseMove);
 drawCanvas();
+
