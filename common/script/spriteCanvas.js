@@ -523,4 +523,13 @@ export class TSpriteCanvas {
     }
     this.#guiSprites = this.#guiSprites.filter((btn) => btn !== aGUISprite);
   }
+
+  updateBoundsRect() {
+    this.#boundingRect = this.#cvs.getBoundingClientRect();
+  }
+
+  removeAllGUISprites() {
+    this.#activeGUISprite = null;
+    this.#guiSprites = [];
+  }
 }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="no" style="display: table; margin: auto">
+  <head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Mine Sweeper</title>
+    <style>
+      body {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+      }
+      h1 {
+        font-size: xx-large;
+        margin-bottom: 0px;
+        margin-top: 0px;
+      }
+      select {
+        padding-left: 10px;
+        margin-left: 25px;
+        font-size: large;
+      }
+      label {
+        font-weight: bold;
+        font-size: large;
+      }
+      .border {
+        border: thin solid black;
+        padding: 10px;
+        margin: 10px;
+      }
+    </style>
+      <script type="importmap">
+      {
+        "imports": {
+          "libSprite": "../../common/script/libSprite.mjs",
+          "lib2d": "../../common/script/lib2d.mjs",
+          "libSound": "../../common/script/libSound.mjs"
+        }
+      }
+    </script>
+    <script src="./Minesweeper.mjs" type="module" defer></script>
+    <script>
+      //Prevent default context menu on right click
+      window.oncontextmenu = function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        return false;
+      };
+    </script>
+  </head>
+
+  <body>
+    <h1>Minesweeper</h1>
+    <canvas id="cvs" height="100" width="100" style="background-color: antiquewhite"></canvas>
+    <fieldset class="border">
+      <legend>Game options</legend>
+      <label for="selectDifficulty">Select Difficulty:</label>
+      <select id="selectDifficulty">
+        <option value="Level_1" selected="true">1. Easy</option>
+        <option value="Level_2">2. Medium</option>
+        <option value="Level_3">3. Hard</option>
+      </select>
+    </fieldset>
+    <p class="border" style="font-family: 'Franklin Gothic'; font-size: x-large;">
+      <i>Information on debuger mode:</i>&nbsp;
+      <br />
+      <strong>The right click is disabled in the game, becouse of the insert of flags.</strong>
+      <br />
+      On Chrome and Firefox, Press F12 (rember if you have a "FN" key, you might need to press "FN" + F12) to open the developer console.
+      <br />
+      On safari in macOS, you need to enable the developer menu in the preferences and press Option+Command+I (⌥+⌘+I).
+    </p>
+  </body>
+</html>

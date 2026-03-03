@@ -39,12 +39,12 @@ export class TSpriteNumber {
    * @param {object} aPosition - Object with x and y properties (e.g., {x: 10, y: 10}).
    * @param {class} aShapeClass - Optional shape class.
    */
-  constructor(aSpriteCanvas, aSpriteInfo, aX, aY, aInitalValue = 0, aDigits = 0, aJustify = ESpriteNumberJustifyType.Left) { 
+  constructor(aSpriteCanvas, aSpriteInfo, aX, aY, aInitialValue = 0, aDigits = 1, aJustify = ESpriteNumberJustifyType.Left) { 
     this.#spcvs = aSpriteCanvas;
     this.#spi = aSpriteInfo;
     this.#position = new TPoint(aX, aY);
-    this.#shapeClass = TRect; // Number is always rectange shape
-    this.#value = aInitalValue;
+    this.#shapeClass = TRect; // Number is always rectangle shape
+    this.#value = aInitialValue;
     
     /** * @member {number} digits 
      * @description Fixed number of digits to display (padding with zeros). 
@@ -153,6 +153,37 @@ export class TSpriteNumber {
     if (needToRealign) {
       this.#updatePosition();
     }
+  }
+
+  /** 
+   * @description Gets the x coordinate of the number sprites.
+   * @returns {number} The x coordinate.
+   */
+  get x() {
+    return this.#position.x;
+  }
+
+  /** @description Sets the x coordinate of the number sprites.
+   * @param {number} aX - The new x coordinate.
+   */
+  set x(aX) {
+    this.#position.x = aX;
+    this.#updatePosition();
+  }
+
+  /** @description Gets the y coordinate of the number sprites.
+   * @returns {number} The y coordinate.
+   */
+  get y() {
+    return this.#position.y;
+  }
+  
+  /** @description Sets the y coordinate of the number sprites.
+   * @param {number} aY - The new y coordinate.
+   */
+  set y(aY) {
+    this.#position.y = aY;
+    this.#updatePosition();
   }
 
   /**
