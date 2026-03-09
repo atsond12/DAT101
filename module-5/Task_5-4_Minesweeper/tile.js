@@ -3,6 +3,7 @@ import { TSpriteButton } from "libSprite";
 import { TPoint } from "lib2d";
 import { gameLevel } from "./Minesweeper.mjs";
 
+const MineInfoColors = ["blue", "green", "red", "darkblue", "brown", "cyan", "black", "grey"];
 let tiles = [];
 const ctx = document.getElementById("cvs").getContext("2d");
 
@@ -29,50 +30,59 @@ export class TTile extends TSpriteButton {
 
   set isMine(aValue) {
     this.#mine = aValue;
+    this.mineInfo = 0;
+    this.#getNeighbors();
+    for (let i = 0; i < this.#neighbors.length; i++) {
+      const tile = this.#neighbors[i];
+      if (tile.isMine === false) {
+        tile.mineInfo++;
+      }
+    }
   }
 
   get open() {
-    return this.index === 2;
+    return this.index === 2 || this.index === 5;
   }
 
-  draw(){
+  draw() {
     super.draw();
-    if(this.open){
+    if (this.open && this.mineInfo) {
       ctx.font = "48px Consolas";
+      ctx.fillStyle = MineInfoColors[this.mineInfo - 1];
       ctx.fillText(this.mineInfo, this.x + 13, this.y + 41);
     }
   }
 
-  #getNeighbors(){
-    if(this.#neighbors !== null){
+  #getNeighbors() {
+    if (this.#neighbors !== null) {
       return;
     }
     let colFrom = this.#col - 1;
-    let colTo = this.#col + 1
+    let colTo = this.#col + 1;
     let rowFrom = this.#row - 1;
     let rowTo = this.#row + 1;
-    if(colFrom < 0){
+    if (colFrom < 0) {
       colFrom = 0;
     }
-    if(rowFrom < 0){
+    if (rowFrom < 0) {
       rowFrom = 0;
     }
-    if(colTo >= gameLevel.Tiles.Col){
+    if (colTo >= gameLevel.Tiles.Col) {
       colTo = gameLevel.Tiles.Col - 1;
     }
-    if(rowTo >= gameLevel.Tiles.Row){
+    if (rowTo >= gameLevel.Tiles.Row) {
       rowTo = gameLevel.Tiles.Row - 1;
     }
     this.#neighbors = [];
-    for(let colIndex = colFrom; colIndex <= colTo; colIndex++){
-      for(let rowIndex = rowFrom; rowIndex <= rowTo; rowIndex++){
+    for (let colIndex = colFrom; colIndex <= colTo; colIndex++) {
+      for (let rowIndex = rowFrom; rowIndex <= rowTo; rowIndex++) {
         const tile = tiles[colIndex][rowIndex];
-        if(this !== tile){
+        if (this !== tile) {
           this.#neighbors.push(tile);
         }
       }
     }
-  } 
+  }
 
   // Override functions
   onMouseDown(eEvent) {
@@ -91,15 +101,23 @@ export class TTile extends TSpriteButton {
     }
     super.onMouseLeave(aEvent);
   }
-  
-  set open(_aValue){
-    if(this.isMine){
+
+  set open(_aValue) {
+    if (this.isMine) {
       this.index = 5;
-    }else{
+    } else {
       this.index = 2;
     }
+    if (this.mineInfo === 0) {
+      this.#getNeighbors();
+      for (let i = 0; i < this.#neighbors.length; i++) {
+        const tile = this.#neighbors[i];
+        if (tile.open === false) {
+          tile.open = true;
+        }
+      }
+    }
   }
-
 } // End of TTile
 
 export function createMines() {
