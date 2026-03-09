@@ -2,7 +2,7 @@
 import { TPoint } from "lib2d";
 import { TSpriteCanvas } from "libSprite";
 import { TGameBoard } from "./GameBoard.mjs";
-import { TTile, createTiles } from "./tile.js";
+import { createTiles, drawTiles} from "./tile.js";
 
 //-----------------------------------------------------------------------------------------
 //----------- variables and object --------------------------------------------------------
@@ -34,7 +34,7 @@ const cvs = document.getElementById("cvs");
 const spcvs = new TSpriteCanvas(cvs);
 const selectDifficulty = document.getElementById("selectDifficulty");
 let gameBoard = null;
-let tile = new TTile(spcvs, SpriteInfoList.ButtonTile);
+
 
 //-----------------------------------------------------------------------------------------
 //----------- functions -------------------------------------------------------------------
@@ -51,13 +51,13 @@ export function newGame() {
   spcvs.updateBoundsRect();
   spcvs.removeAllGUISprites();
   gameBoard = new TGameBoard(spcvs, SpriteInfoList.Board, new TPoint(0, 0));
-  createTiles();
+  createTiles(spcvs, SpriteInfoList.ButtonTile);
 }
 
 function drawGame() {
   spcvs.clearCanvas();
   gameBoard.draw();
-  tile.draw();
+  drawTiles();
 }
 
 //-----------------------------------------------------------------------------------------
