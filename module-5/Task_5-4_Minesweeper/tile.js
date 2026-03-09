@@ -34,7 +34,7 @@ export class TTile extends TSpriteButton {
   }
 
   onMouseUp(aEvent) {
-    this.index = 2;
+    this.open();
     super.onMouseUp(aEvent);
   }
 
@@ -44,12 +44,21 @@ export class TTile extends TSpriteButton {
     }
     super.onMouseLeave(aEvent);
   }
+  
+  open(){
+    if(this.isMine){
+      this.index = 5;
+    }else{
+      this.index = 2;
+    }
+  }
+
 } // End of TTile
 
 export function createMines() {
-  mineCount = 0;
-  colCount = gameLevel.Tiles.Col;
-  rowCount = gameLevel.Tiles.Row;
+  let mineCount = 0;
+  let colCount = gameLevel.Tiles.Col;
+  let rowCount = gameLevel.Tiles.Row;
   do {
     const col = Math.floor(Math.random() * colCount);
     const row = Math.floor(Math.random() * rowCount);
@@ -58,7 +67,7 @@ export function createMines() {
       tile.isMine = true;
       mineCount++;
     }
-  } while (mineCount <= gameLevel.Mines);
+  } while (mineCount < gameLevel.Mines);
 }
 
 export function createTiles(aSpcvs, aSPI) {
