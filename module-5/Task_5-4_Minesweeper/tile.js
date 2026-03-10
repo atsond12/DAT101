@@ -88,21 +88,28 @@ export class TTile extends TSpriteButton {
   onMouseDown(aEvent) {
     // Create an if test, for testing if right button is pressed
     // if index is 3 then set it to 0 and vice versa.
-    console.log(aEvent.buttons);
-    this.index = 1;
+    console.log(aEvent.button);
+    if(aEvent.button === 1){
+      this.index = 1;
+    }else if (aEvent.button === 2){
+      this.index = 3 - this.index;
+    }
     super.onMouseDown(aEvent);
   }
 
   onMouseUp(aEvent) {
+    if(aEvent.button === 2 || this.index === 3){
+      return;
+    }
     this.open = true;
     super.onMouseUp(aEvent);
   }
 
   onMouseLeave(aEvent) {
-    if (this.open === false) {
+    if (this.index === 1) {
       this.index = 0;
+      super.onMouseLeave(aEvent);
     }
-    super.onMouseLeave(aEvent);
   }
 
   set open(_aValue) {
