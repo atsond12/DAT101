@@ -85,9 +85,12 @@ export class TTile extends TSpriteButton {
   }
 
   // Override functions
-  onMouseDown(eEvent) {
+  onMouseDown(aEvent) {
+    // Create an if test, for testing if right button is pressed
+    // if index is 3 then set it to 0 and vice versa.
+    console.log(aEvent.buttons);
     this.index = 1;
-    super.onMouseDown(eEvent);
+    super.onMouseDown(aEvent);
   }
 
   onMouseUp(aEvent) {
