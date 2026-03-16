@@ -2,7 +2,7 @@ import { TPoint } from "./point2d.js";
 import { TSprite } from "./sprite.js";
 import { TEventListenerList } from "./eventListener.js";
 
-const ESpriteButtonEventNames = { CLICK: "click", MOUSEENTER: "mouseenter", MOUSELEAVE: "mouseleave", MOUSEDOWN: "mousedown", MOUSEUP: "mouseup" };
+const ESpriteButtonEventNames = { CLICK: "click", MOUSEMOVE: "mousemove", MOUSEENTER: "mouseenter", MOUSELEAVE: "mouseleave", MOUSEDOWN: "mousedown", MOUSEUP: "mouseup" };
 
 export class TSpriteButton extends TSprite {
   // ============================================================
@@ -69,6 +69,13 @@ export class TSpriteButton extends TSprite {
     this.#eventHandlers.callAll(aEvent, ESpriteButtonEventNames.CLICK);
   }
 
+
+  onMouseMove(aEvent) {
+    this.spcvs.style.cursor = "pointer";
+    aEvent.target = this;
+    this.#eventHandlers.callAll(aEvent, ESpriteButtonEventNames.MOUSEMOVE);
+  }
+
   /**
    * @description Internal function called when the mouse button is pressed down on the button. DO NOT CALL DIRECTLY.
    */
@@ -89,7 +96,6 @@ export class TSpriteButton extends TSprite {
    * @description Internal function called when the mouse enters the button area. DO NOT CALL DIRECTLY.
    */
   onMouseEnter(aEvent) {
-    this.spcvs.style.cursor = "pointer";
     aEvent.target = this;
     this.#eventHandlers.callAll(aEvent, ESpriteButtonEventNames.MOUSEENTER);
   }
@@ -191,6 +197,13 @@ export class TSpriteButtonHaptic extends TSpriteButton {
     super.onMouseEnter(aEvent);
     this.index = 1; // Hover frame
   }
+
+
+  onMouseMove(aEvent) {
+    if (this.#disabledState) return;
+    super.onMouseMove(aEvent);
+  }
+    
 
   /**
    * @description Overrides onMouseLeave to change sprite index back to idle state.

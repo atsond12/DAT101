@@ -35,7 +35,7 @@ const cvs = document.getElementById("cvs");
 const spcvs = new TSpriteCanvas(cvs);
 const selectDifficulty = document.getElementById("selectDifficulty");
 let gameBoard = null;
-let gameInfo = null;
+export let gameInfo = null;
 
 //-----------------------------------------------------------------------------------------
 //----------- functions -------------------------------------------------------------------
