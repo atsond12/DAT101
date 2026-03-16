@@ -15,5 +15,5 @@
 
 export { TSpriteCanvas } from "./spriteCanvas.js";
 export { TSprite } from "./sprite.js";
-export { TSpriteButton, TSpriteButtonHaptic, TSpriteDraggable } from "./spriteButton.js";
+export { TSpriteButton, TSpriteButtonHaptic, TSpriteDraggable, TSnapTo } from "./spriteButton.js";
 export { TSpriteNumber, ESpriteNumberJustifyType } from "./spriteNumber.js";

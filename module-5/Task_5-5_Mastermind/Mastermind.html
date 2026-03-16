@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="no" style="display: table; margin: auto">
+  <head>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <title>Mastermind</title>
+    <style>
+      body {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+      }
+      .note {
+        font-size: 0.8em;
+        color: gray;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "libSprite": "../../common/script/libSprite.mjs",
+          "lib2d": "../../common/script/lib2d.mjs",
+          "libSound": "../../common/script/libSound.mjs"
+        }
+      }
+    </script>
+    <script src="./Mastermind.mjs" type="module" defer></script>
+  </head>
+  <body>
+    <h2><label for="cvs">Mastermind</label></h2>
+    <canvas id="cvs" height="100px" width="100px" style="background-color: antiquewhite; border: 7px black solid"></canvas>
+  </body>
+</html>

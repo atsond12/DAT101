@@ -185,6 +185,7 @@ export class TSpriteCanvas {
     const sp = this.#activeGUISprite;
     this.#updateMousePosition(aEvent);
     // If this is a draggable sprite, check for dragging
+    //
     if (sp && sp instanceof TSpriteDraggable) {
       if (sp.isDragging) {
         sp.onDrag(this.#mousePos);
@@ -193,8 +194,6 @@ export class TSpriteCanvas {
     }
     // Notify current active sprite of mouse move (if any)
     if (this.#activeGUISprite) {
-      // Reset the cursor, let the sprite's set it if needed
-      this.#cvs.style.cursor = "default";
       const newEvent = this.#createNewEventFromMouseEvent(aEvent, this.#activeGUISprite);
       this.#activeGUISprite.onMouseMove(newEvent);
     }

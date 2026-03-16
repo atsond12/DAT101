@@ -1,4 +1,5 @@
 import { TPoint } from "./point2d.js";
+import { TPosition } from "./shape2d.js";
 import { TSprite } from "./sprite.js";
 import { TEventListenerList } from "./eventListener.js";
 
@@ -71,7 +72,6 @@ export class TSpriteButton extends TSprite {
 
 
   onMouseMove(aEvent) {
-    this.spcvs.style.cursor = "pointer";
     aEvent.target = this;
     this.#eventHandlers.callAll(aEvent, ESpriteButtonEventNames.MOUSEMOVE);
   }
@@ -248,7 +248,7 @@ export class TSnapTo {
    */
   constructor(aPositions, aDistance) {
     // Copy the array to avoid external modifications
-    this.points = aPositions.slice();
+    this.positions = aPositions.slice();
     this.distance = aDistance;
     this.lastSnapIndex = -1;
     this.lastSnapPosition = null;
@@ -263,8 +263,8 @@ export class TSnapTo {
     const distSqLimit = this.distance ** 2;
 
     // Use a standard loop to allow early return
-    for (let i = 0; i < this.points.length; i++) {
-      const targetPt = this.points[i];
+    for (let i = 0; i < this.positions.length; i++) {
+      const targetPt = this.positions[i];
       const dx = aPos.x - targetPt.x;
       const dy = aPos.y - targetPt.y;
       const distSq = dx * dx + dy * dy;
@@ -272,10 +272,15 @@ export class TSnapTo {
       if (distSq <= distSqLimit) {
         this.lastSnapPosition = targetPt;
         this.lastSnapIndex = i;
-        return targetPt;
+        // Now ask if we can snap here (e.g. if it's not occupied)
+        // Check both the snap validity and snap function, if no custom validator is provided, we allow the snap by default
+        if(!this.canSnap || this.canSnap(targetPt)){
+          return targetPt;
+        }
       }
     }
-
+    
+    // If the loop finishes without returning, no valid snap was found
     this.lastSnapPosition = null;
     this.lastSnapIndex = -1;
     return null;
@@ -308,12 +313,7 @@ export class TSpriteDraggable extends TSpriteButton {
     this.#canDrop = true;
     this.snapTo = null; // Instance of TSnapTo
     this.#dropPos = null;
-
-    // Delegates for user callbacks
-    this.onDrop = null;
-    this.onCancelDrop = null;
-    this.onCanDrop = null;
-  }
+    }
 
   /**
    * @description Checks if the sprite is currently being dragged.
@@ -325,7 +325,11 @@ export class TSpriteDraggable extends TSpriteButton {
 
   onMouseEnter(aEvent) {
     // Override parent behavior
-    this.spcvs.style.cursor = "grab";
+    if(this.canDrag){
+      this.spcvs.style.cursor = "grab";
+    }else{
+      this.spcvs.style.cursor = "default";
+    }
     super.onMouseEnter(aEvent); // Call parent to handle visual states (index) if needed
   }
 
@@ -335,6 +339,10 @@ export class TSpriteDraggable extends TSpriteButton {
   }
 
   onMouseDown(aEvent) {
+    // Give the user feedback that they have started dragging immediately, before any potential canDrag checks
+    if(this.onStartDrag){
+      this.onStartDrag(aEvent);
+    }
     if (this.canDrag === false) return;
 
     super.onMouseDown(aEvent); // Call parent to handle click visuals
@@ -415,8 +423,8 @@ export class TSpriteDraggable extends TSpriteButton {
     let collisionFree = this.lastCollisionSprite === null;
 
     // If user provided a custom validator, use it, otherwise default to true
-    if (this.onCanDrop) {
-      this.#canDrop = this.onCanDrop(new TPosition(this.x, this.y));
+    if (this.canDrop) {
+      this.#canDrop = this.canDrop(new TPosition(this.x, this.y));
     } else {
       // Default behavior: drop is valid if no collision
       // (You might want to remove the collision check if overlapping is allowed)

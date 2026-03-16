@@ -25,7 +25,7 @@ export class TSprite {
   constructor(aSpriteCanvas, aSpriteInfo, aX, aY, aShapeClass) {
     this.spcvs = aSpriteCanvas; // This needs to be public, derived classes need to access it's methods
     this.spi = aSpriteInfo;
-    
+
     // Create shape based on type - TCircle and TEllipse need radius parameters
     if (aShapeClass === TCircle) {
       const radius = Math.min(this.spi.width, this.spi.height) / 2;
@@ -35,7 +35,7 @@ export class TSprite {
     } else {
       this.#shape = aShapeClass ? new aShapeClass(aX, aY, this.spi.width, this.spi.height) : new TRect(aX, aY, this.spi.width, this.spi.height);
     }
-    
+
     this.#frameIndex = 0;
     this.#speedIndex = 0;
 
@@ -306,24 +306,42 @@ export class TSprite {
     this.noneUniformScale = { x: aScale, y: aScale };
   }
 
+/**
+   * @description Get whether the sprite is visible (the opposite of hidden).
+   * @returns {boolean} True if visible, false if hidden
+   */
+  get visible() {
+    return !this.hidden;
+  }
+
+  /**
+   * @description Set whether the sprite is visible.
+   * @param {boolean} aVisible - True to show, false to hide
+   */
+  set visible(aVisible) {
+    this.hidden = !aVisible;
+  }
+
   // ============================================================
   //  PUBLIC FUNCTIONS
   // ============================================================
 
-  /** 
+  /**
    * @description Draw the sprite on the sprite canvas
-  */
+   */
   draw() {
-    if (this.hidden) return;
+    if (this.hidden) {
+      return;
+    }
     this.#animateSpriteFrame();
     this.spcvs.drawSprite(this);
   }
 
-  /** 
+  /**
    * @description Calculate the distance from this sprite to a point
    * @param {TPoint} aPoint - The point to calculate the distance to
    * @returns {number} The distance to the point
-  */
+   */
   distanceToPoint(aPoint) {
     return this.#shape.distanceToPoint(aPoint);
   }
@@ -356,7 +374,7 @@ export class TSprite {
   /**
    * @description Flip the sprite horizontally around its pivot point
    * @returns {number} The new direction multiplier after the flip
-  */
+   */
   flipHorizontal() {
     // 1. The Coordinate Correction (The "Jump Fix")
     // We shift X by the current width to keep the sprite visually in place
@@ -370,15 +388,13 @@ export class TSprite {
     return -1 * Math.sign(currentScale.x);
   }
 
-  
-    /**
-     * @description Translate the hero by delta x and delta y
-     * @param {number} aDX - Delta X
-     * @param {number} aDY - Delta Y
-    */
-    translate(aDX, aDY) {
-      this.x += aDX;
-      this.y += aDY;
-    }
-
+  /**
+   * @description Translate the hero by delta x and delta y
+   * @param {number} aDX - Delta X
+   * @param {number} aDY - Delta Y
+   */
+  translate(aDX, aDY) {
+    this.x += aDX;
+    this.y += aDY;
+  }
 }
