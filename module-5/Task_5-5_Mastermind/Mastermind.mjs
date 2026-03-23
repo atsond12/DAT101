@@ -31,6 +31,8 @@
 
 import { TSpriteCanvas } from "libSprite";
 import { TMenu } from "./menu.js";
+import { TColorPicker } from "./colorPicker.js";
+import { MastermindBoard } from "./MastermindBoard.mjs";
 // --------------------------------------------------------------------------------------------------------------------
 // 🗄️ 2. Variables, Constants, and Game Objects
 // --------------------------------------------------------------------------------------------------------------------
@@ -52,6 +54,7 @@ export const SpriteInfoList = {
 const cvs = document.getElementById("cvs");
 export const spcvs = new TSpriteCanvas(cvs);
 export let menu = null;
+export let colorPickers = [];
 
 // --------------------------------------------------------------------------------------------------------------------
 // ⚙️ 3. Game Functions
@@ -66,6 +69,25 @@ export function newGame() {
   // TODO: Generate a new secret code for the computer.
   // TODO: Create the draggable color picker pegs for the menu.
   menu = new TMenu();
+  createColorPickers();
+}
+
+function createColorPickers(){
+  const keys = Object.keys(MastermindBoard.ColorPicker);
+  for(let i = 0; i < keys.length; i++){
+    const key = keys[i];
+    const pos = MastermindBoard.ColorPicker[key];
+    const newColorPicker = new TColorPicker(pos);
+    newColorPicker.index = i;
+    colorPickers.push(newColorPicker);
+  }
+}
+
+function drawColorPickers(){
+  for(let i = 0; i < colorPickers.length; i++){
+    const colorPicker = colorPickers[i];
+    colorPicker.draw();
+  }
 }
 
 function drawGame() {
@@ -82,7 +104,7 @@ function drawGame() {
   menu.drawBackground();
 
   menu.draw();
-
+drawColorPickers();
 }
 
 // --------------------------------------------------------------------------------------------------------------------
