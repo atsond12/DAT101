@@ -5,13 +5,12 @@ import { MastermindBoard } from "./MastermindBoard.mjs";
 import { TPoint } from "lib2d";
 
 let playerAnswerRow = MastermindBoard.PlayerAnswer.Row1;
+let playerAnswers = [null, null, null, null];
 
 class TSnapping extends TSnapTo {
-
-    constructor(){
-      super(playerAnswerRow, 30);
-    }
-
+  constructor() {
+    super(playerAnswerRow, 30);
+  }
 }
 
 export class TColorPicker extends TSpriteDraggable {
@@ -21,18 +20,36 @@ export class TColorPicker extends TSpriteDraggable {
     this.initPos = new TPoint(aPos.x, aPos.y);
   }
 
-  duplicate(){
+  duplicate() {
     const newColorPicker = new TColorPicker(this.initPos);
     newColorPicker.index = this.index;
     return newColorPicker;
   }
 
-  canDrop(aPos){
+  onDrop(aPos) {
+    const dup = this.duplicate();
+    colorPickers.push(dup);
     for(let i = 0; i < playerAnswerRow.length; i++){
       const pos = playerAnswerRow[i];
       if((aPos.x === pos.x) && (aPos.y === pos.y)){
-        const dup = this.duplicate();
-        colorPickers.push(dup);
+        playerAnswers[i] = this;
+      }
+    }
+    let count = 0;
+    for(let i = 0; i < playerAnswers.length; i++){
+      if(playerAnswers[i] !== null){
+        count++;
+      }
+    }
+    if(count >= 4){
+      // We must enable the check answer button.
+    }
+  }
+
+  canDrop(aPos) {
+    for (let i = 0; i < playerAnswerRow.length; i++) {
+      const pos = playerAnswerRow[i];
+      if (aPos.x === pos.x && aPos.y === pos.y) {
         return true;
       }
     }
@@ -42,6 +59,6 @@ export class TColorPicker extends TSpriteDraggable {
   onStartDrag() {
     const index = colorPickers.indexOf(this);
     colorPickers.splice(index, 1);
-		colorPickers.push(this);
+    colorPickers.push(this);
   }
 }
