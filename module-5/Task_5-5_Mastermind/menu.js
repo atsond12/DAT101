@@ -15,6 +15,7 @@ export class TMenu{
   #checkAnswer;
   #cheat;
   #hideAnswer;
+  #hints;
 
   constructor(){
     this.#background = new TSprite(spcvs, SpriteInfoList.Board, 0, 0);
@@ -35,6 +36,7 @@ export class TMenu{
     this.#cheat.onClick = this.#cheatOnClick.bind(this);
     this.#newGame.onClick = this.#newGameOnClick.bind(this);
     this.#checkAnswer.onClick = this.#checkAnswerOnClick.bind(this);
+    this.#hints = [];
   }
 
   #checkAnswerOnClick(){
@@ -58,10 +60,19 @@ export class TMenu{
     this.#checkAnswer.draw();
     this.#cheat.draw();
     this.#hideAnswer.draw();
+    for(let i = 0; i < this.#hints.length; i++){
+      const hintPeg = this.#hints[i];
+      hintPeg.draw();
+    }
   }
 
   SetCheckAnswerDisabled(aDisabled){
     this.#checkAnswer.disabled = aDisabled;
+  }
+
+  createHints(aCorrectCount, aWrongCount){
+    // Create a black hint peg
+    // Push this to hints. 
   }
 
 }// End of TMenu
