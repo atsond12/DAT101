@@ -60,5 +60,9 @@ export class TMenu{
     this.#hideAnswer.draw();
   }
 
+  SetCheckAnswerDisabled(aDisabled){
+    this.#checkAnswer.disabled = aDisabled;
+  }
+
 }// End of TMenu
 

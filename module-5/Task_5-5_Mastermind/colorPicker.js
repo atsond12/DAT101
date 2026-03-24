@@ -1,11 +1,11 @@
 "use strict";
 import { TSpriteDraggable, TSnapTo } from "libSprite";
-import { spcvs, SpriteInfoList, colorPickers } from "./Mastermind.mjs";
+import { spcvs, SpriteInfoList, colorPickers, menu } from "./Mastermind.mjs";
 import { MastermindBoard } from "./MastermindBoard.mjs";
 import { TPoint } from "lib2d";
 
 let playerAnswerRow = MastermindBoard.PlayerAnswer.Row1;
-let playerAnswers = [null, null, null, null];
+export let playerAnswers = [null, null, null, null];
 
 class TSnapping extends TSnapTo {
   constructor() {
@@ -42,7 +42,8 @@ export class TColorPicker extends TSpriteDraggable {
       }
     }
     if(count >= 4){
-      // We must enable the check answer button.
+      console.log("We must enable the check answer button.");
+      menu.SetCheckAnswerDisabled(false);
     }
   }
 
